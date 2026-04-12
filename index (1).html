@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noel Joyce Varghese — Embedded Hardware Design Engineer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+
+  <style>
+    /* ─── VARIABLES & RESET ────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f5f4f0;
+      --bg2:       #edecea;
+      --surface:   #ffffff;
+      --border:    #e0dedd;
+      --border2:   #c8c5c2;
+      --accent:    #5c3bff;
+      --accent2:   #ff3b5c;
+      --text:      #0f0e0d;
+      --muted:     #7a7774;
+      --muted2:    #b0adaa;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CUSTOM CURSOR ─────────────────────────────────── */
+    .cursor {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 30px; height: 30px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      opacity: 0.5;
+    }
+
+    /* ─── NAVIGATION ────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 5rem;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(245,244,240,0.92);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.1rem; font-weight: 800;
+      color: var(--text); text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem; color: var(--muted);
+      text-decoration: none; font-weight: 400;
+      transition: color 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1.5px; background: var(--accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 0.85rem; font-weight: 500;
+      padding: 0.55rem 1.4rem;
+      border: 1.5px solid var(--text);
+      border-radius: 100px;
+      color: var(--text); text-decoration: none;
+      transition: all 0.25s;
+    }
+    .nav-cta:hover { background: var(--text); color: var(--bg); }
+
+    /* ─── HERO ──────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Large background text watermark */
+    .hero-watermark {
+      position: absolute;
+      bottom: -1rem; left: -0.5rem;
+      font-family: var(--font-head);
+      font-size: clamp(6rem, 14vw, 13rem);
+      font-weight: 800;
+      color: var(--border);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+
+    /* Left: text content */
+    .hero-left { position: relative; z-index: 2; }
+
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--accent); letter-spacing: 0.18em;
+      text-transform: uppercase; margin-bottom: 1.8rem;
+      opacity: 0;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.4; transform:scale(0.7); }
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(3rem, 5.5vw, 5.2rem);
+      font-weight: 800; line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: var(--text); margin-bottom: 1rem;
+      opacity: 0;
+    }
+    .hero-name .accent-line {
+      display: block; color: var(--accent);
+      font-style: italic;
+    }
+
+    .hero-role {
+      font-family: var(--font-mono); font-size: 0.95rem;
+      color: var(--muted); margin-bottom: 2rem;
+      min-height: 1.6em; opacity: 0;
+    }
+    .typed-cursor { color: var(--accent); animation: blink 0.8s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-desc {
+      font-size: 1rem; color: var(--muted);
+      line-height: 1.8; max-width: 480px;
+      margin-bottom: 2.5rem; opacity: 0;
+    }
+
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; }
+
+    .btn {
+      font-size: 0.85rem; font-weight: 500;
+      padding: 0.8rem 2rem; border-radius: 100px;
+      text-decoration: none; display: inline-flex;
+      align-items: center; gap: 8px;
+      transition: all 0.25s; cursor: none;
+    }
+    .btn-primary {
+      background: var(--accent); color: #fff;
+      border: 1.5px solid var(--accent);
+    }
+    .btn-primary:hover { background: #4428ee; border-color: #4428ee; transform: translateY(-2px); }
+    .btn-secondary {
+      background: transparent; color: var(--text);
+      border: 1.5px solid var(--border2);
+    }
+    .btn-secondary:hover { border-color: var(--text); transform: translateY(-2px); }
+
+    /* Hero stat pills */
+    .hero-stats {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      margin-top: 3rem; opacity: 0;
+    }
+    .stat-pill {
+      display: flex; flex-direction: column;
+      padding: 0.8rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+    .stat-pill-num {
+      font-family: var(--font-head);
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+    .stat-pill-label {
+      font-size: 0.7rem; color: var(--muted);
+      margin-top: 2px; white-space: nowrap;
+    }
+
+    /* Right: Photo with shape */
+    .hero-right {
+      position: relative; z-index: 2;
+      display: flex; justify-content: flex-end; align-items: center;
+    }
+    .photo-shape-wrap {
+      position: relative; width: 420px; height: 520px;
+    }
+    /* The big colored blob behind photo */
+    .photo-blob {
+      position: absolute;
+      top: 30px; right: 0;
+      width: 380px; height: 460px;
+      background: var(--accent);
+      border-radius: 60% 40% 55% 45% / 50% 45% 55% 50%;
+      z-index: 1;
+    }
+    /* The photo itself */
+    .hero-photo {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 370px; height: 490px;
+      object-fit: cover; object-position: top center;
+      border-radius: 200px 200px 20px 20px;
+      z-index: 2;
+      display: block;
+    }
+    /* Fallback if no photo yet */
+    .hero-photo-placeholder {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 370px; height: 490px;
+      border-radius: 200px 200px 20px 20px;
+      z-index: 2;
+      background: var(--bg2);
+      border: 2px dashed var(--border2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+    }
+    .placeholder-initials {
+      font-family: var(--font-head);
+      font-size: 4rem; font-weight: 800;
+      color: var(--border2);
+    }
+    .placeholder-hint {
+      font-family: var(--font-mono);
+      font-size: 10px; color: var(--muted2);
+      text-align: center; line-height: 1.8;
+      padding: 0 2rem;
+    }
+
+    /* Floating badge cards on hero photo */
+    .hero-badge {
+      position: absolute; z-index: 3;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 0.7rem 1rem;
+      display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .badge-icon { font-size: 1.4rem; }
+    .badge-title { font-size: 0.8rem; font-weight: 500; color: var(--text); }
+    .badge-sub { font-size: 0.7rem; color: var(--muted); }
+    .badge-1 { top: 60px; left: -20px; }
+    .badge-2 { bottom: 80px; right: -30px; }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0;
+    }
+    .scroll-hint span {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--muted2); letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .scroll-bar {
+      width: 1px; height: 48px;
+      background: linear-gradient(var(--accent), transparent);
+      animation: scrollAnim 2s ease-in-out infinite;
+    }
+    @keyframes scrollAnim {
+      0%,100% { opacity:0.3; transform:scaleY(0.8); }
+      50%      { opacity:1; transform:scaleY(1); }
+    }
+
+    /* ─── SECTION SHARED ────────────────────────────────── */
+    .section-header {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 4rem;
+    }
+    .section-num {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--accent); letter-spacing: 0.2em;
+    }
+    .section-line { flex:1; height: 1px; background: var(--border); }
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 800; letter-spacing: -0.02em;
+    }
+
+    /* ─── ABOUT ─────────────────────────────────────────── */
+    #about {
+      padding: 7rem 5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 5rem; align-items: start;
+    }
+
+    /* Left col */
+    .about-left { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .about-photo-wrap {
+      position: relative; width: 100%;
+      aspect-ratio: 3/4; overflow: hidden;
+      border-radius: 20px;
+    }
+    /* ══════════════════════════════════════════════
+       YOUR PHOTO — noel.jpg must be in SAME folder
+       as index.html. The src below is correct.
+       If still not showing: check the filename is
+       exactly  noel.jpg  (lowercase, no spaces).
+       ══════════════════════════════════════════════ */
+    .about-photo {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
+      display: block; border-radius: 20px;
+    }
+    .about-photo-placeholder {
+      width: 100%; height: 100%;
+      background: var(--bg2);
+      border-radius: 20px;
+      border: 2px dashed var(--border2);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px;
+    }
+    .about-photo-placeholder .initials {
+      font-family: var(--font-head);
+      font-size: 3rem; font-weight: 800;
+      color: var(--border2);
+    }
+    .about-photo-placeholder .hint {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--muted2); text-align: center; line-height: 1.8;
+      padding: 0 1.5rem;
+    }
+
+    .info-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.9rem;
+    }
+    .info-row {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 8px;
+      font-size: 13px;
+    }
+    .info-key { color: var(--muted); font-size: 12px; }
+    .info-val { color: var(--text); font-weight: 500; text-align: right; }
+    .info-val.accent { color: var(--accent); }
+    .info-val a { color: var(--text); text-decoration: none; }
+    .info-val a:hover { color: var(--accent); }
+    .info-divider { height: 1px; background: var(--border); }
+    .nda-note {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--muted2); line-height: 1.6;
+      padding-top: 0.2rem;
+    }
+    .nda-note strong { color: var(--muted); }
+
+    /* Right col */
+    .about-right {}
+    .about-heading {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+      font-weight: 800; line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.8rem;
+      opacity: 0; transform: translateY(20px);
+    }
+    .about-heading em { color: var(--accent); font-style: italic; }
+    .about-para {
+      font-size: 0.97rem; color: var(--muted);
+      line-height: 1.85; margin-bottom: 1rem;
+      opacity: 0; transform: translateY(16px);
+    }
+    .about-para strong { color: var(--text); font-weight: 500; }
+
+    .edu-block {
+      margin: 2rem 0 0;
+      padding: 1.5rem;
+      background: var(--bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      opacity: 0; transform: translateY(16px);
+    }
+    .edu-eyebrow {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--accent); letter-spacing: 0.2em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .edu-row { display: flex; gap: 14px; align-items: flex-start; }
+    .edu-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); margin-top: 4px; flex-shrink: 0;
+    }
+    .edu-degree { font-size: 0.9rem; font-weight: 500; margin-bottom: 3px; }
+    .edu-school { font-size: 0.84rem; color: var(--muted); margin-bottom: 2px; }
+    .edu-year { font-family: var(--font-mono); font-size: 11px; color: var(--accent); }
+
+    .counter-strip {
+      display: flex; margin-top: 2rem;
+      border: 1px solid var(--border); border-radius: 16px;
+      overflow: hidden; opacity: 0; transform: translateY(16px);
+    }
+    .counter-item { flex:1; padding: 1.2rem; text-align: center; }
+    .counter-item + .counter-item { border-left: 1px solid var(--border); }
+    .counter-num {
+      font-family: var(--font-head);
+      font-size: 2rem; font-weight: 800;
+      color: var(--accent); line-height: 1;
+    }
+    .counter-label {
+      font-family: var(--font-mono); font-size: 9px;
+      color: var(--muted); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-top: 4px;
+    }
+
+    /* ─── SKILLS ────────────────────────────────────────── */
+    #skills {
+      padding: 7rem 5rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .skill-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      opacity: 0; transform: translateY(24px);
+    }
+    .skill-group-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .skill-group-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .icon-purple { background: #ede9ff; color: #5c3bff; }
+    .icon-red    { background: #ffe9ec; color: #ff3b5c; }
+    .icon-green  { background: #e6f9f0; color: #00a86b; }
+    .icon-amber  { background: #fff4e0; color: #e07b00; }
+
+    .skill-group-name {
+      font-family: var(--font-head);
+      font-size: 1rem; font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .skill-group-count {
+      font-family: var(--font-mono); font-size: 10px;
+      color: var(--muted); margin-left: auto;
+    }
+
+    /* Tag cloud per group */
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-family: var(--font-mono); font-size: 11px;
+      padding: 5px 12px; border-radius: 100px;
+      border: 1px solid var(--border);
+      color: var(--muted); background: var(--bg);
+      transition: all 0.2s;
+    }
+    .skill-tag:hover {
+      background: var(--accent); color: #fff;
+      border-color: var(--accent);
+    }
+    .skill-tag.highlight {
+      background: var(--accent); color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* Bar skills (for tools with proficiency) */
+    .skill-bars { display: flex; flex-direction: column; gap: 14px; }
+    .skill-bar-row {}
+    .skill-bar-top {
+      display: flex; justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    .skill-bar-name { font-size: 12px; color: var(--text); font-weight: 500; }
+    .skill-bar-pct  { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+    .skill-bar-track {
+      height: 4px; background: var(--bg2);
+      border-radius: 100px; overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%; border-radius: 100px;
+      background: var(--accent); width: 0;
+      transition: width 1s ease;
+    }
+    .skill-bar-fill.red   { background: var(--accent2); }
+    .skill-bar-fill.green { background: #00a86b; }
+
+    /* ─── PLACEHOLDERS ──────────────────────────────────── */
+    .coming-soon {
+      min-height: 30vh;
+      display: flex; align-items: center; justify-content: center;
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--border2); letter-spacing: 0.2em; text-transform: uppercase;
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      #hero { grid-template-columns: 1fr; padding: 7rem 2.5rem 4rem; }
+      .hero-right { justify-content: center; margin-top: 3rem; }
+      .photo-shape-wrap { width: 320px; height: 400px; }
+      .hero-photo, .hero-photo-placeholder { width: 280px; height: 370px; }
+      .photo-blob { width: 290px; height: 360px; }
+      nav { padding: 1.2rem 2.5rem; }
+      #about, #skills { padding: 5rem 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cring"></div>
+
+  <!-- ─── NAV ─────────────────────────────────────────── -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">Noel<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Contact</a>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────── -->
+  <section id="hero">
+
+    <div class="hero-watermark">HARDWARE</div>
+
+    <!-- Left: text -->
+    <div class="hero-left">
+      <div class="hero-tag" id="htag">
+        <span class="hero-tag-dot"></span>
+        Embedded Hardware Engineer
+      </div>
+
+      <h1 class="hero-name" id="hname">
+        Noel Joyce
+        <span class="accent-line">Varghese.</span>
+      </h1>
+
+      <p class="hero-role" id="hrole">
+        <span id="typed"></span><span class="typed-cursor">|</span>
+      </p>
+
+      <p class="hero-desc" id="hdesc">
+        Designing custom PCBs for aerospace, robotics &amp; defence.
+        From schematic to validated board — I build hardware that
+        actually flies, spins, and senses.
+      </p>
+
+      <div class="hero-btns" id="hbtns">
+        <a href="#projects" class="btn btn-primary">View Projects →</a>
+        <a href="#contact"  class="btn btn-secondary">Get in Touch</a>
+      </div>
+
+      <div class="hero-stats" id="hstats">
+        <div class="stat-pill">
+          <span class="stat-pill-num">5+</span>
+          <span class="stat-pill-label">PCB Projects</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-num">4L</span>
+          <span class="stat-pill-label">Max Layers</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-num">2</span>
+          <span class="stat-pill-label">Internships</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-num">6+</span>
+          <span class="stat-pill-label">EDA Tools</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: photo -->
+    <div class="hero-right">
+      <div class="photo-shape-wrap">
+        <div class="photo-blob"></div>
+
+        <!--
+        ╔══════════════════════════════════════════════════╗
+        ║  YOUR PHOTO — HOW TO MAKE IT SHOW               ║
+        ║  1. Your file must be named:  noel.jpg           ║
+        ║  2. It must be in the SAME folder as index.html  ║
+        ║  3. The line below already points to it —        ║
+        ║     just make sure filename matches exactly.     ║
+        ║  4. Delete the placeholder div below the img     ║
+        ║     once your photo loads correctly.             ║
+        ╚══════════════════════════════════════════════════╝
+        -->
+        <img
+          src="noel.jpg"
+          alt="Noel Joyce Varghese"
+          class="hero-photo"
+          id="hero-photo-img"
+          onerror="this.style.display='none'; document.getElementById('hero-photo-fallback').style.display='flex';"
+        />
+        <!-- This fallback ONLY shows if noel.jpg is missing or wrong filename -->
+        <div class="hero-photo-placeholder" id="hero-photo-fallback" style="display:none;">
+          <div class="placeholder-initials">NJV</div>
+          <div class="placeholder-hint">
+            Save photo as <strong>noel.jpg</strong><br/>
+            in same folder as index.html
+          </div>
+        </div>
+
+        <!-- Floating info badges -->
+        <div class="hero-badge badge-1">
+          <span class="badge-icon">⚡</span>
+          <div>
+            <div class="badge-title">Currently at</div>
+            <div class="badge-sub">PSYC Aerospace & Defence</div>
+          </div>
+        </div>
+        <div class="hero-badge badge-2">
+          <span class="badge-icon">🛰️</span>
+          <div>
+            <div class="badge-title">Specialisation</div>
+            <div class="badge-sub">Aerospace PCB Design</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-hint" id="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-bar"></div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ────────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title" style="margin-bottom:3rem; opacity:0; transform:translateY(20px);" id="about-title">About Me</h2>
+
+    <div class="about-grid">
+      <!-- Left -->
+      <div class="about-left">
+        <div class="about-photo-wrap">
+          <!--
+          Same photo logic — noel.jpg in same folder.
+          onerror shows placeholder automatically if missing.
+          -->
+          <img
+            src="noel.jpg"
+            alt="Noel Joyce Varghese"
+            class="about-photo"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div class="about-photo-placeholder" style="display:none;">
+            <div class="initials">NJV</div>
+            <div class="hint">noel.jpg · same folder</div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-row">
+            <span class="info-key">Location</span>
+            <span class="info-val">Kerala, India</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Currently at</span>
+            <span class="info-val accent">PSYC Aerospace</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Degree</span>
+            <span class="info-val">B.Tech ECE · 2026</span>
+          </div>
+          <div class="info-row">
+            <span class="info-key">Email</span>
+            <span class="info-val">
+              <a href="mailto:noeljoyce6@gmail.com">noeljoyce6@gmail.com</a>
+            </span>
+          </div>
+          <div class="info-divider"></div>
+          <div class="nda-note">
+            <strong>GitHub:</strong> Private repos (NDA) —
+            source code available on request for verified recruiters.
+          </div>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="about-right">
+        <h3 class="about-heading">
+          Building hardware that<br/>
+          <em>leaves the screen.</em>
+        </h3>
+
+        <p class="about-para">
+          I'm an Embedded Hardware Design Engineer interning at
+          <strong>PSYC Aerospace and Defence Industries</strong> in Bengaluru —
+          designing custom PCBs for aerospace, robotics, and defence platforms.
+          My work spans schematic capture, multilayer layout, component selection,
+          bring-up, soldering, and validation.
+        </p>
+        <p class="about-para">
+          Earlier I worked on analog IC design at <strong>IIIT Kottayam</strong>,
+          simulating CMOS VCOs in Cadence Virtuoso. My projects range from
+          4-layer BLDC motor controllers to 6-layer UAV flight computers and
+          low-noise mixed-signal EEG acquisition hardware.
+        </p>
+        <p class="about-para">
+          I thrive where precision electronics meets real-world systems — where
+          a routed trace becomes a motor spinning, a sensor reading, or a drone flying.
+        </p>
+
+        <div class="edu-block">
+          <div class="edu-eyebrow">Education</div>
+          <div class="edu-row">
+            <div class="edu-dot"></div>
+            <div>
+              <div class="edu-degree">B.Tech — Electronics &amp; Communication Engineering</div>
+              <div class="edu-school">Amal Jyothi College of Engineering (Autonomous)</div>
+              <div class="edu-year">2022 – Present · Kerala, India</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="counter-strip">
+          <div class="counter-item">
+            <div class="counter-num" data-target="5">0</div>
+            <div class="counter-label">PCB Projects</div>
+          </div>
+          <div class="counter-item">
+            <div class="counter-num" data-target="4">0</div>
+            <div class="counter-label">Max Layers</div>
+          </div>
+          <div class="counter-item">
+            <div class="counter-num" data-target="2">0</div>
+            <div class="counter-label">Internships</div>
+          </div>
+          <div class="counter-item">
+            <div class="counter-num" data-target="3">0</div>
+            <div class="counter-label">EDA Tools</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SKILLS ───────────────────────────────────────── -->
+  <section id="skills">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title" style="margin-bottom:3rem; opacity:0; transform:translateY(20px);" id="skills-title">Skills &amp; Tools</h2>
+
+    <div class="skills-layout">
+
+      <!-- Group 1: Hardware Design -->
+      <div class="skill-group">
+        <div class="skill-group-header">
+          <div class="skill-group-icon icon-purple">⬡</div>
+          <span class="skill-group-name">Hardware Design</span>
+          <span class="skill-group-count">8 skills</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">PCB Layout</span>
+          <span class="skill-tag highlight">Schematic Capture</span>
+          <span class="skill-tag">Mixed-Signal Design</span>
+          <span class="skill-tag">Multilayer PCB</span>
+          <span class="skill-tag">High-Current Routing</span>
+          <span class="skill-tag">Grounding Strategy</span>
+          <span class="skill-tag">DFM</span>
+          <span class="skill-tag">BOM &amp; Gerbers</span>
+        </div>
+      </div>
+
+      <!-- Group 2: EDA Tools — with bars -->
+      <div class="skill-group">
+        <div class="skill-group-header">
+          <div class="skill-group-icon icon-red">◧</div>
+          <span class="skill-group-name">EDA Tools</span>
+          <span class="skill-group-count">6 tools</span>
+        </div>
+        <div class="skill-bars">
+          <div class="skill-bar-row">
+            <div class="skill-bar-top">
+              <span class="skill-bar-name">Altium Designer</span>
+              <span class="skill-bar-pct">90%</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div>
+          </div>
+          <div class="skill-bar-row">
+            <div class="skill-bar-top">
+              <span class="skill-bar-name">KiCad</span>
+              <span class="skill-bar-pct">85%</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div>
+          </div>
+          <div class="skill-bar-row">
+            <div class="skill-bar-top">
+              <span class="skill-bar-name">Cadence Virtuoso</span>
+              <span class="skill-bar-pct">70%</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="70"></div></div>
+          </div>
+          <div class="skill-bar-row">
+            <div class="skill-bar-top">
+              <span class="skill-bar-name">LTspice</span>
+              <span class="skill-bar-pct">80%</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div>
+          </div>
+          <div class="skill-bar-row">
+            <div class="skill-bar-top">
+              <span class="skill-bar-name">OrCAD</span>
+              <span class="skill-bar-pct">65%</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="65"></div></div>
+          </div>
+          <div class="skill-bar-row">
+            <div class="skill-bar-top">
+              <span class="skill-bar-name">Proteus / EasyEDA</span>
+              <span class="skill-bar-pct">75%</span>
+            </div>
+            <div class="skill-bar-track"><div class="skill-bar-fill" data-w="75"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 3: Embedded & Platforms -->
+      <div class="skill-group">
+        <div class="skill-group-header">
+          <div class="skill-group-icon icon-green">⬢</div>
+          <span class="skill-group-name">Embedded &amp; Platforms</span>
+          <span class="skill-group-count">6 items</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">ESP32</span>
+          <span class="skill-tag highlight">STM32</span>
+          <span class="skill-tag">Raspberry Pi / CM5</span>
+          <span class="skill-tag">Arduino</span>
+          <span class="skill-tag">Sensor Interfacing</span>
+          <span class="skill-tag">Power Electronics</span>
+        </div>
+      </div>
+
+      <!-- Group 4: Programming & Validation -->
+      <div class="skill-group">
+        <div class="skill-group-header">
+          <div class="skill-group-icon icon-amber">▣</div>
+          <span class="skill-group-name">Programming &amp; Validation</span>
+          <span class="skill-group-count">7 skills</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag highlight">C / C++</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">PCB Bring-Up</span>
+          <span class="skill-tag">Soldering</span>
+          <span class="skill-tag">Hardware Debugging</span>
+          <span class="skill-tag">MATLAB</span>
+          <span class="skill-tag">Fusion 360</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── PLACEHOLDERS ─────────────────────────────────── -->
+  <div class="coming-soon" id="experience">[ 03 // Experience — coming next ]</div>
+  <div class="coming-soon" id="projects">[ 04 // Projects — coming soon ]</div>
+  <div class="coming-soon" id="contact">[ 05 // Contact — coming soon ]</div>
+
+  <!-- ─── SCRIPTS ──────────────────────────────────────── -->
+  <script>
+    // ── Custom cursor
+    const cur = document.getElementById('cursor');
+    const crng = document.getElementById('cring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+    (function loop(){
+      cur.style.transform  = `translate(${mx-4}px,${my-4}px)`;
+      rx += (mx-rx)*0.1; ry += (my-ry)*0.1;
+      crng.style.transform = `translate(${rx-15}px,${ry-15}px)`;
+      requestAnimationFrame(loop);
+    })();
+
+    // ── Nav on scroll
+    window.addEventListener('scroll', () =>
+      document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40)
+    );
+
+    // ── GSAP setup
+    gsap.registerPlugin(ScrollTrigger, TextPlugin);
+
+    // Hero entrance
+    gsap.set(['#htag','#hname','#hrole','#hdesc','#hbtns','#hstats'], { y:28, opacity:0 });
+    gsap.timeline({ defaults:{ ease:'power3.out' } })
+      .to('#htag',   { opacity:1, y:0, duration:0.6, delay:0.3 })
+      .to('#hname',  { opacity:1, y:0, duration:0.7 }, '-=0.3')
+      .to('#hrole',  { opacity:1, y:0, duration:0.5 }, '-=0.3')
+      .to('#hdesc',  { opacity:1, y:0, duration:0.6 }, '-=0.3')
+      .to('#hbtns',  { opacity:1, y:0, duration:0.5 }, '-=0.3')
+      .to('#hstats', { opacity:1, y:0, duration:0.5 }, '-=0.2')
+      .to('#scroll-hint', { opacity:1, duration:0.6 }, '-=0.2');
+
+    // Typewriter
+    const roles = [
+      'PCB Layout Engineer',
+      'Mixed-Signal Designer',
+      'Embedded Systems Prototyper',
+      'Motor Controller Designer',
+      'UAV Hardware Designer',
+    ];
+    let ri=0;
+    const tel = document.getElementById('typed');
+    function typeIt(txt, cb){
+      let i=0; tel.textContent='';
+      const iv=setInterval(()=>{ tel.textContent+=txt[i++]; if(i>=txt.length){clearInterval(iv);setTimeout(cb,1800);} },55);
+    }
+    function eraseIt(cb){
+      const iv=setInterval(()=>{ tel.textContent=tel.textContent.slice(0,-1); if(!tel.textContent.length){clearInterval(iv);cb();} },30);
+    }
+    function cycle(){ typeIt(roles[ri], ()=>eraseIt(()=>{ ri=(ri+1)%roles.length; cycle(); })); }
+    setTimeout(cycle, 1800);
+
+    // Hover cursor scale
+    document.querySelectorAll('a,button').forEach(el=>{
+      el.addEventListener('mouseenter',()=>gsap.to(crng,{width:44,height:44,duration:0.2}));
+      el.addEventListener('mouseleave',()=>gsap.to(crng,{width:30,height:30,duration:0.2}));
+    });
+
+    // ── About scroll animations
+    gsap.to('#about-title', {
+      scrollTrigger:{ trigger:'#about', start:'top 75%' },
+      opacity:1, y:0, duration:0.7, ease:'power3.out'
+    });
+    gsap.from('.about-photo-wrap', {
+      scrollTrigger:{ trigger:'#about', start:'top 70%' },
+      x:-40, opacity:0, duration:0.9, ease:'power3.out'
+    });
+    gsap.from('.info-card', {
+      scrollTrigger:{ trigger:'#about', start:'top 60%' },
+      x:-30, opacity:0, duration:0.8, delay:0.2, ease:'power3.out'
+    });
+    gsap.to('.about-heading',{
+      scrollTrigger:{ trigger:'.about-heading', start:'top 80%' },
+      opacity:1, y:0, duration:0.8, ease:'power3.out'
+    });
+    gsap.to('.about-para',{
+      scrollTrigger:{ trigger:'.about-right', start:'top 72%' },
+      opacity:1, y:0, stagger:0.15, duration:0.7, ease:'power3.out'
+    });
+    gsap.to('.edu-block',{
+      scrollTrigger:{ trigger:'.edu-block', start:'top 85%' },
+      opacity:1, y:0, duration:0.7, ease:'power3.out'
+    });
+    gsap.to('.counter-strip',{
+      scrollTrigger:{ trigger:'.counter-strip', start:'top 88%' },
+      opacity:1, y:0, duration:0.7, ease:'power3.out'
+    });
+
+    // Counters
+    document.querySelectorAll('.counter-num').forEach(el=>{
+      const target=parseInt(el.dataset.target);
+      ScrollTrigger.create({ trigger:el, start:'top 90%', once:true,
+        onEnter:()=>{
+          let c=0; const step=Math.ceil(target/30);
+          const iv=setInterval(()=>{ c=Math.min(c+step,target); el.textContent=c; if(c>=target)clearInterval(iv); },35);
+        }
+      });
+    });
+
+    // ── Skills scroll animations
+    gsap.to('#skills-title',{
+      scrollTrigger:{ trigger:'#skills', start:'top 75%' },
+      opacity:1, y:0, duration:0.7, ease:'power3.out'
+    });
+    gsap.to('.skill-group',{
+      scrollTrigger:{ trigger:'.skills-layout', start:'top 72%' },
+      opacity:1, y:0, stagger:0.12, duration:0.7, ease:'power3.out'
+    });
+
+    // Skill bars fill on scroll
+    ScrollTrigger.create({
+      trigger:'.skill-bars', start:'top 75%', once:true,
+      onEnter:()=>{
+        document.querySelectorAll('.skill-bar-fill').forEach(bar=>{
+          bar.style.width = bar.dataset.w + '%';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
