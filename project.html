@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Noel Joyce Varghese</title>
+  <meta name="description" content="Engineering case study — Noel Joyce Varghese, Embedded Hardware Design Engineer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #070a0f;
+      --bg2: #0c1018;
+      --surface: #0f1520;
+      --surface2: #141d2a;
+      --border: #1c2535;
+      --border2: #273345;
+      --green: #00e889;
+      --green2: #00a860;
+      --green3: #003d20;
+      --copper: #d4821c;
+      --copper2: #7a4010;
+      --text: #d8e4f0;
+      --muted: #566880;
+      --muted2: #1e2d40;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none
+    }
+
+    /* ─── CURSOR ─────────────────────────────────────────── */
+    .cursor {
+      width: 8px; height: 8px; background: var(--green);
+      border-radius: 50%; position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998; transition: transform 0.1s
+    }
+    .cursor-ring {
+      width: 28px; height: 28px; border: 1.5px solid var(--green);
+      border-radius: 50%; position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9997; opacity: 0.4
+    }
+
+    /* ─── NAV ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.3rem 5rem;
+      background: rgba(7, 10, 15, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-head); font-size: 1.05rem; font-weight: 800;
+      color: var(--text); text-decoration: none; letter-spacing: -0.02em
+    }
+    .nav-logo span { color: var(--green) }
+    .nav-back {
+      font-family: var(--font-mono); font-size: 0.75rem;
+      color: var(--muted); text-decoration: none; letter-spacing: 0.1em;
+      padding: 0.5rem 1rem; border: 1px solid var(--border);
+      border-radius: 4px; transition: all 0.2s
+    }
+    .nav-back:hover { color: var(--green); border-color: var(--green2) }
+    .nav-breadcrumb {
+      font-family: var(--font-mono); font-size: 0.72rem;
+      color: var(--muted2); letter-spacing: 0.08em
+    }
+    .nav-breadcrumb span { color: var(--muted) }
+    .nav-center { display: flex; flex-direction: column; align-items: center; gap: 2px }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    #proj-hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; padding: 8rem 5rem 5rem;
+      position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border)
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0,232,137,0.03) 59px, rgba(0,232,137,0.03) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0,232,137,0.03) 59px, rgba(0,232,137,0.03) 60px)
+    }
+    .hero-glow {
+      position: absolute; top: 0; right: 0; width: 60%; height: 100%;
+      background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(0,60,30,0.18) 0%, transparent 70%);
+      pointer-events: none
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 10px; color: var(--green);
+      letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transform: translateY(16px); transition: all 0.7s ease
+    }
+    .hero-eyebrow.visible { opacity: 1; transform: none }
+    .hero-eyebrow-line { height: 1px; width: 40px; background: var(--green); opacity: 0.5 }
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(3rem, 7vw, 7.5rem);
+      font-weight: 800; line-height: 0.95; letter-spacing: -0.04em;
+      color: var(--text); margin-bottom: 1.5rem; max-width: 16ch;
+      opacity: 0; transform: translateY(24px); transition: all 0.8s 0.1s ease
+    }
+    .hero-title.visible { opacity: 1; transform: none }
+    .hero-subtitle {
+      font-family: var(--font-mono); font-size: 0.95rem; color: var(--muted);
+      letter-spacing: 0.08em; margin-bottom: 3rem;
+      opacity: 0; transform: translateY(16px); transition: all 0.7s 0.2s ease
+    }
+    .hero-subtitle.visible { opacity: 1; transform: none }
+
+    .hero-spec-strip {
+      display: flex; flex-wrap: wrap; gap: 0;
+      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+      width: fit-content; max-width: 100%;
+      opacity: 0; transform: translateY(16px); transition: all 0.7s 0.3s ease
+    }
+    .hero-spec-strip.visible { opacity: 1; transform: none }
+    .hero-spec {
+      padding: 0.9rem 1.6rem; border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 3px
+    }
+    .hero-spec:last-child { border-right: none }
+    .hero-spec-k {
+      font-family: var(--font-mono); font-size: 8px; color: var(--muted);
+      letter-spacing: 0.18em; text-transform: uppercase
+    }
+    .hero-spec-v {
+      font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--green)
+    }
+
+    .hero-scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0.4; animation: bounce 2s ease-in-out infinite
+    }
+    .hero-scroll-hint span {
+      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+      letter-spacing: 0.2em; text-transform: uppercase
+    }
+    .hero-scroll-arrow { color: var(--green); font-size: 1rem }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0) }
+      50% { transform: translateX(-50%) translateY(6px) }
+    }
+
+    /* ─── SECTION BASE ───────────────────────────────────── */
+    .cs-section {
+      padding: 7rem 5rem;
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease
+    }
+    .cs-section.visible { opacity: 1; transform: none }
+    .cs-section.alt-bg { background: var(--surface) }
+    .cs-section-label {
+      font-family: var(--font-mono); font-size: 9px; color: var(--green);
+      letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1.2rem
+    }
+    .cs-section-heading {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 1.6rem; max-width: 20ch
+    }
+    .cs-section-heading em { color: var(--green); font-style: italic }
+
+    /* ─── OVERVIEW SPLIT ─────────────────────────────────── */
+    .overview-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center
+    }
+    .overview-text p {
+      font-size: 0.95rem; color: var(--muted); line-height: 1.9;
+      margin-bottom: 1rem
+    }
+    .overview-text p strong { color: var(--text); font-weight: 500 }
+    .overview-viewer {
+      height: 520px; border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border); position: relative;
+      background: var(--bg2)
+    }
+    .overview-viewer canvas { display: block; width: 100%; height: 100% }
+    .viewer-no-stl {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 12px
+    }
+    .viewer-no-stl-icon { font-size: 3rem; opacity: 0.2 }
+    .viewer-no-stl-text {
+      font-family: var(--font-mono); font-size: 11px; color: var(--muted2);
+      letter-spacing: 0.15em; text-align: center; line-height: 1.8
+    }
+
+    /* ─── VIEWER CONTROLS ────────────────────────────────── */
+    .viewer-tabs {
+      display: flex; gap: 6px; padding: 12px; border-bottom: 1px solid var(--border);
+      background: rgba(7, 10, 15, 0.8); flex-shrink: 0
+    }
+    .viewer-tab {
+      font-family: var(--font-mono); font-size: 9px; padding: 5px 12px;
+      border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
+      background: none; cursor: none; transition: all 0.2s; letter-spacing: 0.1em;
+    }
+    .viewer-tab.active, .viewer-tab:hover {
+      border-color: var(--green); color: var(--green); background: rgba(0,232,137,0.08)
+    }
+    .viewer-hint {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-mono); font-size: 8px; color: var(--muted2);
+      letter-spacing: 0.12em; pointer-events: none; white-space: nowrap
+    }
+    .vm-load-overlay {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px; background: var(--bg2); z-index: 5
+    }
+    .vm-load-overlay.hidden { display: none }
+    .vm-load-txt {
+      font-family: var(--font-mono); font-size: 10px; color: var(--green);
+      letter-spacing: 0.2em; text-transform: uppercase
+    }
+    .vm-load-bar-wrap { width: 160px; height: 2px; background: var(--border2); border-radius: 2px; overflow: hidden }
+    .vm-load-bar-fill { height: 100%; background: var(--green); width: 0; transition: width 0.2s }
+    .vm-load-pct-txt { font-family: var(--font-mono); font-size: 10px; color: var(--muted) }
+
+    /* ─── SPECS SECTION ──────────────────────────────────── */
+    .specs-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px;
+      border: 1px solid var(--border); border-radius: 12px; overflow: hidden
+    }
+    .spec-cell {
+      padding: 1.4rem 1.6rem; background: var(--surface2);
+      border-right: 1px solid var(--border); border-bottom: 1px solid var(--border)
+    }
+    .spec-cell:nth-child(n) { border-bottom: none } /* removes bottom from last row — handled by outer border */
+    .spec-cell-k {
+      font-family: var(--font-mono); font-size: 8px; color: var(--muted);
+      letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px
+    }
+    .spec-cell-v { font-size: 1rem; font-weight: 600; color: var(--text) }
+
+    /* ─── HIGHLIGHTS ─────────────────────────────────────── */
+    .highlights-list { display: flex; flex-direction: column; gap: 0 }
+    .highlight-item {
+      display: grid; grid-template-columns: 80px 1fr;
+      padding: 2rem 0; border-bottom: 1px solid var(--border);
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease
+    }
+    .highlight-item.visible { opacity: 1; transform: none }
+    .highlight-item:first-child { border-top: 1px solid var(--border) }
+    .highlight-num {
+      font-family: var(--font-mono); font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 800; color: var(--border2); line-height: 1; align-self: center
+    }
+    .highlight-text { font-size: 1rem; color: var(--muted); line-height: 1.7; align-self: center }
+    .highlight-text strong { color: var(--text); font-weight: 500 }
+
+    /* ─── DOCUMENTATION ACCORDION ────────────────────────── */
+    .doc-tabs {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 2rem
+    }
+    .doc-tab {
+      font-family: var(--font-mono); font-size: 9px; padding: 6px 14px;
+      border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
+      background: none; cursor: none; transition: all 0.2s; letter-spacing: 0.1em
+    }
+    .doc-tab.active { border-color: var(--green); color: var(--green); background: rgba(0,232,137,0.08) }
+    .doc-panels { }
+    .doc-panel {
+      display: none; animation: fadeUp 0.4s ease forwards
+    }
+    .doc-panel.active { display: block }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px) }
+      to { opacity: 1; transform: none }
+    }
+    .doc-panel-content {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 2rem
+    }
+    .doc-panel-content p {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.9; margin-bottom: 0.8rem
+    }
+    .doc-panel-content p:last-child { margin-bottom: 0 }
+    .doc-download {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.2rem
+    }
+    .doc-dl-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--border2); border-radius: 6px;
+      color: var(--text); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em;
+      background: var(--surface); transition: all 0.2s
+    }
+    .doc-dl-btn:hover { border-color: var(--green2); color: var(--green); background: rgba(0,232,137,0.06) }
+    .doc-dl-icon { font-size: 0.85rem }
+
+    /* ─── FULL-BLEED VIEWER ──────────────────────────────── */
+    #full-viewer-section {
+      padding: 0;
+      border-top: 1px solid var(--border)
+    }
+    .full-viewer-header {
+      padding: 2rem 5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between
+    }
+    .full-viewer-header h2 {
+      font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em
+    }
+    .full-viewer-header-tabs { display: flex; gap: 6px }
+    #full-viewer-canvas-wrap {
+      height: 70vh; position: relative; overflow: hidden
+    }
+    #full-viewer-canvas { display: block; width: 100%; height: 100% }
+
+    /* ─── NEXT PROJECT ───────────────────────────────────── */
+    #next-project {
+      padding: 6rem 5rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem
+    }
+    .next-label {
+      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+      letter-spacing: 0.25em; text-transform: uppercase
+    }
+    .next-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: var(--text); line-height: 1.1
+    }
+    .next-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 1rem 2.4rem;
+      background: var(--green); color: #000; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
+      text-decoration: none; letter-spacing: 0.08em;
+      transition: all 0.25s; margin-top: 0.5rem
+    }
+    .next-cta:hover {
+      background: #00ffaa; transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,232,137,0.3)
+    }
+    .back-to-portfolio {
+      font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s
+    }
+    .back-to-portfolio:hover { color: var(--text) }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media(max-width: 1100px) {
+      nav, #proj-hero, .cs-section, .full-viewer-header, #next-project { padding-left: 3rem; padding-right: 3rem }
+      .overview-grid { grid-template-columns: 1fr; gap: 3rem }
+      .overview-viewer { height: 400px }
+    }
+    @media(max-width: 768px) {
+      nav, #proj-hero, .cs-section, .full-viewer-header, #next-project { padding-left: 1.5rem; padding-right: 1.5rem }
+      #proj-hero { padding-top: 7rem }
+      .hero-spec-strip { flex-direction: column; width: 100% }
+      .hero-spec { border-right: none; border-bottom: 1px solid var(--border) }
+      .hero-spec:last-child { border-bottom: none }
+      .highlight-item { grid-template-columns: 50px 1fr }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cring"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">Noel<span>.</span></a>
+    <div class="nav-center">
+      <div class="nav-breadcrumb">Portfolio <span id="nav-proj-name">/ Project</span></div>
+    </div>
+    <a href="index.html#projects" class="nav-back">← Portfolio</a>
+  </nav>
+
+  <!-- PROJECT HERO -->
+  <section id="proj-hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-eyebrow" id="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span id="hero-cat">Engineering Project</span>
+      <div class="hero-eyebrow-line"></div>
+    </div>
+    <h1 class="hero-title" id="hero-title">Project Title</h1>
+    <p class="hero-subtitle" id="hero-subtitle">Project Subtitle</p>
+
+    <div class="hero-spec-strip" id="hero-specs">
+      <!-- Injected by JS -->
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="hero-scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- OVERVIEW SECTION -->
+  <section class="cs-section" id="section-overview">
+    <div class="overview-grid">
+      <div class="overview-text">
+        <div class="cs-section-label">01 · Overview</div>
+        <h2 class="cs-section-heading" id="overview-heading">Engineering <em>at its core.</em></h2>
+        <div id="overview-body">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+      <div class="overview-viewer" id="overview-viewer">
+        <!-- 3D viewer or placeholder -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECIFICATIONS SECTION -->
+  <section class="cs-section alt-bg" id="section-specs">
+    <div class="cs-section-label">02 · Technical Specifications</div>
+    <h2 class="cs-section-heading">By the <em>numbers.</em></h2>
+    <div class="specs-grid" id="specs-grid">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTS SECTION -->
+  <section class="cs-section" id="section-highlights">
+    <div class="cs-section-label">03 · Engineering Highlights</div>
+    <h2 class="cs-section-heading">What makes it <em>special.</em></h2>
+    <div class="highlights-list" id="highlights-list">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- DOCUMENTATION SECTION -->
+  <section class="cs-section alt-bg" id="section-docs">
+    <div class="cs-section-label">04 · Documentation</div>
+    <h2 class="cs-section-heading" style="margin-bottom: 2.5rem">Technical <em>deep dive.</em></h2>
+    <div class="doc-tabs" id="doc-tabs">
+      <!-- Injected by JS -->
+    </div>
+    <div class="doc-panels" id="doc-panels">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
+  <!-- FULL-BLEED 3D VIEWER SECTION (only if STLs exist) -->
+  <section id="full-viewer-section" style="display:none">
+    <div class="full-viewer-header">
+      <h2>Explore the Board in 3D</h2>
+      <div class="full-viewer-header-tabs" id="full-viewer-tabs"></div>
+    </div>
+    <div id="full-viewer-canvas-wrap">
+      <canvas id="full-viewer-canvas"></canvas>
+      <div class="vm-load-overlay" id="full-load-overlay">
+        <div class="vm-load-txt">Loading 3D Model</div>
+        <div class="vm-load-bar-wrap"><div class="vm-load-bar-fill" id="full-load-fill"></div></div>
+        <div class="vm-load-pct-txt" id="full-load-pct">0%</div>
+      </div>
+      <div class="viewer-hint">Drag to rotate · Scroll to zoom · Right-drag to pan</div>
+    </div>
+  </section>
+
+  <!-- NEXT PROJECT -->
+  <section id="next-project">
+    <div class="next-label">Next Project</div>
+    <div class="next-title" id="next-proj-title">Loading…</div>
+    <a href="#" class="next-cta" id="next-proj-link">View Case Study →</a>
+    <a href="index.html#projects" class="back-to-portfolio">← Return to Portfolio</a>
+  </section>
+
+  <!-- SCRIPTS -->
+  <script src="projects-data.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script>
+    // ── CURSOR ─────────────────────────────────────────────
+    const cur = document.getElementById('cursor');
+    const crng = document.getElementById('cring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function loop() {
+      cur.style.transform = `translate(${mx - 4}px,${my - 4}px)`;
+      rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+      crng.style.transform = `translate(${rx - 14}px,${ry - 14}px)`;
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('a,button').forEach(el => {
+      el.addEventListener('mouseenter', () => crng.style.transform += ' scale(1.5)');
+    });
+
+    // ── GET PROJECT FROM URL ────────────────────────────────
+    const params = new URLSearchParams(window.location.search);
+    const projId = params.get('id') || 'foc';
+    const proj = PROJECTS.find(p => p.id === projId) || PROJECTS[0];
+    const projIdx = PROJECTS.indexOf(proj);
+    const nextProj = PROJECTS[(projIdx + 1) % PROJECTS.length];
+
+    // ── UPDATE PAGE TITLE & META ────────────────────────────
+    document.title = `${proj.title} — Noel Joyce Varghese`;
+    document.querySelector('meta[name="description"]').content = proj.desc;
+
+    // ── INJECT HERO ─────────────────────────────────────────
+    document.getElementById('nav-proj-name').textContent = '/ ' + proj.title;
+    document.getElementById('hero-cat').textContent = proj.cat + ' · ' + proj.status;
+    document.getElementById('hero-title').textContent = proj.title;
+    document.getElementById('hero-subtitle').textContent = proj.subtitle;
+
+    const keySpecs = [
+      { k: 'Category', v: proj.cat },
+      { k: 'Layers', v: proj.layers + 'L' },
+      { k: 'Dimensions', v: proj.dims },
+      { k: 'Status', v: proj.status }
+    ];
+    const specStrip = document.getElementById('hero-specs');
+    keySpecs.forEach(s => {
+      specStrip.innerHTML += `<div class="hero-spec"><div class="hero-spec-k">${s.k}</div><div class="hero-spec-v">${s.v}</div></div>`;
+    });
+
+    // ── INJECT OVERVIEW ─────────────────────────────────────
+    const overviewBody = document.getElementById('overview-body');
+    const overviewParas = proj.documentation.overview.split('\n\n').filter(Boolean);
+    overviewBody.innerHTML = overviewParas.map(p => `<p>${p}</p>`).join('');
+
+    // ── INJECT SPECS ─────────────────────────────────────────
+    const specsGrid = document.getElementById('specs-grid');
+    proj.specs.forEach(s => {
+      specsGrid.innerHTML += `<div class="spec-cell"><div class="spec-cell-k">${s.k}</div><div class="spec-cell-v">${s.v}</div></div>`;
+    });
+
+    // ── INJECT HIGHLIGHTS ────────────────────────────────────
+    const highlightsList = document.getElementById('highlights-list');
+    proj.highlights.forEach((h, i) => {
+      const parts = h.split(':');
+      const numStr = String(i + 1).padStart(2, '0');
+      highlightsList.innerHTML += `
+        <div class="highlight-item" data-idx="${i}">
+          <div class="highlight-num">${numStr}</div>
+          <div class="highlight-text">${parts.length > 1 ? `<strong>${parts[0]}:</strong>${parts[1]}` : h}</div>
+        </div>`;
+    });
+
+    // ── INJECT DOCUMENTATION ─────────────────────────────────
+    const docDef = proj.documentation;
+    const docSections = [
+      { id: 'overview', label: 'Overview', content: docDef.overview },
+      { id: 'architecture', label: 'Architecture', content: docDef.architecture },
+      { id: 'pcb', label: 'PCB Design', content: docDef.pcb },
+      { id: 'testing', label: 'Testing', content: docDef.testing },
+      { id: 'firmware', label: 'Firmware', content: docDef.firmware },
+      { id: 'downloads', label: 'Downloads', content: null },
+      { id: 'future', label: 'Future Work', content: docDef.future }
+    ];
+
+    const docTabs = document.getElementById('doc-tabs');
+    const docPanels = document.getElementById('doc-panels');
+
+    docSections.forEach((sec, i) => {
+      const tab = document.createElement('button');
+      tab.className = 'doc-tab' + (i === 0 ? ' active' : '');
+      tab.textContent = sec.label;
+      tab.addEventListener('click', () => {
+        docTabs.querySelectorAll('.doc-tab').forEach((t, ti) => t.classList.toggle('active', ti === i));
+        docPanels.querySelectorAll('.doc-panel').forEach((p, pi) => p.classList.toggle('active', pi === i));
+      });
+      docTabs.appendChild(tab);
+
+      let panelContent = '';
+      if (sec.id === 'downloads') {
+        if (proj.docs && proj.docs.length > 0) {
+          panelContent = `<p>Documentation files available for download:</p><div class="doc-download">` +
+            proj.docs.map(d => `<a href="${d.file}" target="_blank" class="doc-dl-btn"><span class="doc-dl-icon">📄</span>${d.label}</a>`).join('') +
+            `</div>`;
+          if (proj.stls && proj.stls.length > 0) {
+            panelContent += `<div class="doc-download" style="margin-top:0.6rem">` +
+              proj.stls.map(s => `<a href="${s.file}" download class="doc-dl-btn"><span class="doc-dl-icon">🧊</span>${s.label} (.stl)</a>`).join('') +
+              `</div>`;
+          }
+        } else {
+          panelContent = `<p>Documentation is under NDA. Source files and documentation are available on request for verified recruiters. Please reach out via email at <strong>noeljoyce6@gmail.com</strong>.</p>`;
+        }
+      } else {
+        const paras = (sec.content || '').split('\n').filter(Boolean);
+        panelContent = paras.map(p => `<p>${p.trim()}</p>`).join('');
+      }
+
+      const panel = document.createElement('div');
+      panel.className = 'doc-panel' + (i === 0 ? ' active' : '');
+      panel.innerHTML = `<div class="doc-panel-content">${panelContent}</div>`;
+      docPanels.appendChild(panel);
+    });
+
+    // ── INJECT NEXT PROJECT ──────────────────────────────────
+    document.getElementById('next-proj-title').textContent = nextProj.title;
+    document.getElementById('next-proj-link').href = `project.html?id=${nextProj.id}`;
+
+    // ── SCROLL ANIMATIONS ────────────────────────────────────
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Hero entrance (immediate)
+    setTimeout(() => {
+      document.getElementById('hero-eyebrow').classList.add('visible');
+      setTimeout(() => document.getElementById('hero-title').classList.add('visible'), 100);
+      setTimeout(() => document.getElementById('hero-subtitle').classList.add('visible'), 200);
+      setTimeout(() => document.getElementById('hero-specs').classList.add('visible'), 300);
+    }, 100);
+
+    // Section reveal
+    document.querySelectorAll('.cs-section').forEach(sec => {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) { sec.classList.add('visible'); observer.disconnect(); }
+      }, { threshold: 0.1 });
+      observer.observe(sec);
+    });
+
+    // Highlight items stagger
+    const highlightObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const idx = parseInt(entry.target.dataset.idx);
+          setTimeout(() => entry.target.classList.add('visible'), idx * 100);
+          highlightObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.highlight-item').forEach(el => highlightObserver.observe(el));
+
+    // ── OVERVIEW VIEWER (small, inline) ────────────────────────────
+    const overviewViewer = document.getElementById('overview-viewer');
+    if (proj.stls && proj.stls.length > 0) {
+      overviewViewer.innerHTML = `
+        <div class="vm-load-overlay" id="ov-load">
+          <div class="vm-load-txt">Loading 3D</div>
+          <div class="vm-load-bar-wrap"><div class="vm-load-bar-fill" id="ov-fill"></div></div>
+          <div class="vm-load-pct-txt" id="ov-pct">0%</div>
+        </div>
+        <canvas id="overview-canvas"></canvas>
+        <div class="viewer-hint">Drag to rotate · Scroll to zoom</div>`;
+
+      if (proj.stls.length > 1) {
+        const tabsDiv = document.createElement('div');
+        tabsDiv.className = 'viewer-tabs';
+        proj.stls.forEach((s, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'viewer-tab' + (i === 0 ? ' active' : '');
+          btn.textContent = s.label;
+          btn.addEventListener('click', () => {
+            tabsDiv.querySelectorAll('.viewer-tab').forEach((t, ti) => t.classList.toggle('active', ti === i));
+            if (window._loadOverviewStl) window._loadOverviewStl(s.file);
+          });
+          tabsDiv.appendChild(btn);
+        });
+        overviewViewer.insertBefore(tabsDiv, overviewViewer.firstChild);
+      }
+    } else {
+      overviewViewer.innerHTML = `<div class="viewer-no-stl">
+        <div class="viewer-no-stl-icon">${proj.icon}</div>
+        <div class="viewer-no-stl-text">3D model not available<br>for this project</div>
+      </div>`;
+    }
+
+    // ── FULL VIEWER SECTION ──────────────────────────────────
+    if (proj.stls && proj.stls.length > 0) {
+      document.getElementById('full-viewer-section').style.display = 'block';
+      const fullTabs = document.getElementById('full-viewer-tabs');
+      if (proj.stls.length > 1) {
+        proj.stls.forEach((s, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'viewer-tab' + (i === 0 ? ' active' : '');
+          btn.textContent = s.label;
+          btn.addEventListener('click', () => {
+            fullTabs.querySelectorAll('.viewer-tab').forEach((t, ti) => t.classList.toggle('active', ti === i));
+            if (window._loadFullStl) window._loadFullStl(s.file);
+          });
+          fullTabs.appendChild(btn);
+        });
+      }
+    }
+  </script>
+
+  <!-- THREE.JS VIEWER MODULE -->
+  <script type="module">
+    import * as THREE from 'three';
+    import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+    const params = new URLSearchParams(window.location.search);
+    const projId = params.get('id') || 'foc';
+    const proj = PROJECTS.find(p => p.id === projId) || PROJECTS[0];
+
+    if (proj.stls && proj.stls.length > 0) {
+      // ── OVERVIEW VIEWER (small) ───────────────────────────
+    let ovScene, ovCamera, ovRenderer, ovControls, ovMesh, ovAnimId;
+    const ovCanvas = document.getElementById('overview-canvas');
+
+    function initOverviewScene() {
+      if (!ovCanvas) return;
+      const wrap = ovCanvas.parentElement;
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+
+      ovScene = new THREE.Scene();
+      ovScene.background = new THREE.Color(0x0c1018);
+      ovScene.fog = new THREE.FogExp2(0x0c1018, 0.0018);
+
+      ovCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 2000);
+      ovCamera.position.set(0, 120, 200);
+
+      ovRenderer = new THREE.WebGLRenderer({ canvas: ovCanvas, antialias: true });
+      ovRenderer.setSize(W, H);
+      ovRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      ovRenderer.shadowMap.enabled = true;
+      ovRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+      ovRenderer.toneMappingExposure = 1.2;
+
+      setupLights(ovScene, ovRenderer);
+
+      const grid = new THREE.GridHelper(400, 30, 0x0d1a10, 0x0d1a10);
+      grid.position.y = -50;
+      ovScene.add(grid);
+
+      ovControls = new OrbitControls(ovCamera, ovRenderer.domElement);
+      ovControls.enableDamping = true;
+      ovControls.dampingFactor = 0.06;
+      ovControls.autoRotate = true;
+      ovControls.autoRotateSpeed = 1.5;
+      ovControls.addEventListener('start', () => { ovControls.autoRotate = false; });
+      ovControls.addEventListener('end', () => { setTimeout(() => ovControls.autoRotate = true, 3000); });
+
+      window.addEventListener('resize', () => {
+        if (!ovRenderer || !ovCanvas) return;
+        const W2 = ovCanvas.parentElement.clientWidth, H2 = ovCanvas.parentElement.clientHeight;
+        ovCamera.aspect = W2 / H2; ovCamera.updateProjectionMatrix();
+        ovRenderer.setSize(W2, H2);
+      });
+
+      animateOv();
+    }
+
+    function animateOv() {
+      ovAnimId = requestAnimationFrame(animateOv);
+      ovControls.update();
+      ovRenderer.render(ovScene, ovCamera);
+    }
+
+    window._loadOverviewStl = function (filename) {
+      if (!ovScene) initOverviewScene();
+      if (ovMesh) { ovScene.remove(ovMesh); ovMesh.geometry.dispose(); }
+
+      const loadEl = document.getElementById('ov-load');
+      const fillEl = document.getElementById('ov-fill');
+      const pctEl = document.getElementById('ov-pct');
+      if (loadEl) loadEl.classList.remove('hidden');
+
+      loadStl(filename, ovScene, (m) => {
+        ovMesh = m;
+        if (loadEl) loadEl.classList.add('hidden');
+        fitCamera(ovCamera, ovControls, ovMesh);
+      }, fillEl, pctEl);
+    };
+
+    // ── FULL VIEWER (large) ───────────────────────────────
+    let fvScene, fvCamera, fvRenderer, fvControls, fvMesh, fvAnimId;
+    const fvCanvas = document.getElementById('full-viewer-canvas');
+
+    function initFullScene() {
+      if (!fvCanvas) return;
+      const wrap = fvCanvas.parentElement;
+      const W = wrap.clientWidth, H = wrap.clientHeight;
+
+      fvScene = new THREE.Scene();
+      fvScene.background = new THREE.Color(0x070a0f);
+      fvScene.fog = new THREE.FogExp2(0x070a0f, 0.0012);
+
+      fvCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 2000);
+      fvCamera.position.set(0, 120, 200);
+
+      fvRenderer = new THREE.WebGLRenderer({ canvas: fvCanvas, antialias: true });
+      fvRenderer.setSize(W, H);
+      fvRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      fvRenderer.shadowMap.enabled = true;
+      fvRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+      fvRenderer.toneMappingExposure = 1.2;
+
+      setupLights(fvScene, fvRenderer);
+
+      const grid = new THREE.GridHelper(600, 40, 0x0d1a10, 0x0d1a10);
+      grid.position.y = -50;
+      fvScene.add(grid);
+
+      fvControls = new OrbitControls(fvCamera, fvRenderer.domElement);
+      fvControls.enableDamping = true;
+      fvControls.dampingFactor = 0.06;
+      fvControls.autoRotate = true;
+      fvControls.autoRotateSpeed = 0.8;
+      fvControls.minDistance = 30;
+      fvControls.maxDistance = 800;
+      fvControls.addEventListener('start', () => { fvControls.autoRotate = false; });
+      fvControls.addEventListener('end', () => { setTimeout(() => fvControls.autoRotate = true, 4000); });
+
+      window.addEventListener('resize', () => {
+        if (!fvRenderer || !fvCanvas) return;
+        const W2 = fvCanvas.parentElement.clientWidth, H2 = fvCanvas.parentElement.clientHeight;
+        fvCamera.aspect = W2 / H2; fvCamera.updateProjectionMatrix();
+        fvRenderer.setSize(W2, H2);
+      });
+
+      animateFv();
+    }
+
+    function animateFv() {
+      fvAnimId = requestAnimationFrame(animateFv);
+      fvControls.update();
+      fvRenderer.render(fvScene, fvCamera);
+    }
+
+    window._loadFullStl = function (filename) {
+      if (!fvScene) initFullScene();
+      if (fvMesh) { fvScene.remove(fvMesh); fvMesh.geometry.dispose(); }
+
+      const loadEl = document.getElementById('full-load-overlay');
+      const fillEl = document.getElementById('full-load-fill');
+      const pctEl = document.getElementById('full-load-pct');
+      if (loadEl) loadEl.classList.remove('hidden');
+
+      loadStl(filename, fvScene, (m) => {
+        fvMesh = m;
+        if (loadEl) loadEl.classList.add('hidden');
+        fitCamera(fvCamera, fvControls, fvMesh);
+      }, fillEl, pctEl);
+    };
+
+    // ── SHARED HELPERS ────────────────────────────────────
+    function setupLights(scene, renderer) {
+      const ambient = new THREE.AmbientLight(0xddf0ff, 1.2);
+      scene.add(ambient);
+      const key = new THREE.DirectionalLight(0xffffff, 3.5);
+      key.position.set(-100, 250, 150);
+      key.castShadow = true;
+      key.shadow.mapSize.set(2048, 2048);
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xa0c0ff, 1.8);
+      fill.position.set(150, 150, -100);
+      scene.add(fill);
+      const rim = new THREE.DirectionalLight(0xffaa44, 3.0);
+      rim.position.set(0, -100, -200);
+      scene.add(rim);
+      const top = new THREE.DirectionalLight(0xffffff, 1.2);
+      top.position.set(0, 350, 0);
+      scene.add(top);
+
+      try {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        pmrem.compileEquirectangularShader();
+        const envS = new THREE.Scene();
+        const p1 = new THREE.Mesh(new THREE.BoxGeometry(40,40,2), new THREE.MeshBasicMaterial({color:0xffffff}));
+        p1.position.set(-50,60,50); p1.lookAt(0,0,0); envS.add(p1);
+        const p2 = new THREE.Mesh(new THREE.BoxGeometry(30,60,2), new THREE.MeshBasicMaterial({color:0xa0c0ff}));
+        p2.position.set(60,40,-60); p2.lookAt(0,0,0); envS.add(p2);
+        const p3 = new THREE.Mesh(new THREE.BoxGeometry(20,20,2), new THREE.MeshBasicMaterial({color:0xffd0a0}));
+        p3.position.set(0,-50,-80); p3.lookAt(0,0,0); envS.add(p3);
+        const rt = pmrem.fromScene(envS);
+        scene.environment = rt.texture;
+        pmrem.dispose();
+      } catch(e) {}
+    }
+
+    function fitCamera(camera, controls, meshObj) {
+      const box = new THREE.Box3().setFromObject(meshObj);
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 120 / maxDim;
+      meshObj.scale.setScalar(scale);
+      meshObj.rotation.x = -Math.PI * 0.1;
+      const scaled = maxDim * scale;
+      camera.position.set(0, scaled * 0.6, scaled * 1.8);
+      controls.target.set(0, 0, 0);
+      controls.update();
+    }
+
+    function loadStl(filename, scene, onDone, fillEl, pctEl) {
+      const url = filename.split('').map(c => c === ' ' ? '%20' : c).join('');
+      const loader = new STLLoader();
+
+      loader.load(url, geo => {
+        geo.computeVertexNormals();
+        geo.center();
+
+        geo.computeBoundingBox();
+        const bbox = geo.boundingBox;
+        const localSize = new THREE.Vector3().subVectors(bbox.max, bbox.min);
+
+        let heightAxis = 'z';
+        let minVal = bbox.min.z;
+        let getVal = (i) => geo.attributes.position.getZ(i);
+        let getNorm = (i) => Math.abs(geo.attributes.normal.getZ(i));
+
+        if (localSize.x < localSize.y && localSize.x < localSize.z) {
+          heightAxis = 'x'; minVal = bbox.min.x;
+          getVal = (i) => geo.attributes.position.getX(i);
+          getNorm = (i) => Math.abs(geo.attributes.normal.getX(i));
+        } else if (localSize.y < localSize.x && localSize.y < localSize.z) {
+          heightAxis = 'y'; minVal = bbox.min.y;
+          getVal = (i) => geo.attributes.position.getY(i);
+          getNorm = (i) => Math.abs(geo.attributes.normal.getY(i));
+        }
+
+        const heightCounts = {};
+        const posAttr = geo.attributes.position;
+        const step = Math.max(1, Math.floor(posAttr.count / 20000));
+        for (let i = 0; i < posAttr.count; i += step) {
+          if (getNorm(i) > 0.95) {
+            const val = getVal(i);
+            const rounded = Math.round(val * 10) / 10;
+            heightCounts[rounded] = (heightCounts[rounded] || 0) + 1;
+          }
+        }
+
+        const peaks = Object.entries(heightCounts)
+          .map(([h, count]) => ({ h: parseFloat(h), count }))
+          .sort((a, b) => b.count - a.count);
+
+        let pcbTop = minVal + 1.6;
+        if (peaks.length > 0) {
+          const maxCount = peaks[0].count;
+          const significant = peaks.filter(p => p.count > maxCount * 0.05);
+          if (significant.length > 1) {
+            const top2 = significant.slice(0, 2);
+            pcbTop = Math.min(top2[0].h, top2[1].h);
+          } else {
+            pcbTop = significant[0].h;
+          }
+        }
+
+        const mat = new THREE.MeshPhysicalMaterial({
+          roughness: 0.5, metalness: 0.5,
+          clearcoat: 1.0, clearcoatRoughness: 0.12, side: THREE.DoubleSide
+        });
+
+        const axisInt = heightAxis === 'x' ? 0 : (heightAxis === 'y' ? 1 : 2);
+
+        mat.onBeforeCompile = (shader) => {
+          shader.uniforms.uHeightAxis = { value: axisInt };
+          shader.uniforms.uPcbTop = { value: pcbTop };
+          shader.uniforms.uThickness = { value: 1.6 };
+
+          shader.vertexShader = shader.vertexShader.replace('#include <common>',
+            `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;`);
+          shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>',
+            `#include <begin_vertex>\nvLocalPosition = position;\nvLocalNormal = normal;`);
+          shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
+            `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;\nuniform int uHeightAxis;\nuniform float uPcbTop;\nuniform float uThickness;`);
+          shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>',
+            `#include <color_fragment>
+            float h = vLocalPosition.z; float n = abs(vLocalNormal.z);
+            if (uHeightAxis == 0) { h = vLocalPosition.x; n = abs(vLocalNormal.x); }
+            else if (uHeightAxis == 1) { h = vLocalPosition.y; n = abs(vLocalNormal.y); }
+            vec3 baseGreen = vec3(0.02, 0.16, 0.06);
+            vec3 icColor = vec3(0.08, 0.08, 0.08);
+            vec3 metalColor = vec3(0.85, 0.85, 0.85);
+            vec3 copperColor = vec3(0.83, 0.51, 0.11);
+            vec3 silkColor = vec3(0.95, 0.95, 0.95);
+            vec3 finalColor = baseGreen;
+            float finalRoughness = 0.12; float finalMetalness = 0.1;
+            if (h > uPcbTop) {
+              if (n > 0.85) { finalColor = icColor; finalRoughness = 0.75; finalMetalness = 0.05; }
+              else if (n < 0.3) {
+                if (h < uPcbTop + 1.5) { finalColor = metalColor; finalRoughness = 0.2; finalMetalness = 0.95; }
+                else { finalColor = icColor; finalRoughness = 0.8; finalMetalness = 0.05; }
+              } else { finalColor = metalColor; finalRoughness = 0.15; finalMetalness = 0.95; }
+            } else if (h < uPcbTop - uThickness) {
+              if (n > 0.85) { finalColor = icColor; finalRoughness = 0.75; finalMetalness = 0.05; }
+              else { finalColor = metalColor; finalRoughness = 0.15; finalMetalness = 0.95; }
+            } else {
+              if (h > uPcbTop - 0.15) {
+                float tp = sin(vLocalPosition.x * 2.5) * cos(vLocalPosition.y * 2.5);
+                float sp = sin(vLocalPosition.x * 0.4) * sin(vLocalPosition.y * 0.4);
+                if (tp > 0.93) { finalColor = copperColor; finalRoughness = 0.25; finalMetalness = 0.8; }
+                else if (sp > 0.985) { finalColor = silkColor; finalRoughness = 0.85; finalMetalness = 0.0; }
+                else { finalColor = baseGreen; finalRoughness = 0.12; finalMetalness = 0.1; }
+              } else { finalColor = baseGreen; finalRoughness = 0.15; finalMetalness = 0.05; }
+            }
+            diffuseColor.rgb = finalColor;`
+          );
+        };
+
+        const m = new THREE.Mesh(geo, mat);
+        m.castShadow = true; m.receiveShadow = true;
+        scene.add(m);
+        onDone(m);
+      }, xhr => {
+        if (xhr.total) {
+          const p = Math.round((xhr.loaded / xhr.total) * 100);
+          if (fillEl) fillEl.style.width = p + '%';
+          if (pctEl) pctEl.textContent = p + '%';
+        }
+      }, err => {
+        console.error('STL load error', err);
+      });
+    }
+
+    // ── INIT ON DOM ───────────────────────────────────────
+    if (proj.stls && proj.stls.length > 0) {
+      // Init overview viewer
+      initOverviewScene();
+      window._loadOverviewStl(proj.stls[0].file);
+
+      // Init full viewer with IntersectionObserver
+      const fvSection = document.getElementById('full-viewer-section');
+      if (fvSection) {
+        const fvObs = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            initFullScene();
+            window._loadFullStl(proj.stls[0].file);
+            fvObs.disconnect();
+          }
+        }, { threshold: 0.1 });
+        fvObs.observe(fvSection);
+      }
+      }
+    }
+  </script>
+</body>
+
+</html>
