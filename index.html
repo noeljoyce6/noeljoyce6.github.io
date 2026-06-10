@@ -1177,12 +1177,54 @@
     }
 
     .proj-visual {
-      height: 160px;
+      height: 260px;
       position: relative;
       overflow: hidden;
+      background: radial-gradient(ellipse 70% 70% at 50% 60%, rgba(0, 25, 15, 0.95) 0%, #070a0f 100%)
+    }
+
+    /* Board photo — floats centered on dark background */
+    .proj-board-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center 55%;
+      padding: 12px 16px 0;
+      transform: scale(1.0) translateY(0px);
+      transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+      filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.7)) drop-shadow(0 4px 8px rgba(0, 232, 137, 0.06))
+    }
+
+    .proj-card:hover .proj-board-img {
+      transform: scale(1.06) translateY(-4px);
+      filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.8)) drop-shadow(0 6px 16px rgba(0, 232, 137, 0.12))
+    }
+
+    /* Gradient overlay on top of photo — very subtle, just bottom fade */
+    .proj-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+          transparent 0%,
+          transparent 55%,
+          rgba(7, 10, 15, 0.55) 80%,
+          rgba(7, 10, 15, 0.92) 100%);
+      pointer-events: none
+    }
+
+    /* Fallback grid when no photo */
+    .proj-visual-fallback {
+      position: absolute;
+      inset: 0;
       background: repeating-linear-gradient(0deg, transparent, transparent 29px, rgba(0, 232, 137, 0.05) 29px, rgba(0, 232, 137, 0.05) 30px),
         repeating-linear-gradient(90deg, transparent, transparent 29px, rgba(0, 232, 137, 0.05) 29px, rgba(0, 232, 137, 0.05) 30px),
-        var(--surface2)
+        var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center
     }
 
     .proj-visual-inner {
@@ -1273,8 +1315,8 @@
     }
 
     .proj-icon {
-      font-size: 2.8rem;
-      opacity: 0.25
+      font-size: 3.5rem;
+      opacity: 0.18
     }
 
     .proj-body {
@@ -2745,7 +2787,11 @@
       card.style.cursor = 'none';
       card.innerHTML = `
       <div class="proj-visual">
-        <div class="proj-visual-inner"><div class="proj-icon">${p.icon}</div></div>
+        ${p.img
+          ? `<img class="proj-board-img" src="${p.img}" alt="${p.title} board" loading="lazy" />
+             <div class="proj-img-overlay"></div>`
+          : `<div class="proj-visual-fallback"><div class="proj-icon">${p.icon}</div></div>`
+        }
         <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
         <span class="proj-status ${p.statusClass}">${p.status}</span>
       </div>

@@ -108,6 +108,16 @@
       background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(0,60,30,0.18) 0%, transparent 70%);
       pointer-events: none
     }
+    /* Board photo shown as subtle darkened hero background */
+    .hero-photo-bg {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.07;
+      filter: blur(2px) saturate(0.6);
+      pointer-events: none;
+      transition: opacity 1s ease
+    }
     .hero-eyebrow {
       font-family: var(--font-mono); font-size: 10px; color: var(--green);
       letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 2rem;
@@ -406,7 +416,7 @@
   <!-- PROJECT HERO -->
   <section id="proj-hero">
     <div class="hero-grid-bg"></div>
-    <div class="hero-glow"></div>
+    <div class="hero-glow" id="hero-glow"></div>
 
     <div class="hero-eyebrow" id="hero-eyebrow">
       <div class="hero-eyebrow-line"></div>
@@ -527,6 +537,14 @@
     // ── UPDATE PAGE TITLE & META ────────────────────────────
     document.title = `${proj.title} — Noel Joyce Varghese`;
     document.querySelector('meta[name="description"]').content = proj.desc;
+
+    // ── HERO PHOTO BACKGROUND ────────────────────────────────
+    if (proj.img) {
+      const heroBg = document.createElement('div');
+      heroBg.className = 'hero-photo-bg';
+      heroBg.style.backgroundImage = `url('${proj.img}')`;
+      document.getElementById('proj-hero').insertBefore(heroBg, document.getElementById('proj-hero').firstChild);
+    }
 
     // ── INJECT HERO ─────────────────────────────────────────
     document.getElementById('nav-proj-name').textContent = '/ ' + proj.title;
