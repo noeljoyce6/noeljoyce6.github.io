@@ -4,6 +4,7 @@
 const PROJECTS = [
   {
     id: 'foc',
+    img: 'img/foc.png',
     title: 'Unified FOC Motor Controller',
     subtitle: 'BLDC Motor Drive Platform',
     cat: 'Motor Control', catClass: 'cat-motor', icon: '⚡',
@@ -40,6 +41,7 @@ const PROJECTS = [
   },
   {
     id: 'fc',
+    img: 'img/fc.png',
     title: 'Minima Flight Controller',
     subtitle: 'CM5-Based UAV Flight Computer',
     cat: 'Aerospace', catClass: 'cat-aero', icon: '🛩',
@@ -76,6 +78,7 @@ const PROJECTS = [
   },
   {
     id: 'winch',
+    img: null,
     title: 'Nemo Winch V3.0',
     subtitle: 'Drone Payload Delivery System',
     cat: 'UAV Systems', catClass: 'cat-uav', icon: '🔩',
@@ -120,6 +123,7 @@ const PROJECTS = [
   },
   {
     id: 'encoder',
+    img: null,
     title: 'MA732 Magnetic Encoder',
     subtitle: 'Absolute Position Sensing Board',
     cat: 'Sensing', catClass: 'cat-sense', icon: '◎',
@@ -155,6 +159,7 @@ const PROJECTS = [
   },
   {
     id: 'pepper',
+    img: 'img/pepper.png',
     title: 'Automated Security System',
     subtitle: 'Detection & Actuation Platform',
     cat: 'Security', catClass: 'cat-sec', icon: '👁',
@@ -191,6 +196,7 @@ const PROJECTS = [
   },
   {
     id: 'tranq',
+    img: null,
     title: 'Tranquilizer Remote System',
     subtitle: 'Remote Deployment Control Board',
     cat: 'Defence', catClass: 'cat-def', icon: '🎯',
@@ -227,6 +233,7 @@ const PROJECTS = [
   },
   {
     id: 'eeg',
+    img: null,
     title: 'Wireless EEG Acquisition',
     subtitle: '4-Channel Neural Signal Platform',
     cat: 'BioSignal', catClass: 'cat-bio', icon: '🧠',
@@ -264,6 +271,7 @@ const PROJECTS = [
   },
   {
     id: 'helmet',
+    img: null,                   // ← add img: 'img/helmet.jpg' when photo is ready
     title: 'Smart Helmet',
     subtitle: 'Accident & Health Monitoring',
     cat: 'Wearable', catClass: 'cat-bio', icon: '⛑',
@@ -300,6 +308,7 @@ const PROJECTS = [
   },
   {
     id: 'robot',
+    img: null,                   // ← add img: 'img/robot.jpg' when photo is ready
     title: 'Vanguard MK1',
     subtitle: 'Search & Rescue Crawling Robot',
     cat: 'Robotics', catClass: 'cat-uav', icon: '🤖',
