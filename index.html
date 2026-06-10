@@ -1,324 +1,2002 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Noel Joyce Varghese — Embedded Hardware Design Engineer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet" />
+  <script
+    type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --bg:#070a0f;--bg2:#0c1018;--surface:#0f1520;--surface2:#141d2a;
-      --border:#1c2535;--border2:#273345;
-      --green:#00e889;--green2:#00a860;--green3:#003d20;
-      --copper:#d4821c;--copper2:#7a4010;
-      --text:#d8e4f0;--muted:#566880;--muted2:#1e2d40;
-      --font-head:'Syne',sans-serif;--font-mono:'Share Tech Mono',monospace;--font-body:'DM Sans',sans-serif;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
     }
-    html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;cursor:none}
-    body:not(.loaded) main{opacity:0}
-    body.loaded main{opacity:1;transition:opacity 0.4s}
+
+    :root {
+      --bg: #070a0f;
+      --bg2: #0c1018;
+      --surface: #0f1520;
+      --surface2: #141d2a;
+      --border: #1c2535;
+      --border2: #273345;
+      --green: #00e889;
+      --green2: #00a860;
+      --green3: #003d20;
+      --copper: #d4821c;
+      --copper2: #7a4010;
+      --text: #d8e4f0;
+      --muted: #566880;
+      --muted2: #1e2d40;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Share Tech Mono', monospace;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none
+    }
+
+    body:not(.loaded) main {
+      opacity: 0
+    }
+
+    body.loaded main {
+      opacity: 1;
+      transition: opacity 0.4s
+    }
 
     /* ─── LOADER ─────────────────────────────────────────── */
-    #loader{position:fixed;inset:0;z-index:9999;background:#070a0f;display:flex;align-items:center;justify-content:center}
-    #loader-canvas{position:absolute;inset:0;width:100%;height:100%}
-    .loader-text{position:relative;z-index:2;text-align:center;pointer-events:none}
-    .loader-name{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3.5rem);font-weight:800;color:var(--text);letter-spacing:-0.03em;opacity:0;transform:translateY(16px);transition:opacity 0.6s,transform 0.6s}
-    .loader-name.show{opacity:1;transform:none}
-    .loader-role{font-family:var(--font-mono);font-size:clamp(0.6rem,1.2vw,0.8rem);color:var(--green);letter-spacing:0.2em;text-transform:uppercase;margin-top:8px;opacity:0;transition:opacity 0.6s 0.2s}
-    .loader-role.show{opacity:1}
-    .loader-bar-wrap{width:220px;margin:24px auto 0;height:2px;background:var(--border2);border-radius:2px;overflow:hidden}
-    .loader-bar-fill{height:100%;width:0;background:var(--green);border-radius:2px;transition:width 0.1s linear}
-    .loader-pct{font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:8px;text-align:center;letter-spacing:0.15em}
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #070a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    #loader-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%
+    }
+
+    .loader-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      pointer-events: none
+    }
+
+    .loader-name {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.03em;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s, transform 0.6s
+    }
+
+    .loader-name.show {
+      opacity: 1;
+      transform: none
+    }
+
+    .loader-role {
+      font-family: var(--font-mono);
+      font-size: clamp(0.6rem, 1.2vw, 0.8rem);
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      opacity: 0;
+      transition: opacity 0.6s 0.2s
+    }
+
+    .loader-role.show {
+      opacity: 1
+    }
+
+    .loader-bar-wrap {
+      width: 220px;
+      margin: 24px auto 0;
+      height: 2px;
+      background: var(--border2);
+      border-radius: 2px;
+      overflow: hidden
+    }
+
+    .loader-bar-fill {
+      height: 100%;
+      width: 0;
+      background: var(--green);
+      border-radius: 2px;
+      transition: width 0.1s linear
+    }
+
+    .loader-pct {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 8px;
+      text-align: center;
+      letter-spacing: 0.15em
+    }
 
     /* ─── CURSOR ─────────────────────────────────────────── */
-    .cursor{width:8px;height:8px;background:var(--green);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;mix-blend-mode:normal;transition:transform 0.1s}
-    .cursor-ring{width:28px;height:28px;border:1.5px solid var(--green);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9997;opacity:0.4}
+    .cursor {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      mix-blend-mode: normal;
+      transition: transform 0.1s
+    }
+
+    .cursor-ring {
+      width: 28px;
+      height: 28px;
+      border: 1.5px solid var(--green);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9997;
+      opacity: 0.4
+    }
 
     /* ─── NAV ────────────────────────────────────────────── */
-    nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.3rem 5rem;transition:background 0.4s,border-color 0.4s;border-bottom:1px solid transparent}
-    nav.scrolled{background:rgba(7,10,15,0.92);backdrop-filter:blur(16px);border-color:var(--border)}
-    .nav-logo{font-family:var(--font-head);font-size:1.05rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
-    .nav-logo span{color:var(--green)}
-    .nav-links{display:flex;gap:2.5rem;list-style:none}
-    .nav-links a{font-size:0.82rem;color:var(--muted);text-decoration:none;font-weight:400;transition:color 0.2s;position:relative;letter-spacing:0.02em}
-    .nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--green);transition:width 0.3s}
-    .nav-links a:hover{color:var(--text)}
-    .nav-links a:hover::after{width:100%}
-    .nav-cta{font-family:var(--font-mono);font-size:0.75rem;font-weight:500;padding:0.55rem 1.4rem;border:1px solid var(--green2);border-radius:4px;color:var(--green);text-decoration:none;transition:all 0.25s;letter-spacing:0.08em}
-    .nav-cta:hover{background:var(--green);color:#000}
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.3rem 5rem;
+      transition: background 0.4s, border-color 0.4s;
+      border-bottom: 1px solid transparent
+    }
+
+    nav.scrolled {
+      background: rgba(7, 10, 15, 0.92);
+      backdrop-filter: blur(16px);
+      border-color: var(--border)
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em
+    }
+
+    .nav-logo span {
+      color: var(--green)
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.2s;
+      position: relative;
+      letter-spacing: 0.02em
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--green);
+      transition: width 0.3s
+    }
+
+    .nav-links a:hover {
+      color: var(--text)
+    }
+
+    .nav-links a:hover::after {
+      width: 100%
+    }
+
+    .nav-cta {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid var(--green2);
+      border-radius: 4px;
+      color: var(--green);
+      text-decoration: none;
+      transition: all 0.25s;
+      letter-spacing: 0.08em
+    }
+
+    .nav-cta:hover {
+      background: var(--green);
+      color: #000
+    }
 
     /* ─── HERO ───────────────────────────────────────────── */
-    #hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:6rem 5rem 4rem;position:relative;overflow:hidden}
-    .hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 70% at 70% 50%,rgba(0,80,40,0.12) 0%,transparent 70%)}
-    .hero-grid-bg{position:absolute;inset:0;pointer-events:none;z-index:0;
-      background-image:repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(0,232,137,0.04) 59px,rgba(0,232,137,0.04) 60px),
-                       repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(0,232,137,0.04) 59px,rgba(0,232,137,0.04) 60px)}
-    .hero-watermark{position:absolute;bottom:-1rem;right:-1rem;font-family:var(--font-head);font-size:clamp(5rem,13vw,11rem);font-weight:800;color:rgba(0,232,137,0.025);line-height:1;pointer-events:none;user-select:none;letter-spacing:-0.04em;white-space:nowrap;z-index:0}
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 6rem 5rem 4rem;
+      position: relative;
+      overflow: hidden
+    }
 
-    .hero-left{position:relative;z-index:2}
-    .hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;color:var(--green);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1.8rem;opacity:0}
-    .hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
-    .hero-name{font-family:var(--font-head);font-size:clamp(2.8rem,5.5vw,5rem);font-weight:800;line-height:1.04;letter-spacing:-0.03em;color:var(--text);margin-bottom:0.8rem;opacity:0}
-    .hero-name .accent-line{display:block;color:var(--green);font-style:italic}
-    .hero-role{font-family:var(--font-mono);font-size:0.9rem;color:var(--muted);margin-bottom:2rem;min-height:1.4em;opacity:0}
-    .typed-cursor{color:var(--green);animation:blink 0.8s infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-    .hero-desc{font-size:0.95rem;color:var(--muted);line-height:1.85;max-width:480px;margin-bottom:2.5rem;opacity:0}
-    .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;opacity:0}
-    .btn{font-size:0.82rem;font-weight:500;padding:0.8rem 1.8rem;border-radius:4px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.25s;cursor:none;font-family:var(--font-mono);letter-spacing:0.06em}
-    .btn-primary{background:var(--green);color:#000;border:1px solid var(--green)}
-    .btn-primary:hover{background:#00ffaa;transform:translateY(-2px);box-shadow:0 0 20px rgba(0,232,137,0.3)}
-    .btn-secondary{background:transparent;color:var(--text);border:1px solid var(--border2)}
-    .btn-secondary:hover{border-color:var(--green);color:var(--green);transform:translateY(-2px)}
-    .hero-stats{display:flex;gap:1rem;flex-wrap:wrap;margin-top:3rem;opacity:0}
-    .stat-pill{display:flex;flex-direction:column;padding:0.8rem 1.2rem;background:var(--surface);border:1px solid var(--border);border-radius:8px}
-    .stat-pill-num{font-family:var(--font-head);font-size:1.4rem;font-weight:800;color:var(--green);line-height:1}
-    .stat-pill-label{font-size:0.65rem;color:var(--muted);margin-top:2px;white-space:nowrap;font-family:var(--font-mono);letter-spacing:0.1em;text-transform:uppercase}
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(ellipse 60% 70% at 70% 50%, rgba(0, 80, 40, 0.12) 0%, transparent 70%)
+    }
 
-    .hero-right{position:relative;z-index:2;display:flex;justify-content:flex-end;align-items:center}
-    .photo-shape-wrap{position:relative;width:400px;height:500px}
-    .photo-blob{position:absolute;top:30px;right:0;width:360px;height:450px;background:linear-gradient(135deg,var(--green3),var(--surface2));border-radius:60% 40% 55% 45%/50% 45% 55% 50%;z-index:1;border:1px solid rgba(0,232,137,0.15)}
-    .hero-photo{position:absolute;bottom:0;left:0;width:350px;height:470px;object-fit:cover;object-position:top center;border-radius:180px 180px 16px 16px;z-index:2;display:block;border:1px solid var(--border)}
-    .hero-photo-placeholder{position:absolute;bottom:0;left:0;width:350px;height:470px;border-radius:180px 180px 16px 16px;z-index:2;background:var(--surface);border:1px dashed var(--border2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
-    .placeholder-initials{font-family:var(--font-head);font-size:4rem;font-weight:800;color:var(--border2)}
-    .placeholder-hint{font-family:var(--font-mono);font-size:10px;color:var(--muted2);text-align:center;line-height:1.8;padding:0 2rem}
-    .hero-badge{position:absolute;z-index:3;background:rgba(15,21,32,0.9);border:1px solid var(--border2);border-radius:10px;padding:0.6rem 1rem;display:flex;align-items:center;gap:10px;box-shadow:0 4px 24px rgba(0,0,0,0.4);backdrop-filter:blur(8px)}
-    .badge-icon{font-size:1.2rem;line-height:1}
-    .badge-title{font-size:0.75rem;font-weight:500;color:var(--text)}
-    .badge-sub{font-size:0.68rem;color:var(--muted);font-family:var(--font-mono)}
-    .badge-1{top:50px;left:-30px}
-    .badge-2{bottom:90px;right:-40px}
-    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0}
-    .scroll-hint span{font-family:var(--font-mono);font-size:9px;color:var(--muted2);letter-spacing:0.2em;text-transform:uppercase}
-    .scroll-bar{width:1px;height:44px;background:linear-gradient(var(--green),transparent);animation:scrollAnim 2s ease-in-out infinite}
-    @keyframes scrollAnim{0%,100%{opacity:0.3}50%{opacity:1}}
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0, 232, 137, 0.04) 59px, rgba(0, 232, 137, 0.04) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0, 232, 137, 0.04) 59px, rgba(0, 232, 137, 0.04) 60px)
+    }
+
+    .hero-watermark {
+      position: absolute;
+      bottom: -1rem;
+      right: -1rem;
+      font-family: var(--font-head);
+      font-size: clamp(5rem, 13vw, 11rem);
+      font-weight: 800;
+      color: rgba(0, 232, 137, 0.025);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+      z-index: 0
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 2
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      opacity: 0
+    }
+
+    .hero-tag-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 0.4;
+        transform: scale(0.7)
+      }
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-size: clamp(2.8rem, 5.5vw, 5rem);
+      font-weight: 800;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+      opacity: 0
+    }
+
+    .hero-name .accent-line {
+      display: block;
+      color: var(--green);
+      font-style: italic
+    }
+
+    .hero-role {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      min-height: 1.4em;
+      opacity: 0
+    }
+
+    .typed-cursor {
+      color: var(--green);
+      animation: blink 0.8s infinite
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.85;
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      opacity: 0
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0
+    }
+
+    .btn {
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.8rem 1.8rem;
+      border-radius: 4px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+      cursor: none;
+      font-family: var(--font-mono);
+      letter-spacing: 0.06em
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #000;
+      border: 1px solid var(--green)
+    }
+
+    .btn-primary:hover {
+      background: #00ffaa;
+      transform: translateY(-2px);
+      box-shadow: 0 0 20px rgba(0, 232, 137, 0.3)
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border2)
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--green);
+      color: var(--green);
+      transform: translateY(-2px)
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+      opacity: 0
+    }
+
+    .stat-pill {
+      display: flex;
+      flex-direction: column;
+      padding: 0.8rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px
+    }
+
+    .stat-pill-num {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1
+    }
+
+    .stat-pill-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      text-transform: uppercase
+    }
+
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center
+    }
+
+    .photo-shape-wrap {
+      position: relative;
+      width: 400px;
+      height: 500px
+    }
+
+    .photo-blob {
+      position: absolute;
+      top: 30px;
+      right: 0;
+      width: 360px;
+      height: 450px;
+      background: linear-gradient(135deg, var(--green3), var(--surface2));
+      border-radius: 60% 40% 55% 45%/50% 45% 55% 50%;
+      z-index: 1;
+      border: 1px solid rgba(0, 232, 137, 0.15)
+    }
+
+    .hero-photo {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 350px;
+      height: 470px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 180px 180px 16px 16px;
+      z-index: 2;
+      display: block;
+      border: 1px solid var(--border)
+    }
+
+    .hero-photo-placeholder {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 350px;
+      height: 470px;
+      border-radius: 180px 180px 16px 16px;
+      z-index: 2;
+      background: var(--surface);
+      border: 1px dashed var(--border2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px
+    }
+
+    .placeholder-initials {
+      font-family: var(--font-head);
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--border2)
+    }
+
+    .placeholder-hint {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted2);
+      text-align: center;
+      line-height: 1.8;
+      padding: 0 2rem
+    }
+
+    .hero-badge {
+      position: absolute;
+      z-index: 3;
+      background: rgba(15, 21, 32, 0.9);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(8px)
+    }
+
+    .badge-icon {
+      font-size: 1.2rem;
+      line-height: 1
+    }
+
+    .badge-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    .badge-sub {
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-family: var(--font-mono)
+    }
+
+    .badge-1 {
+      top: 50px;
+      left: -30px
+    }
+
+    .badge-2 {
+      bottom: 90px;
+      right: -40px
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0
+    }
+
+    .scroll-hint span {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted2);
+      letter-spacing: 0.2em;
+      text-transform: uppercase
+    }
+
+    .scroll-bar {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(var(--green), transparent);
+      animation: scrollAnim 2s ease-in-out infinite
+    }
+
+    @keyframes scrollAnim {
+
+      0%,
+      100% {
+        opacity: 0.3
+      }
+
+      50% {
+        opacity: 1
+      }
+    }
+
+    /* intro canvas removed */
 
     /* ─── SECTIONS SHARED ────────────────────────────────── */
-    .section-header{display:flex;align-items:center;gap:16px;margin-bottom:1rem}
-    .section-num{font-family:var(--font-mono);font-size:10px;color:var(--green);letter-spacing:0.2em}
-    .section-line{flex:1;height:1px;background:var(--border)}
-    .section-title{font-family:var(--font-head);font-size:clamp(1.6rem,2.8vw,2.2rem);font-weight:800;letter-spacing:-0.02em;margin-bottom:3.5rem;opacity:0;transform:translateY(20px)}
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 1rem
+    }
+
+    .section-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.2em
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      transform: translateY(20px)
+    }
 
     /* ─── ABOUT ──────────────────────────────────────────── */
-    #about{padding:7rem 5rem;background:var(--surface);border-top:1px solid var(--border)}
-    .about-grid{display:grid;grid-template-columns:280px 1fr;gap:5rem;align-items:start}
-    .about-left{display:flex;flex-direction:column;gap:1.4rem}
-    .about-photo-wrap{position:relative;width:100%;aspect-ratio:3/4;overflow:hidden;border-radius:16px;border:1px solid var(--border)}
-    .about-photo{width:100%;height:100%;object-fit:cover;object-position:top;display:block;border-radius:16px}
-    .about-photo-placeholder{width:100%;height:100%;background:var(--surface2);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px}
-    .about-photo-placeholder .initials{font-family:var(--font-head);font-size:3rem;font-weight:800;color:var(--border2)}
-    .about-photo-placeholder .hint{font-family:var(--font-mono);font-size:10px;color:var(--muted2);text-align:center;line-height:1.8;padding:0 1.5rem}
-    .info-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;display:flex;flex-direction:column;gap:0.8rem}
-    .info-row{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px}
-    .info-key{color:var(--muted);font-family:var(--font-mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase}
-    .info-val{color:var(--text);font-weight:500;text-align:right}
-    .info-val.accent{color:var(--green)}
-    .info-val a{color:var(--text);text-decoration:none}
-    .info-val a:hover{color:var(--green)}
-    .info-divider{height:1px;background:var(--border)}
-    .nda-note{font-family:var(--font-mono);font-size:9px;color:var(--muted2);line-height:1.7}
-    .nda-note strong{color:var(--muted)}
+    #about {
+      padding: 7rem 5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border)
+    }
 
-    .about-heading{font-family:var(--font-head);font-size:clamp(1.6rem,2.6vw,2.2rem);font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:1.6rem;opacity:0;transform:translateY(20px)}
-    .about-heading em{color:var(--green);font-style:italic}
-    .about-para{font-size:0.93rem;color:var(--muted);line-height:1.85;margin-bottom:0.9rem;opacity:0;transform:translateY(14px)}
-    .about-para strong{color:var(--text);font-weight:500}
-    .edu-block{margin:1.8rem 0 0;padding:1.4rem;background:var(--bg2);border-radius:12px;border:1px solid var(--border);opacity:0;transform:translateY(14px)}
-    .edu-eyebrow{font-family:var(--font-mono);font-size:9px;color:var(--green);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.9rem}
-    .edu-row{display:flex;gap:12px;align-items:flex-start}
-    .edu-dot{width:8px;height:8px;border-radius:50%;background:var(--green);margin-top:4px;flex-shrink:0}
-    .edu-degree{font-size:0.88rem;font-weight:500;margin-bottom:3px}
-    .edu-school{font-size:0.8rem;color:var(--muted);margin-bottom:2px}
-    .edu-year{font-family:var(--font-mono);font-size:10px;color:var(--green)}
-    .counter-strip{display:flex;margin-top:1.8rem;border:1px solid var(--border);border-radius:12px;overflow:hidden;opacity:0;transform:translateY(14px)}
-    .counter-item{flex:1;padding:1.1rem;text-align:center}
-    .counter-item+.counter-item{border-left:1px solid var(--border)}
-    .counter-num{font-family:var(--font-head);font-size:1.8rem;font-weight:800;color:var(--green);line-height:1}
-    .counter-label{font-family:var(--font-mono);font-size:8px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-top:4px}
+    .about-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 5rem;
+      align-items: start
+    }
+
+    .about-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem
+    }
+
+    .about-photo-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid var(--border)
+    }
+
+    .about-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      border-radius: 16px
+    }
+
+    .about-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: var(--surface2);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px
+    }
+
+    .about-photo-placeholder .initials {
+      font-family: var(--font-head);
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--border2)
+    }
+
+    .about-photo-placeholder .hint {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted2);
+      text-align: center;
+      line-height: 1.8;
+      padding: 0 1.5rem
+    }
+
+    .info-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px
+    }
+
+    .info-key {
+      color: var(--muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase
+    }
+
+    .info-val {
+      color: var(--text);
+      font-weight: 500;
+      text-align: right
+    }
+
+    .info-val.accent {
+      color: var(--green)
+    }
+
+    .info-val a {
+      color: var(--text);
+      text-decoration: none
+    }
+
+    .info-val a:hover {
+      color: var(--green)
+    }
+
+    .info-divider {
+      height: 1px;
+      background: var(--border)
+    }
+
+    .nda-note {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted2);
+      line-height: 1.7
+    }
+
+    .nda-note strong {
+      color: var(--muted)
+    }
+
+    .about-heading {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      transform: translateY(20px)
+    }
+
+    .about-heading em {
+      color: var(--green);
+      font-style: italic
+    }
+
+    .about-para {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 0.9rem;
+      opacity: 0;
+      transform: translateY(14px)
+    }
+
+    .about-para strong {
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .edu-block {
+      margin: 1.8rem 0 0;
+      padding: 1.4rem;
+      background: var(--bg2);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(14px)
+    }
+
+    .edu-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 0.9rem
+    }
+
+    .edu-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start
+    }
+
+    .edu-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-top: 4px;
+      flex-shrink: 0
+    }
+
+    .edu-degree {
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 3px
+    }
+
+    .edu-school {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2px
+    }
+
+    .edu-year {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green)
+    }
+
+    .counter-strip {
+      display: flex;
+      margin-top: 1.8rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(14px)
+    }
+
+    .counter-item {
+      flex: 1;
+      padding: 1.1rem;
+      text-align: center
+    }
+
+    .counter-item+.counter-item {
+      border-left: 1px solid var(--border)
+    }
+
+    .counter-num {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1
+    }
+
+    .counter-label {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px
+    }
 
     /* ─── SKILLS ─────────────────────────────────────────── */
-    #skills{padding:7rem 5rem;background:var(--bg);border-top:1px solid var(--border)}
-    .skills-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-    .skill-group{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.8rem;opacity:0;transform:translateY(24px)}
-    .skill-group-header{display:flex;align-items:center;gap:12px;margin-bottom:1.4rem}
-    .skill-group-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-family:var(--font-mono);font-weight:700;flex-shrink:0;letter-spacing:0}
-    .icon-green{background:rgba(0,232,137,0.12);color:var(--green)}
-    .icon-copper{background:rgba(212,130,28,0.12);color:var(--copper)}
-    .icon-blue{background:rgba(77,142,255,0.12);color:#4d8eff}
-    .icon-purple{background:rgba(130,80,255,0.12);color:#8250ff}
-    .skill-group-name{font-family:var(--font-head);font-size:0.95rem;font-weight:700;letter-spacing:-0.01em}
-    .skill-group-count{font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-left:auto;letter-spacing:0.1em}
-    .skill-tags{display:flex;flex-wrap:wrap;gap:7px}
-    .skill-tag{font-family:var(--font-mono);font-size:10px;padding:4px 11px;border-radius:3px;border:1px solid var(--border);color:var(--muted);background:var(--bg2);transition:all 0.2s;letter-spacing:0.05em}
-    .skill-tag:hover,.skill-tag.hi{background:rgba(0,232,137,0.1);color:var(--green);border-color:rgba(0,232,137,0.3)}
-    .skill-bars{display:flex;flex-direction:column;gap:13px}
-    .skill-bar-top{display:flex;justify-content:space-between;margin-bottom:5px}
-    .skill-bar-name{font-size:12px;color:var(--text);font-weight:500}
-    .skill-bar-pct{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
-    .skill-bar-track{height:3px;background:var(--surface2);border-radius:3px;overflow:hidden}
-    .skill-bar-fill{height:100%;border-radius:3px;background:var(--green);width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
-    .skill-bar-fill.copper{background:var(--copper)}
+    #skills {
+      padding: 7rem 5rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border)
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--green), transparent);
+      opacity: 0.5
+    }
+
+    .skill-card:hover {
+      border-color: rgba(0, 232, 137, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3)
+    }
+
+    .skill-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.8rem
+    }
+
+    .skill-card-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 6px;
+      color: var(--green)
+    }
+
+    .skill-card-icon svg {
+      width: 100%;
+      height: 100%
+    }
+
+    .skill-card-title {
+      font-family: var(--font-head);
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em
+    }
+
+    .skill-card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .skill-card-list li {
+      font-size: 0.83rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-body);
+      transition: color 0.2s
+    }
+
+    .skill-card-list li::before {
+      content: '';
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--copper);
+      box-shadow: 0 0 3px rgba(212, 130, 28, 0.4);
+      flex-shrink: 0
+    }
+
+    .skill-card-list li:hover {
+      color: var(--text)
+    }
 
     /* ─── EXPERIENCE ─────────────────────────────────────── */
-    #experience{padding:7rem 5rem;background:var(--surface);border-top:1px solid var(--border)}
-    .exp-timeline{display:flex;flex-direction:column;gap:0}
-    .exp-item{display:grid;grid-template-columns:160px 1fr;gap:0;position:relative}
-    .exp-item::before{content:'';position:absolute;left:160px;top:20px;bottom:0;width:1px;background:var(--border)}
-    .exp-item:last-child::before{display:none}
-    .exp-time{padding:0 2.5rem 0 0;text-align:right;padding-top:3px}
-    .exp-date{font-family:var(--font-mono);font-size:10px;color:var(--green);letter-spacing:0.1em;line-height:1.6}
-    .exp-loc{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.08em;margin-top:3px}
-    .exp-body{padding:0 0 4rem 2.5rem;position:relative}
-    .exp-dot{position:absolute;left:-5px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--bg)}
-    .exp-dot.dim{background:var(--border2);border-color:var(--bg)}
-    .exp-company{font-family:var(--font-mono);font-size:9px;color:var(--green);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:5px}
-    .exp-role{font-family:var(--font-head);font-size:1.15rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:10px}
-    .exp-bullets{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:10px}
-    .exp-bullets li{font-size:0.87rem;color:var(--muted);line-height:1.7;padding-left:16px;position:relative}
-    .exp-bullets li::before{content:'›';position:absolute;left:0;color:var(--green);font-size:1rem}
-    .exp-item{opacity:0;transform:translateY(20px)}
+    #experience {
+      padding: 7rem 5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border)
+    }
+
+    .exp-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0
+    }
+
+    .exp-item {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 0;
+      position: relative
+    }
+
+    .exp-item::before {
+      content: '';
+      position: absolute;
+      left: 160px;
+      top: 20px;
+      bottom: 0;
+      width: 1px;
+      background: var(--border)
+    }
+
+    .exp-item:last-child::before {
+      display: none
+    }
+
+    .exp-time {
+      padding: 0 2.5rem 0 0;
+      text-align: right;
+      padding-top: 3px
+    }
+
+    .exp-date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      line-height: 1.6
+    }
+
+    .exp-loc {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 3px
+    }
+
+    .exp-body {
+      padding: 0 0 4rem 2.5rem;
+      position: relative
+    }
+
+    .exp-dot {
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      border: 2px solid var(--bg)
+    }
+
+    .exp-dot.dim {
+      background: var(--border2);
+      border-color: var(--bg)
+    }
+
+    .exp-company {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 5px
+    }
+
+    .exp-role {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 10px
+    }
+
+    .exp-bullets li {
+      font-size: 0.87rem;
+      color: var(--muted);
+      line-height: 1.7;
+      padding-left: 16px;
+      position: relative
+    }
+
+    .exp-bullets li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-size: 1rem
+    }
+
+    .exp-item {
+      opacity: 0;
+      transform: translateY(20px)
+    }
 
     /* ─── PROJECTS ───────────────────────────────────────── */
-    #projects{padding:7rem 5rem;background:var(--bg);border-top:1px solid var(--border)}
-    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem}
-    .proj-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;cursor:none;transition:border-color 0.3s,transform 0.3s,box-shadow 0.3s;opacity:0;transform:translateY(24px);display:flex;flex-direction:column}
-    .proj-card:hover{border-color:rgba(0,232,137,0.35);transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,0.4),0 0 0 1px rgba(0,232,137,0.1)}
-    .proj-visual{height:160px;position:relative;overflow:hidden;
-      background:repeating-linear-gradient(0deg,transparent,transparent 29px,rgba(0,232,137,0.05) 29px,rgba(0,232,137,0.05) 30px),
-                 repeating-linear-gradient(90deg,transparent,transparent 29px,rgba(0,232,137,0.05) 29px,rgba(0,232,137,0.05) 30px),
-                 var(--surface2)}
-    .proj-visual-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-    .proj-cat-badge{position:absolute;top:12px;left:12px;font-family:var(--font-mono);font-size:9px;padding:3px 9px;border-radius:3px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700}
-    .cat-motor{background:rgba(212,130,28,0.15);color:var(--copper);border:1px solid rgba(212,130,28,0.25)}
-    .cat-aero{background:rgba(77,142,255,0.12);color:#4d8eff;border:1px solid rgba(77,142,255,0.2)}
-    .cat-uav{background:rgba(130,80,255,0.12);color:#8250ff;border:1px solid rgba(130,80,255,0.2)}
-    .cat-sense{background:rgba(0,232,137,0.1);color:var(--green);border:1px solid rgba(0,232,137,0.2)}
-    .cat-sec{background:rgba(255,60,60,0.1);color:#ff6060;border:1px solid rgba(255,60,60,0.2)}
-    .cat-bio{background:rgba(0,200,200,0.1);color:#00cccc;border:1px solid rgba(0,200,200,0.2)}
-    .cat-def{background:rgba(180,50,50,0.12);color:#cc4444;border:1px solid rgba(180,50,50,0.2)}
-    .proj-status{position:absolute;top:12px;right:12px;font-family:var(--font-mono);font-size:9px;padding:3px 9px;border-radius:3px;letter-spacing:0.1em;text-transform:uppercase}
-    .status-done{background:rgba(0,232,137,0.1);color:var(--green);border:1px solid rgba(0,232,137,0.2)}
-    .status-wip{background:rgba(255,180,0,0.1);color:#ffb400;border:1px solid rgba(255,180,0,0.2)}
-    .proj-icon{font-size:2.8rem;opacity:0.25}
-    .proj-body{padding:1.4rem;flex:1;display:flex;flex-direction:column}
-    .proj-title{font-family:var(--font-head);font-size:1rem;font-weight:700;letter-spacing:-0.01em;margin-bottom:4px}
-    .proj-subtitle{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px}
-    .proj-desc{font-size:0.82rem;color:var(--muted);line-height:1.7;margin-bottom:12px;flex:1}
-    .proj-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-    .proj-chip{font-family:var(--font-mono);font-size:9px;padding:3px 8px;border-radius:3px;border:1px solid var(--border2);color:var(--muted2);background:var(--bg2);letter-spacing:0.05em}
-    .proj-footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);padding-top:12px;margin-top:auto}
-    .proj-meta{font-family:var(--font-mono);font-size:9px;color:var(--muted2);letter-spacing:0.08em}
-    .proj-meta span{color:var(--muted)}
-    .proj-cta{font-family:var(--font-mono);font-size:9px;color:var(--green);letter-spacing:0.1em;display:flex;align-items:center;gap:5px;transition:gap 0.2s}
-    .proj-card:hover .proj-cta{gap:8px}
-    .no-stl .proj-cta{color:var(--muted);cursor:default}
+    #projects {
+      padding: 7rem 5rem;
+      background: var(--bg);
+      border-top: 1px solid var(--border)
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem
+    }
+
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: none;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(24px);
+      display: flex;
+      flex-direction: column
+    }
+
+    .proj-card:hover {
+      border-color: rgba(0, 232, 137, 0.35);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 232, 137, 0.1)
+    }
+
+    .proj-visual {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      background: repeating-linear-gradient(0deg, transparent, transparent 29px, rgba(0, 232, 137, 0.05) 29px, rgba(0, 232, 137, 0.05) 30px),
+        repeating-linear-gradient(90deg, transparent, transparent 29px, rgba(0, 232, 137, 0.05) 29px, rgba(0, 232, 137, 0.05) 30px),
+        var(--surface2)
+    }
+
+    .proj-visual-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .proj-cat-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 3px 9px;
+      border-radius: 3px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700
+    }
+
+    .cat-motor {
+      background: rgba(212, 130, 28, 0.15);
+      color: var(--copper);
+      border: 1px solid rgba(212, 130, 28, 0.25)
+    }
+
+    .cat-aero {
+      background: rgba(77, 142, 255, 0.12);
+      color: #4d8eff;
+      border: 1px solid rgba(77, 142, 255, 0.2)
+    }
+
+    .cat-uav {
+      background: rgba(130, 80, 255, 0.12);
+      color: #8250ff;
+      border: 1px solid rgba(130, 80, 255, 0.2)
+    }
+
+    .cat-sense {
+      background: rgba(0, 232, 137, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(0, 232, 137, 0.2)
+    }
+
+    .cat-sec {
+      background: rgba(255, 60, 60, 0.1);
+      color: #ff6060;
+      border: 1px solid rgba(255, 60, 60, 0.2)
+    }
+
+    .cat-bio {
+      background: rgba(0, 200, 200, 0.1);
+      color: #00cccc;
+      border: 1px solid rgba(0, 200, 200, 0.2)
+    }
+
+    .cat-def {
+      background: rgba(180, 50, 50, 0.12);
+      color: #cc4444;
+      border: 1px solid rgba(180, 50, 50, 0.2)
+    }
+
+    .proj-status {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 3px 9px;
+      border-radius: 3px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase
+    }
+
+    .status-done {
+      background: rgba(0, 232, 137, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(0, 232, 137, 0.2)
+    }
+
+    .status-wip {
+      background: rgba(255, 180, 0, 0.1);
+      color: #ffb400;
+      border: 1px solid rgba(255, 180, 0, 0.2)
+    }
+
+    .proj-icon {
+      font-size: 2.8rem;
+      opacity: 0.25
+    }
+
+    .proj-body {
+      padding: 1.4rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column
+    }
+
+    .proj-title {
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 4px
+    }
+
+    .proj-subtitle {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px
+    }
+
+    .proj-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 12px;
+      flex: 1
+    }
+
+    .proj-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding: 2px 0
+    }
+
+    .proj-chip {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--border2);
+      color: var(--green);
+      background: rgba(0, 232, 137, 0.04);
+      letter-spacing: 0.05em;
+      display: inline-block;
+      transition: all 0.2s
+    }
+
+    .proj-chip.chip-ic {
+      background: #111622;
+      border: 1px solid var(--border2);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 2px;
+      position: relative;
+      font-weight: 600;
+      box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.05);
+      margin-left: 4px;
+      margin-right: 4px;
+    }
+
+    .proj-chip.chip-ic::before,
+    .proj-chip.chip-ic::after {
+      content: '';
+      position: absolute;
+      top: 15%;
+      bottom: 15%;
+      width: 2px;
+      background: linear-gradient(to bottom, #d0d0d0, #888, #d0d0d0);
+      border-radius: 1px;
+    }
+
+    .proj-chip.chip-ic::before {
+      left: -2px;
+      box-shadow: 0 3px 0 #d0d0d0, 0 6px 0 #d0d0d0;
+    }
+
+    .proj-chip.chip-ic::after {
+      right: -2px;
+      box-shadow: 0 3px 0 #d0d0d0, 0 6px 0 #d0d0d0;
+    }
+
+    .proj-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: auto
+    }
+
+    .proj-meta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted2);
+      letter-spacing: 0.08em
+    }
+
+    .proj-meta span {
+      color: var(--muted)
+    }
+
+    .proj-cta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap 0.2s
+    }
+
+    .proj-card:hover .proj-cta {
+      gap: 8px
+    }
+
+    .no-stl .proj-cta {
+      color: var(--muted);
+      cursor: default
+    }
 
     /* ─── CONTACT ────────────────────────────────────────── */
-    #contact{padding:7rem 5rem;background:var(--surface);border-top:1px solid var(--border)}
-    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+    #contact {
+      padding: 7rem 5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border)
+    }
 
-    .contact-heading{font-family:var(--font-head);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:1.2rem;opacity:0;transform:translateY(20px)}
-    .contact-heading em{color:var(--green);font-style:italic}
-    .contact-sub{font-size:0.93rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;opacity:0;transform:translateY(14px)}
-    .contact-links{display:flex;flex-direction:column;gap:0.9rem;opacity:0;transform:translateY(14px)}
-    .contact-link{display:flex;align-items:center;gap:14px;padding:0.9rem 1.2rem;background:var(--surface2);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text);transition:all 0.25s}
-    .contact-link:hover{border-color:rgba(0,232,137,0.35);background:rgba(0,232,137,0.05);transform:translateX(4px)}
-    .cl-icon{width:36px;height:36px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:1px solid var(--border)}
-    .cl-label{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px}
-    .cl-val{font-size:0.85rem;color:var(--text);font-weight:500}
-    .contact-right{opacity:0;transform:translateY(20px)}
-    .avail-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:2rem}
-    .avail-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;display:inline-block;margin-right:8px}
-    .avail-title{font-family:var(--font-head);font-size:1.1rem;font-weight:700;margin-bottom:8px}
-    .avail-text{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.5rem}
-    .avail-tags{display:flex;flex-wrap:wrap;gap:7px}
-    .avail-tag{font-family:var(--font-mono);font-size:9px;padding:4px 10px;border-radius:3px;border:1px solid rgba(0,232,137,0.25);color:var(--green);background:rgba(0,232,137,0.06);letter-spacing:0.08em}
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center
+    }
+
+    .contact-heading {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      transform: translateY(20px)
+    }
+
+    .contact-heading em {
+      color: var(--green);
+      font-style: italic
+    }
+
+    .contact-sub {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(14px)
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      opacity: 0;
+      transform: translateY(14px)
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0.9rem 1.2rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.25s
+    }
+
+    .contact-link:hover {
+      border-color: rgba(0, 232, 137, 0.35);
+      background: rgba(0, 232, 137, 0.05);
+      transform: translateX(4px)
+    }
+
+    .cl-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      border: 1px solid var(--border)
+    }
+
+    .cl-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 2px
+    }
+
+    .cl-val {
+      font-size: 0.85rem;
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .contact-right {
+      opacity: 0;
+      transform: translateY(20px)
+    }
+
+    .avail-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem
+    }
+
+    .avail-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+      display: inline-block;
+      margin-right: 8px
+    }
+
+    .avail-title {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
+
+    .avail-text {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem
+    }
+
+    .avail-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px
+    }
+
+    .avail-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 4px 10px;
+      border-radius: 3px;
+      border: 1px solid rgba(0, 232, 137, 0.25);
+      color: var(--green);
+      background: rgba(0, 232, 137, 0.06);
+      letter-spacing: 0.08em
+    }
 
     /* ─── FOOTER ─────────────────────────────────────────── */
-    footer{padding:2rem 5rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-    .footer-copy{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.1em}
-    .footer-links{display:flex;gap:1.5rem}
-    .footer-links a{font-family:var(--font-mono);font-size:10px;color:var(--muted);text-decoration:none;letter-spacing:0.1em;transition:color 0.2s}
-    .footer-links a:hover{color:var(--green)}
+    footer {
+      padding: 2rem 5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.1em
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.2s
+    }
+
+    .footer-links a:hover {
+      color: var(--green)
+    }
 
     /* ─── 3D VIEWER MODAL ────────────────────────────────── */
-    #viewer-modal{position:fixed;inset:0;z-index:500;background:var(--bg);display:none;flex-direction:column;overflow:hidden}
-    #viewer-modal.open{display:flex}
-    .vm-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:rgba(7,10,15,0.9);backdrop-filter:blur(12px);flex-shrink:0;gap:1rem}
-    .vm-header-left{display:flex;align-items:center;gap:16px;min-width:0}
-    .vm-back{font-family:var(--font-mono);font-size:10px;color:var(--muted);letter-spacing:0.12em;cursor:none;padding:6px 12px;border:1px solid var(--border);border-radius:4px;transition:all 0.2s;background:none;white-space:nowrap}
-    .vm-back:hover{color:var(--green);border-color:var(--green)}
-    .vm-title{font-family:var(--font-head);font-size:1.1rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .vm-subtitle{font-family:var(--font-mono);font-size:9px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase;margin-top:1px}
-    .vm-board-tabs{display:flex;gap:6px;margin-left:auto}
-    .vm-tab{font-family:var(--font-mono);font-size:9px;padding:5px 12px;border-radius:3px;border:1px solid var(--border);color:var(--muted);background:none;cursor:none;transition:all 0.2s;letter-spacing:0.1em;white-space:nowrap}
-    .vm-tab.active,.vm-tab:hover{border-color:var(--green);color:var(--green);background:rgba(0,232,137,0.08)}
-    .vm-body{flex:1;display:grid;grid-template-columns:1fr 400px;overflow:hidden}
-    .vm-canvas-wrap{position:relative;background:var(--bg);overflow:hidden}
-    #viewer-canvas{display:block;width:100%;height:100%}
-    .vm-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:var(--bg);z-index:10}
-    .vm-loading.hidden{display:none}
-    .vm-load-text{font-family:var(--font-mono);font-size:11px;color:var(--green);letter-spacing:0.2em;text-transform:uppercase}
-    .vm-load-bar{width:200px;height:2px;background:var(--border2);border-radius:2px;overflow:hidden}
-    .vm-load-fill{height:100%;background:var(--green);border-radius:2px;width:0;transition:width 0.2s}
-    .vm-load-pct{font-family:var(--font-mono);font-size:10px;color:var(--muted)}
-    .vm-controls-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:9px;color:var(--muted2);letter-spacing:0.15em;pointer-events:none}
-    .vm-details{overflow-y:auto;border-left:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column}
-    .vm-details::-webkit-scrollbar{width:4px}
-    .vm-details::-webkit-scrollbar-track{background:var(--surface)}
-    .vm-details::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-    .vm-section{padding:1.6rem;border-bottom:1px solid var(--border)}
-    .vm-section:last-child{border-bottom:none}
-    .vm-sec-label{font-family:var(--font-mono);font-size:9px;color:var(--green);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px}
-    .vm-desc-text{font-size:0.83rem;color:var(--muted);line-height:1.75}
-    .vm-highlights{list-style:none;display:flex;flex-direction:column;gap:7px}
-    .vm-highlights li{font-size:0.8rem;color:var(--muted);line-height:1.65;padding-left:14px;position:relative}
-    .vm-highlights li::before{content:'›';position:absolute;left:0;color:var(--green)}
-    .vm-specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .vm-spec{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.7rem}
-    .vm-spec-k{font-family:var(--font-mono);font-size:8px;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:3px}
-    .vm-spec-v{font-size:0.8rem;color:var(--text);font-weight:500}
-    .vm-tags{display:flex;flex-wrap:wrap;gap:6px}
-    .vm-tag{font-family:var(--font-mono);font-size:9px;padding:3px 9px;border-radius:3px;border:1px solid var(--border2);color:var(--muted);background:var(--bg2);letter-spacing:0.05em}
+    #viewer-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: var(--bg);
+      display: none;
+      flex-direction: column;
+      overflow: hidden
+    }
+
+    #viewer-modal.open {
+      display: flex
+    }
+
+    .vm-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 10, 15, 0.9);
+      backdrop-filter: blur(12px);
+      flex-shrink: 0;
+      gap: 1rem
+    }
+
+    .vm-header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0
+    }
+
+    .vm-back {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      cursor: none;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s;
+      background: none;
+      white-space: nowrap
+    }
+
+    .vm-back:hover {
+      color: var(--green);
+      border-color: var(--green)
+    }
+
+    .vm-title {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis
+    }
+
+    .vm-subtitle {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-top: 1px
+    }
+
+    .vm-board-tabs {
+      display: flex;
+      gap: 6px;
+      margin-left: auto
+    }
+
+    .vm-tab {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 5px 12px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: none;
+      cursor: none;
+      transition: all 0.2s;
+      letter-spacing: 0.1em;
+      white-space: nowrap
+    }
+
+    .vm-tab.active,
+    .vm-tab:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 232, 137, 0.08)
+    }
+
+    .vm-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      overflow: hidden
+    }
+
+    .vm-canvas-wrap {
+      position: relative;
+      background: var(--bg);
+      overflow: hidden
+    }
+
+    #viewer-canvas {
+      display: block;
+      width: 100%;
+      height: 100%
+    }
+
+    .vm-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: var(--bg);
+      z-index: 10
+    }
+
+    .vm-loading.hidden {
+      display: none
+    }
+
+    .vm-load-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase
+    }
+
+    .vm-load-bar {
+      width: 200px;
+      height: 2px;
+      background: var(--border2);
+      border-radius: 2px;
+      overflow: hidden
+    }
+
+    .vm-load-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 2px;
+      width: 0;
+      transition: width 0.2s
+    }
+
+    .vm-load-pct {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted)
+    }
+
+    .vm-controls-hint {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted2);
+      letter-spacing: 0.15em;
+      pointer-events: none
+    }
+
+    .vm-details {
+      overflow-y: auto;
+      border-left: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column
+    }
+
+    .vm-details::-webkit-scrollbar {
+      width: 4px
+    }
+
+    .vm-details::-webkit-scrollbar-track {
+      background: var(--surface)
+    }
+
+    .vm-details::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px
+    }
+
+    .vm-section {
+      padding: 1.6rem;
+      border-bottom: 1px solid var(--border)
+    }
+
+    .vm-section:last-child {
+      border-bottom: none
+    }
+
+    .vm-sec-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 10px
+    }
+
+    .vm-desc-text {
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.75
+    }
+
+    .vm-highlights {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px
+    }
+
+    .vm-highlights li {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.65;
+      padding-left: 14px;
+      position: relative
+    }
+
+    .vm-highlights li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--green)
+    }
+
+    .vm-specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px
+    }
+
+    .vm-spec {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem
+    }
+
+    .vm-spec-k {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px
+    }
+
+    .vm-spec-v {
+      font-size: 0.8rem;
+      color: var(--text);
+      font-weight: 500
+    }
+
+    .vm-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px
+    }
+
+    .vm-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 3px 9px;
+      border-radius: 3px;
+      border: 1px solid var(--border2);
+      color: var(--muted);
+      background: var(--bg2);
+      letter-spacing: 0.05em
+    }
 
     /* ─── RESPONSIVE ─────────────────────────────────────── */
-    @media(max-width:1100px){
-      #hero{grid-template-columns:1fr;padding:7rem 3rem 4rem}
-      .hero-right{justify-content:center;margin-top:3rem}
-      .photo-shape-wrap{width:320px;height:400px}
-      .hero-photo,.hero-photo-placeholder{width:280px;height:370px}
-      .photo-blob{width:290px;height:360px}
-      nav{padding:1.2rem 3rem}
-      #about,#skills,#experience,#projects,#contact{padding:5rem 3rem}
-      footer{padding:1.5rem 3rem}
-      .about-grid{grid-template-columns:220px 1fr;gap:3rem}
+    @media(max-width:1100px) {
+      #hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 3rem 4rem
+      }
+
+      .hero-right {
+        justify-content: center;
+        margin-top: 3rem
+      }
+
+      .photo-shape-wrap {
+        width: 320px;
+        height: 400px
+      }
+
+      .hero-photo,
+      .hero-photo-placeholder {
+        width: 280px;
+        height: 370px
+      }
+
+      .photo-blob {
+        width: 290px;
+        height: 360px
+      }
+
+      nav {
+        padding: 1.2rem 3rem
+      }
+
+      #about,
+      #skills,
+      #experience,
+      #projects,
+      #contact {
+        padding: 5rem 3rem
+      }
+
+      footer {
+        padding: 1.5rem 3rem
+      }
+
+      .about-grid {
+        grid-template-columns: 220px 1fr;
+        gap: 3rem
+      }
     }
-    @media(max-width:900px){
-      .vm-body{grid-template-columns:1fr}
-      .vm-details{border-left:none;border-top:1px solid var(--border);max-height:40vh}
+
+    @media(max-width:900px) {
+      .vm-body {
+        grid-template-columns: 1fr
+      }
+
+      .vm-details {
+        border-left: none;
+        border-top: 1px solid var(--border);
+        max-height: 40vh
+      }
     }
-    @media(max-width:768px){
-      nav{padding:1rem 1.5rem}
-      .nav-links{display:none}
-      #hero,#about,#skills,#experience,#projects,#contact{padding:4rem 1.5rem}
-      footer{padding:1.2rem 1.5rem;flex-direction:column;gap:0.8rem}
-      .about-grid{grid-template-columns:1fr;gap:2rem}
-      .skills-layout,.contact-grid{grid-template-columns:1fr}
-      .exp-item{grid-template-columns:1fr}
-      .exp-item::before{display:none}
-      .exp-time{text-align:left;padding:0 0 0 1.5rem;margin-bottom:4px}
-      .exp-body{padding-left:1.5rem}
-      .vm-header{flex-wrap:wrap}
-      .vm-board-tabs{margin-left:0}
+
+    @media(max-width:768px) {
+      nav {
+        padding: 1rem 1.5rem
+      }
+
+      .nav-links {
+        display: none
+      }
+
+      #hero,
+      #about,
+      #skills,
+      #experience,
+      #projects,
+      #contact {
+        padding: 4rem 1.5rem
+      }
+
+      footer {
+        padding: 1.2rem 1.5rem;
+        flex-direction: column;
+        gap: 0.8rem
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem
+      }
+
+      .skills-layout,
+      .contact-grid {
+        grid-template-columns: 1fr
+      }
+
+      .exp-item {
+        grid-template-columns: 1fr
+      }
+
+      .exp-item::before {
+        display: none
+      }
+
+      .exp-time {
+        text-align: left;
+        padding: 0 0 0 1.5rem;
+        margin-bottom: 4px
+      }
+
+      .exp-body {
+        padding-left: 1.5rem
+      }
+
+      .vm-header {
+        flex-wrap: wrap
+      }
+
+      .vm-board-tabs {
+        margin-left: 0
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- LOADER -->
@@ -327,7 +2005,9 @@
     <div class="loader-text">
       <div class="loader-name" id="lname">Noel Joyce Varghese</div>
       <div class="loader-role" id="lrole">Embedded Hardware Design Engineer</div>
-      <div class="loader-bar-wrap"><div class="loader-bar-fill" id="lbar"></div></div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-fill" id="lbar"></div>
+      </div>
       <div class="loader-pct" id="lpct">0%</div>
     </div>
   </div>
@@ -360,16 +2040,21 @@
         <div class="hero-tag" id="htag"><span class="hero-tag-dot"></span>Embedded Hardware Engineer</div>
         <h1 class="hero-name" id="hname">Noel Joyce<span class="accent-line">Varghese.</span></h1>
         <p class="hero-role" id="hrole"><span id="typed"></span><span class="typed-cursor">|</span></p>
-        <p class="hero-desc" id="hdesc">Designing custom PCBs for aerospace, robotics &amp; defence. From schematic capture to validated board — building hardware that actually flies, spins, and senses.</p>
+        <p class="hero-desc" id="hdesc">Designing custom PCBs for aerospace, robotics &amp; defence. From schematic
+          capture to validated board — building hardware that actually flies, spins, and senses.</p>
         <div class="hero-btns" id="hbtns">
           <a href="#projects" class="btn btn-primary">View Projects →</a>
           <a href="#contact" class="btn btn-secondary">Get in Touch</a>
         </div>
         <div class="hero-stats" id="hstats">
-          <div class="stat-pill"><span class="stat-pill-num">10+</span><span class="stat-pill-label">PCB Boards</span></div>
-          <div class="stat-pill"><span class="stat-pill-num">6L</span><span class="stat-pill-label">Max Layers</span></div>
-          <div class="stat-pill"><span class="stat-pill-num">2</span><span class="stat-pill-label">Internships</span></div>
-          <div class="stat-pill"><span class="stat-pill-num">5+</span><span class="stat-pill-label">EDA Tools</span></div>
+          <div class="stat-pill"><span class="stat-pill-num">10+</span><span class="stat-pill-label">PCB Boards</span>
+          </div>
+          <div class="stat-pill"><span class="stat-pill-num">6L</span><span class="stat-pill-label">Max Layers</span>
+          </div>
+          <div class="stat-pill"><span class="stat-pill-num">2</span><span class="stat-pill-label">Internships</span>
+          </div>
+          <div class="stat-pill"><span class="stat-pill-num">5+</span><span class="stat-pill-label">EDA Tools</span>
+          </div>
         </div>
       </div>
 
@@ -377,55 +2062,77 @@
         <div class="photo-shape-wrap">
           <div class="photo-blob"></div>
           <img src="noel.jpg" alt="Noel Joyce Varghese" class="hero-photo" id="hero-photo-img"
-            onerror="this.style.display='none';document.getElementById('hero-photo-fallback').style.display='flex'"/>
+            onerror="this.style.display='none';document.getElementById('hero-photo-fallback').style.display='flex'" />
           <div class="hero-photo-placeholder" id="hero-photo-fallback" style="display:none">
             <div class="placeholder-initials">NJV</div>
             <div class="placeholder-hint">noel.jpg · same folder</div>
           </div>
           <div class="hero-badge badge-1">
             <span class="badge-icon">⚡</span>
-            <div><div class="badge-title">Currently at</div><div class="badge-sub">PSYC Aerospace &amp; Defence</div></div>
+            <div>
+              <div class="badge-title">Currently at</div>
+              <div class="badge-sub">PSYC Aerospace &amp; Defence</div>
+            </div>
           </div>
           <div class="hero-badge badge-2">
             <span class="badge-icon">🛩</span>
-            <div><div class="badge-title">Specialisation</div><div class="badge-sub">Aerospace PCB Design</div></div>
+            <div>
+              <div class="badge-title">Specialisation</div>
+              <div class="badge-sub">Aerospace PCB Design</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="scroll-hint" id="scroll-hint">
-        <span>Scroll</span><div class="scroll-bar"></div>
+        <span>Scroll</span>
+        <div class="scroll-bar"></div>
       </div>
     </section>
 
     <!-- ABOUT -->
     <section id="about">
-      <div class="section-header"><span class="section-num">01</span><div class="section-line"></div></div>
+      <div class="section-header"><span class="section-num">01</span>
+        <div class="section-line"></div>
+      </div>
       <h2 class="section-title" id="about-title">About Me</h2>
       <div class="about-grid">
         <div class="about-left">
           <div class="about-photo-wrap">
             <img src="noel.jpg" alt="Noel Joyce Varghese" class="about-photo"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" />
             <div class="about-photo-placeholder" style="display:none">
-              <div class="initials">NJV</div><div class="hint">noel.jpg · same folder</div>
+              <div class="initials">NJV</div>
+              <div class="hint">noel.jpg · same folder</div>
             </div>
           </div>
           <div class="info-card">
-            <div class="info-row"><span class="info-key">Location</span><span class="info-val">Kerala, India</span></div>
-            <div class="info-row"><span class="info-key">Currently</span><span class="info-val accent">PSYC Aerospace</span></div>
-            <div class="info-row"><span class="info-key">Degree</span><span class="info-val">B.Tech ECE · 2026</span></div>
-            <div class="info-row"><span class="info-key">Email</span><span class="info-val"><a href="mailto:noeljoyce6@gmail.com">noeljoyce6@gmail.com</a></span></div>
+            <div class="info-row"><span class="info-key">Location</span><span class="info-val">Kerala, India</span>
+            </div>
+            <div class="info-row"><span class="info-key">Currently</span><span class="info-val accent">PSYC
+                Aerospace</span></div>
+            <div class="info-row"><span class="info-key">Degree</span><span class="info-val">B.Tech ECE · 2026</span>
+            </div>
+            <div class="info-row"><span class="info-key">Email</span><span class="info-val"><a
+                  href="mailto:noeljoyce6@gmail.com">noeljoyce6@gmail.com</a></span></div>
             <div class="info-row"><span class="info-key">Phone</span><span class="info-val">+91 8590607872</span></div>
             <div class="info-divider"></div>
-            <div class="nda-note"><strong>Note:</strong> Most repos are private (NDA). Source code available on request for verified recruiters.</div>
+            <div class="nda-note"><strong>Note:</strong> Most repos are private (NDA). Source code available on request
+              for verified recruiters.</div>
           </div>
         </div>
         <div class="about-right">
-          <h3 class="about-heading">Building hardware that<br/><em>leaves the screen.</em></h3>
-          <p class="about-para">I'm an Embedded Hardware Design Engineer interning at <strong>PSYC Aerospace and Defence Industries</strong> in Bengaluru — designing custom PCBs for aerospace, robotics, and defence platforms. My work spans schematic capture, multilayer layout, component selection, bring-up, soldering, and validation.</p>
-          <p class="about-para">Earlier I worked on analog IC design at <strong>IIIT Kottayam</strong>, simulating CMOS VCOs in Cadence Virtuoso. My projects range from 4-layer BLDC motor controllers to 6-layer UAV flight computers, compact winch controllers, EEG acquisition hardware, and security/deterrent systems.</p>
-          <p class="about-para">I thrive where precision electronics meets real-world systems — where a routed trace becomes a motor spinning, a sensor reading, or a drone flying. Every board I ship is designed to IPC standards with production release in mind.</p>
+          <h3 class="about-heading">Building hardware that<br /><em>leaves the screen.</em></h3>
+          <p class="about-para">I'm an Embedded Hardware Design Engineer interning at <strong>PSYC Aerospace and Defence
+              Industries</strong> in Bengaluru — designing custom PCBs for aerospace, robotics, and defence platforms.
+            My work spans schematic capture, multilayer layout, component selection, bring-up, soldering, and
+            validation.</p>
+          <p class="about-para">Earlier I worked on analog IC design at <strong>IIIT Kottayam</strong>, simulating CMOS
+            VCOs in Cadence Virtuoso. My projects range from 4-layer BLDC motor controllers to 6-layer UAV flight
+            computers, compact winch controllers, EEG acquisition hardware, and security/deterrent systems.</p>
+          <p class="about-para">I thrive where precision electronics meets real-world systems — where a routed trace
+            becomes a motor spinning, a sensor reading, or a drone flying. Every board I ship is designed to IPC
+            standards with production release in mind.</p>
           <div class="edu-block">
             <div class="edu-eyebrow">Education</div>
             <div class="edu-row">
@@ -438,87 +2145,278 @@
             </div>
           </div>
           <div class="counter-strip">
-            <div class="counter-item"><div class="counter-num" data-target="10">0</div><div class="counter-label">PCB Boards</div></div>
-            <div class="counter-item"><div class="counter-num" data-target="6">0</div><div class="counter-label">Max Layers</div></div>
-            <div class="counter-item"><div class="counter-num" data-target="2">0</div><div class="counter-label">Internships</div></div>
-            <div class="counter-item"><div class="counter-num" data-target="5">0</div><div class="counter-label">EDA Tools</div></div>
+            <div class="counter-item">
+              <div class="counter-num" data-target="10">0</div>
+              <div class="counter-label">PCB Boards</div>
+            </div>
+            <div class="counter-item">
+              <div class="counter-num" data-target="6">0</div>
+              <div class="counter-label">Max Layers</div>
+            </div>
+            <div class="counter-item">
+              <div class="counter-num" data-target="2">0</div>
+              <div class="counter-label">Internships</div>
+            </div>
+            <div class="counter-item">
+              <div class="counter-num" data-target="5">0</div>
+              <div class="counter-label">EDA Tools</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
+
+
     <!-- SKILLS -->
     <section id="skills">
-      <div class="section-header"><span class="section-num">02</span><div class="section-line"></div></div>
+      <div class="section-header"><span class="section-num">02</span>
+        <div class="section-line"></div>
+      </div>
       <h2 class="section-title" id="skills-title">Skills &amp; Tools</h2>
-      <div class="skills-layout">
-        <div class="skill-group">
-          <div class="skill-group-header">
-            <div class="skill-group-icon icon-green">HW</div>
-            <span class="skill-group-name">Hardware Design</span>
-            <span class="skill-group-count">9 skills</span>
+      <div class="skills-grid">
+        <!-- 1. HARDWARE DESIGN -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M2 7h6l4 4h4l3-3h3" stroke="#d4821c" />
+                <path d="M2 11h5.5L11 14.5h4.5l3-3h3" stroke="#e5a93b" />
+                <circle cx="2" cy="7" r="1.5" fill="#070a0f" stroke="#d4821c" stroke-width="1.5" />
+                <circle cx="22" cy="8" r="1.5" fill="#070a0f" stroke="#d4821c" stroke-width="1.5" />
+                <circle cx="2" cy="11" r="1.5" fill="#070a0f" stroke="#e5a93b" stroke-width="1.5" />
+                <circle cx="22" cy="11.5" r="1.5" fill="#070a0f" stroke="#e5a93b" stroke-width="1.5" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Hardware Design</span>
           </div>
-          <div class="skill-tags">
-            <span class="skill-tag hi">PCB Layout</span><span class="skill-tag hi">Schematic Capture</span>
-            <span class="skill-tag">Mixed-Signal</span><span class="skill-tag">Multilayer PCB</span>
-            <span class="skill-tag">High-Current Routing</span><span class="skill-tag">Controlled Impedance</span>
-            <span class="skill-tag">DFM / DFA</span><span class="skill-tag">BOM Generation</span>
-            <span class="skill-tag">Gerber Release</span>
-          </div>
+          <ul class="skill-card-list">
+            <li>PCB Layout</li>
+            <li>Multilayer PCB</li>
+            <li>Mixed-Signal Design</li>
+            <li>High-Current Routing</li>
+            <li>DFM/DFA</li>
+          </ul>
         </div>
-        <div class="skill-group">
-          <div class="skill-group-header">
-            <div class="skill-group-icon icon-copper">EDA</div>
-            <span class="skill-group-name">EDA Tools</span>
-            <span class="skill-group-count">6 tools</span>
+
+        <!-- 2. PCB DEVELOPMENT -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M2 12h8" stroke="#00e889" />
+                <path d="M14 12h8" stroke="#00e889" />
+                <circle cx="12" cy="12" r="2.5" fill="#070a0f" stroke="#00e889" stroke-width="2" />
+                <circle cx="12" cy="12" r="0.8" fill="#00e889" />
+                <path d="M4 4l6 6" stroke="#00a860" />
+                <circle cx="4" cy="4" r="1.5" fill="#070a0f" stroke="#00a860" />
+                <rect x="18" y="3" width="4" height="4" rx="0.5" fill="none" stroke="#d4821c" />
+                <path d="M14 5h4" stroke="#d4821c" />
+              </svg>
+            </div>
+            <span class="skill-card-title">PCB Development</span>
           </div>
-          <div class="skill-bars">
-            <div class="skill-bar-row"><div class="skill-bar-top"><span class="skill-bar-name">Altium Designer</span><span class="skill-bar-pct">90%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="90"></div></div></div>
-            <div class="skill-bar-row"><div class="skill-bar-top"><span class="skill-bar-name">KiCad</span><span class="skill-bar-pct">85%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="85"></div></div></div>
-            <div class="skill-bar-row"><div class="skill-bar-top"><span class="skill-bar-name">LTspice</span><span class="skill-bar-pct">80%</span></div><div class="skill-bar-track"><div class="skill-bar-fill" data-w="80"></div></div></div>
-            <div class="skill-bar-row"><div class="skill-bar-top"><span class="skill-bar-name">Cadence Virtuoso</span><span class="skill-bar-pct">70%</span></div><div class="skill-bar-track"><div class="skill-bar-fill copper" data-w="70"></div></div></div>
-            <div class="skill-bar-row"><div class="skill-bar-top"><span class="skill-bar-name">OrCAD</span><span class="skill-bar-pct">65%</span></div><div class="skill-bar-track"><div class="skill-bar-fill copper" data-w="65"></div></div></div>
-            <div class="skill-bar-row"><div class="skill-bar-top"><span class="skill-bar-name">Proteus / EasyEDA</span><span class="skill-bar-pct">75%</span></div><div class="skill-bar-track"><div class="skill-bar-fill copper" data-w="75"></div></div></div>
-          </div>
+          <ul class="skill-card-list">
+            <li>Controlled Impedance</li>
+            <li>BOM Generation</li>
+            <li>Gerber Release</li>
+          </ul>
         </div>
-        <div class="skill-group">
-          <div class="skill-group-header">
-            <div class="skill-group-icon icon-blue">MCU</div>
-            <span class="skill-group-name">Embedded &amp; Interfaces</span>
-            <span class="skill-group-count">10 items</span>
+
+        <!-- 3. EDA TOOLS -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M6 4v16l12-8Z" stroke="#00e889" />
+                <path d="M2 8h4" stroke="#566880" />
+                <path d="M2 16h4" stroke="#566880" />
+                <path d="M7 8h2" stroke="#566880" stroke-width="1" />
+                <path d="M7 16h2" stroke="#566880" stroke-width="1" />
+                <path d="M8 15v2" stroke="#566880" stroke-width="1" />
+                <path d="M18 12h4" stroke="#00e889" />
+              </svg>
+            </div>
+            <span class="skill-card-title">EDA Tools</span>
           </div>
-          <div class="skill-tags">
-            <span class="skill-tag hi">STM32</span><span class="skill-tag hi">ESP32</span>
-            <span class="skill-tag">Raspberry Pi / CM5</span><span class="skill-tag">Arduino</span>
-            <span class="skill-tag">SPI / I2C / UART</span><span class="skill-tag">CAN 2.0B</span>
-            <span class="skill-tag">USB</span><span class="skill-tag">ADC / DAC</span>
-            <span class="skill-tag">Motor Drivers</span><span class="skill-tag">DC-DC / LDO</span>
-          </div>
+          <ul class="skill-card-list">
+            <li>Altium Designer</li>
+            <li>KiCad</li>
+            <li>OrCAD</li>
+            <li>Cadence Virtuoso</li>
+            <li>LTspice</li>
+          </ul>
         </div>
-        <div class="skill-group">
-          <div class="skill-group-header">
-            <div class="skill-group-icon icon-purple">VAL</div>
-            <span class="skill-group-name">Validation &amp; Programming</span>
-            <span class="skill-group-count">8 skills</span>
+
+        <!-- 4. EMBEDDED PLATFORMS -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="5" y="5" width="14" height="14" rx="1.5" fill="#141d2a" stroke="#00e889" stroke-width="1.5" />
+                <path d="M8 2v3M12 2v3M16 2v3M8 19v3M12 19v3M16 19v3" stroke="#566880" stroke-width="1" />
+                <path d="M2 8h3M2 12h3M2 16h3M19 8h3M19 12h3M19 16h3" stroke="#566880" stroke-width="1" />
+                <circle cx="8" cy="8" r="1" fill="#d4821c" />
+                <text x="7" y="13" font-size="3" fill="#566880" font-family="monospace">STM32</text>
+              </svg>
+            </div>
+            <span class="skill-card-title">Embedded Platforms</span>
           </div>
-          <div class="skill-tags">
-            <span class="skill-tag hi">Board Bring-Up</span><span class="skill-tag hi">C / C++</span>
-            <span class="skill-tag">Oscilloscope</span><span class="skill-tag">Logic Analyzer</span>
-            <span class="skill-tag">Soldering / Rework</span><span class="skill-tag">Python</span>
-            <span class="skill-tag">MATLAB</span><span class="skill-tag">IPC-2221 / IPC-7351</span>
+          <ul class="skill-card-list">
+            <li>STM32</li>
+            <li>ESP32</li>
+            <li>Raspberry Pi</li>
+            <li>Arduino</li>
+          </ul>
+        </div>
+
+        <!-- 5. COMMUNICATION INTERFACES -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M2 8h4l2 5h6l2-5h6" stroke="#00e889" />
+                <path d="M2 16h4l2-5h6l2 5h6" stroke="#d4821c" />
+                <path d="M8 10v4M16 10v4" stroke="#566880" stroke-dasharray="2 2" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Comms Interfaces</span>
           </div>
+          <ul class="skill-card-list">
+            <li>SPI</li>
+            <li>I2C</li>
+            <li>UART</li>
+            <li>CAN</li>
+            <li>USB</li>
+            <li>ADC/DAC</li>
+          </ul>
+        </div>
+
+        <!-- 6. POWER ELECTRONICS -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M2 12h2c.5-1.5 1.5-1.5 2 0s1.5 1.5 2 0 1.5-1.5 2 0 1.5 1.5 2 0h2" stroke="#d4821c" />
+                <path d="M10 17v-6" stroke="#566880" />
+                <path d="M8 14h4M10 14l-2 3h4Z" fill="#141d2a" stroke="#566880" />
+                <path d="M18 10v4M20 10v4" stroke="#00e889" stroke-width="2" />
+                <path d="M16 12h2M20 12h2" stroke="#00e889" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Power Electronics</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>DC-DC Converters</li>
+            <li>LDO Regulators</li>
+            <li>Motor Drivers</li>
+            <li>Protection Circuits</li>
+          </ul>
+        </div>
+
+        <!-- 7. PROGRAMMING -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M8 4H6a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2" stroke="#00e889" />
+                <path d="M16 4h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2" stroke="#00e889" />
+                <path d="M9 12h6" stroke="#566880" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Programming</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>C</li>
+            <li>C++</li>
+            <li>Python</li>
+          </ul>
+        </div>
+
+        <!-- 8. DEVELOPMENT TOOLS -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M6 3v18" stroke="#566880" />
+                <path d="M6 15a6 6 0 0 0 6-6V5" stroke="#00e889" />
+                <path d="M6 18a9 9 0 0 0 9-9V7" stroke="#d4821c" />
+                <circle cx="6" cy="5" r="2" fill="#141d2a" stroke="#566880" stroke-width="1.5" />
+                <circle cx="6" cy="12" r="2" fill="#141d2a" stroke="#566880" stroke-width="1.5" />
+                <circle cx="12" cy="5" r="2" fill="#141d2a" stroke="#00e889" stroke-width="1.5" />
+                <circle cx="15" cy="7" r="2" fill="#141d2a" stroke="#d4821c" stroke-width="1.5" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Dev Tools</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>Git</li>
+            <li>VS Code</li>
+            <li>Arduino IDE</li>
+          </ul>
+        </div>
+
+        <!-- 9. VALIDATION & DEBUGGING -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M2 12h20M12 2v20" stroke="rgba(0, 232, 137, 0.1)" stroke-dasharray="1 2" />
+                <path d="M2 16h4V6.5c.5-.8.9-.8 1.2.2.3 1.2.6 1.8 1 0 .4-1.8.8-1.8 1.1-.2.3.8.6 1.5 1 .3V16h4V6.5"
+                  stroke="#00e889" stroke-width="1.8" />
+                <path d="M21 12l-2-2v4Z" fill="#d4821c" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Validation &amp; Debug</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>Board Bring-up</li>
+            <li>Oscilloscope</li>
+            <li>Logic Analyzer</li>
+            <li>Hardware Debugging</li>
+          </ul>
+        </div>
+
+        <!-- 10. STANDARDS -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <rect x="3" y="10" width="18" height="11" rx="1" stroke="#566880" stroke-dasharray="3 2" fill="none" />
+                <path d="M4 3c1.5 1 2.5 3 2.5 5" stroke="#d4821c" />
+                <path d="M8 2c2 1.5 3.5 4 3.5 6" stroke="#d4821c" />
+                <path d="M12 1c2.5 2 4 5 4 7" stroke="#d4821c" />
+                <path d="M12 21v2M9 23h6M10 25h4" stroke="#566880" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Standards</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>IPC-2221</li>
+            <li>IPC-7351</li>
+            <li>EMC/EMI Awareness</li>
+          </ul>
         </div>
       </div>
     </section>
 
     <!-- EXPERIENCE -->
     <section id="experience">
-      <div class="section-header"><span class="section-num">03</span><div class="section-line"></div></div>
+      <div class="section-header"><span class="section-num">03</span>
+        <div class="section-line"></div>
+      </div>
       <h2 class="section-title" id="exp-title">Experience</h2>
       <div class="exp-timeline">
         <div class="exp-item" id="exp0">
           <div class="exp-time">
-            <div class="exp-date">Nov 2025<br/>— Present</div>
+            <div class="exp-date">Nov 2025<br />— Present</div>
             <div class="exp-loc">Bengaluru, India</div>
           </div>
           <div class="exp-body">
@@ -526,10 +2424,14 @@
             <div class="exp-company">PSYC Aerospace &amp; Defence Industries Pvt. Ltd.</div>
             <div class="exp-role">PCB Design Intern</div>
             <ul class="exp-bullets">
-              <li>Engineered production-grade hardware for aerospace and robotics across 8+ embedded projects including schematic capture, PCB layout, and BOM generation.</li>
-              <li>Integrated sensors and communication interfaces (SPI / I2C / UART / CAN) into multiple hardware platforms for embedded control and telemetry.</li>
-              <li>Executed board bring-up, debugging, validation, soldering / rework, and full fabrication release support.</li>
-              <li>Delivered multilayer designs (up to 6L) with controlled impedance, power integrity considerations, and IPC-compliant design rules.</li>
+              <li>Engineered production-grade hardware for aerospace and robotics across 8+ embedded projects including
+                schematic capture, PCB layout, and BOM generation.</li>
+              <li>Integrated sensors and communication interfaces (SPI / I2C / UART / CAN) into multiple hardware
+                platforms for embedded control and telemetry.</li>
+              <li>Executed board bring-up, debugging, validation, soldering / rework, and full fabrication release
+                support.</li>
+              <li>Delivered multilayer designs (up to 6L) with controlled impedance, power integrity considerations, and
+                IPC-compliant design rules.</li>
             </ul>
           </div>
         </div>
@@ -543,8 +2445,10 @@
             <div class="exp-company">IIIT Kottayam</div>
             <div class="exp-role">Analog Design Intern</div>
             <ul class="exp-bullets">
-              <li>Simulated a 5 GHz current-starved CMOS Voltage-Controlled Oscillator (VCO) using LTspice and Cadence Virtuoso.</li>
-              <li>Analysed analog circuits and transistor-level RF design fundamentals for oscillator and high-frequency applications.</li>
+              <li>Simulated a 5 GHz current-starved CMOS Voltage-Controlled Oscillator (VCO) using LTspice and Cadence
+                Virtuoso.</li>
+              <li>Analysed analog circuits and transistor-level RF design fundamentals for oscillator and high-frequency
+                applications.</li>
             </ul>
           </div>
         </div>
@@ -553,42 +2457,61 @@
 
     <!-- PROJECTS -->
     <section id="projects">
-      <div class="section-header"><span class="section-num">04</span><div class="section-line"></div></div>
+      <div class="section-header"><span class="section-num">04</span>
+        <div class="section-line"></div>
+      </div>
       <h2 class="section-title" id="proj-title">Projects &amp; Boards</h2>
       <div class="projects-grid" id="projects-grid"></div>
     </section>
 
     <!-- CONTACT -->
     <section id="contact">
-      <div class="section-header"><span class="section-num">05</span><div class="section-line"></div></div>
+      <div class="section-header"><span class="section-num">05</span>
+        <div class="section-line"></div>
+      </div>
       <h2 class="section-title" id="contact-title">Get in Touch</h2>
       <div class="contact-grid">
         <div class="contact-left">
-          <h3 class="contact-heading">Let's build something<br/><em>real.</em></h3>
-          <p class="contact-sub">Open to full-time roles, internships, and freelance hardware design projects. If you need precision PCBs for aerospace, robotics, defence, or embedded systems — let's talk.</p>
+          <h3 class="contact-heading">Let's build something<br /><em>real.</em></h3>
+          <p class="contact-sub">Open to full-time roles, internships, and freelance hardware design projects. If you
+            need precision PCBs for aerospace, robotics, defence, or embedded systems — let's talk.</p>
           <div class="contact-links">
             <a href="mailto:noeljoyce6@gmail.com" class="contact-link">
               <div class="cl-icon">✉</div>
-              <div><div class="cl-label">Email</div><div class="cl-val">noeljoyce6@gmail.com</div></div>
+              <div>
+                <div class="cl-label">Email</div>
+                <div class="cl-val">noeljoyce6@gmail.com</div>
+              </div>
             </a>
             <a href="https://linkedin.com/in/noel-joyce-varghese" target="_blank" class="contact-link">
               <div class="cl-icon">in</div>
-              <div><div class="cl-label">LinkedIn</div><div class="cl-val">noel-joyce-varghese</div></div>
+              <div>
+                <div class="cl-label">LinkedIn</div>
+                <div class="cl-val">noel-joyce-varghese</div>
+              </div>
             </a>
             <a href="https://github.com/noeljoyce6" target="_blank" class="contact-link">
               <div class="cl-icon">gh</div>
-              <div><div class="cl-label">GitHub</div><div class="cl-val">github.com/noeljoyce6</div></div>
+              <div>
+                <div class="cl-label">GitHub</div>
+                <div class="cl-val">github.com/noeljoyce6</div>
+              </div>
             </a>
             <div class="contact-link" style="cursor:default">
               <div class="cl-icon">📍</div>
-              <div><div class="cl-label">Location</div><div class="cl-val">Kerala, India · Open to Relocation</div></div>
+              <div>
+                <div class="cl-label">Location</div>
+                <div class="cl-val">Kerala, India · Open to Relocation</div>
+              </div>
             </div>
           </div>
         </div>
         <div class="contact-right" id="avail-card-wrap">
           <div class="avail-card">
-            <div style="margin-bottom:12px"><span class="avail-dot"></span><span class="avail-title">Available for Opportunities</span></div>
-            <p class="avail-text">Currently interning at PSYC Aerospace. Graduating April 2026 and actively looking for full-time embedded hardware design roles in aerospace, robotics, or defence electronics.</p>
+            <div style="margin-bottom:12px"><span class="avail-dot"></span><span class="avail-title">Available for
+                Opportunities</span></div>
+            <p class="avail-text">Currently interning at PSYC Aerospace. Graduating April 2026 and actively looking for
+              full-time embedded hardware design roles in aerospace, robotics, or defence electronics.</p>
             <div class="avail-tags">
               <span class="avail-tag">Full-Time Roles</span>
               <span class="avail-tag">PCB Design</span>
@@ -612,341 +2535,215 @@
     </footer>
   </main>
 
-  <!-- 3D VIEWER MODAL -->
-  <div id="viewer-modal">
-    <div class="vm-header">
-      <div class="vm-header-left">
-        <button class="vm-back" id="vm-close">← Back</button>
-        <div>
-          <div class="vm-title" id="vm-title">Project</div>
-          <div class="vm-subtitle" id="vm-subtitle">Board</div>
-        </div>
-      </div>
-      <div class="vm-board-tabs" id="vm-board-tabs"></div>
-    </div>
-    <div class="vm-body">
-      <div class="vm-canvas-wrap">
-        <canvas id="viewer-canvas"></canvas>
-        <div class="vm-loading" id="vm-loading">
-          <div class="vm-load-text">Loading 3D Model</div>
-          <div class="vm-load-bar"><div class="vm-load-fill" id="vm-load-fill"></div></div>
-          <div class="vm-load-pct" id="vm-load-pct">0%</div>
-        </div>
-        <div class="vm-controls-hint">Drag to rotate · Scroll to zoom · Right-drag to pan</div>
-      </div>
-      <div class="vm-details" id="vm-details"></div>
-    </div>
-  </div>
+  <!-- 3D Viewer Modal removed — see project.html -->
 
   <!-- SCRIPTS -->
+  <script src="projects-data.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
-  // ── LOADER ANIMATION ───────────────────────────────────────────
-  (function(){
-    const canvas = document.getElementById('loader-canvas');
-    const ctx = canvas.getContext('2d');
-    const lbar = document.getElementById('lbar');
-    const lpct = document.getElementById('lpct');
-    const lname = document.getElementById('lname');
-    const lrole = document.getElementById('lrole');
-    let W, H;
-    function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    resize();
+    // ── LOADER ANIMATION ───────────────────────────────────────────
+    (function () {
+      const canvas = document.getElementById('loader-canvas');
+      const ctx = canvas.getContext('2d');
+      const lbar = document.getElementById('lbar');
+      const lpct = document.getElementById('lpct');
+      const lname = document.getElementById('lname');
+      const lrole = document.getElementById('lrole');
+      let W, H;
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+      resize();
 
-    const COLS=24, ROWS=16;
-    const nodes=[], edges=[];
-    function buildGraph(){
-      nodes.length=0; edges.length=0;
-      for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
-        if(Math.random()>0.38){
-          nodes.push({
-            x:(c/(COLS-1))*W*0.92+W*0.04+(Math.random()-0.5)*(W/COLS)*0.35,
-            y:(r/(ROWS-1))*H*0.88+H*0.06+(Math.random()-0.5)*(H/ROWS)*0.35,
-            sz:Math.random()>0.94?4:Math.random()>0.82?2.5:1.4,
-            alpha:0, delay:Math.random()*0.45
-          });
+      const COLS = 24, ROWS = 16;
+      const nodes = [], edges = [];
+      function buildGraph() {
+        nodes.length = 0; edges.length = 0;
+        for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+          if (Math.random() > 0.38) {
+            nodes.push({
+              x: (c / (COLS - 1)) * W * 0.92 + W * 0.04 + (Math.random() - 0.5) * (W / COLS) * 0.35,
+              y: (r / (ROWS - 1)) * H * 0.88 + H * 0.06 + (Math.random() - 0.5) * (H / ROWS) * 0.35,
+              sz: Math.random() > 0.94 ? 4 : Math.random() > 0.82 ? 2.5 : 1.4,
+              alpha: 0, delay: Math.random() * 0.45
+            });
+          }
+        }
+        for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[j].x - nodes[i].x, dy = nodes[j].y - nodes[i].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 68 && Math.random() > 0.62) edges.push({ i, j, prog: 0, delay: Math.random() * 0.55 + 0.1 });
         }
       }
-      for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
-        const dx=nodes[j].x-nodes[i].x, dy=nodes[j].y-nodes[i].y;
-        const d=Math.sqrt(dx*dx+dy*dy);
-        if(d<68&&Math.random()>0.62) edges.push({i,j,prog:0,delay:Math.random()*0.55+0.1});
-      }
-    }
-    buildGraph();
+      buildGraph();
 
-    const DURATION=2600;
-    let startTime=null;
-    let textShown=false;
+      const DURATION = 2600;
+      let startTime = null;
+      let textShown = false;
 
-    function draw(now){
-      if(!startTime) startTime=now;
-      const t=Math.min((now-startTime)/DURATION,1);
-      ctx.fillStyle='#070a0f';
-      ctx.fillRect(0,0,W,H);
+      function draw(now) {
+        if (!startTime) startTime = now;
+        const t = Math.min((now - startTime) / DURATION, 1);
+        ctx.fillStyle = '#070a0f';
+        ctx.fillRect(0, 0, W, H);
 
-      // grid
-      ctx.strokeStyle='rgba(0,232,137,0.03)';
-      ctx.lineWidth=1;
-      for(let x=0;x<W;x+=50){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
-      for(let y=0;y<H;y+=50){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+        // grid
+        ctx.strokeStyle = 'rgba(0,232,137,0.03)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 50) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+        for (let y = 0; y < H; y += 50) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 
-      // edges
-      edges.forEach(e=>{
-        const p=Math.max(0,Math.min(1,(t-e.delay)/0.28)); e.prog=p;
-        if(p<=0) return;
-        const a=nodes[e.i],b=nodes[e.j];
-        ctx.beginPath();
-        ctx.strokeStyle=`rgba(0,200,120,${0.22*p})`;
-        ctx.lineWidth=0.9;
-        ctx.moveTo(a.x,a.y);
-        ctx.lineTo(a.x+(b.x-a.x)*p,a.y+(b.y-a.y)*p);
-        ctx.stroke();
-      });
+        // edges
+        edges.forEach(e => {
+          const p = Math.max(0, Math.min(1, (t - e.delay) / 0.28)); e.prog = p;
+          if (p <= 0) return;
+          const a = nodes[e.i], b = nodes[e.j];
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(0,200,120,${0.22 * p})`;
+          ctx.lineWidth = 0.9;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(a.x + (b.x - a.x) * p, a.y + (b.y - a.y) * p);
+          ctx.stroke();
+        });
 
-      // nodes
-      nodes.forEach(n=>{
-        const np=Math.max(0,Math.min(1,(t-n.delay)/0.18)); n.alpha=np;
-        if(np<=0) return;
-        ctx.globalAlpha=np;
-        if(n.sz>=4){
-          const g=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,10);
-          g.addColorStop(0,'rgba(0,232,137,0.35)');g.addColorStop(1,'rgba(0,232,137,0)');
-          ctx.fillStyle=g;ctx.beginPath();ctx.arc(n.x,n.y,10,0,Math.PI*2);ctx.fill();
-          ctx.strokeStyle='rgba(0,232,137,0.5)';ctx.lineWidth=1;
-          ctx.beginPath();ctx.arc(n.x,n.y,n.sz+3,0,Math.PI*2);ctx.stroke();
+        // nodes
+        nodes.forEach(n => {
+          const np = Math.max(0, Math.min(1, (t - n.delay) / 0.18)); n.alpha = np;
+          if (np <= 0) return;
+          ctx.globalAlpha = np;
+          if (n.sz >= 4) {
+            const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 10);
+            g.addColorStop(0, 'rgba(0,232,137,0.35)'); g.addColorStop(1, 'rgba(0,232,137,0)');
+            ctx.fillStyle = g; ctx.beginPath(); ctx.arc(n.x, n.y, 10, 0, Math.PI * 2); ctx.fill();
+            ctx.strokeStyle = 'rgba(0,232,137,0.5)'; ctx.lineWidth = 1;
+            ctx.beginPath(); ctx.arc(n.x, n.y, n.sz + 3, 0, Math.PI * 2); ctx.stroke();
+          }
+          ctx.fillStyle = n.sz >= 4 ? '#00e889' : n.sz >= 2.5 ? '#00a860' : '#006040';
+          ctx.beginPath(); ctx.arc(n.x, n.y, n.sz, 0, Math.PI * 2); ctx.fill();
+          ctx.globalAlpha = 1;
+        });
+
+        // scan line (left to right once)
+        const sx = t * W * 1.12 - W * 0.06;
+        const sg = ctx.createLinearGradient(sx - 70, 0, sx + 20, 0);
+        sg.addColorStop(0, 'rgba(0,232,137,0)'); sg.addColorStop(0.7, 'rgba(0,232,137,0.1)'); sg.addColorStop(1, 'rgba(0,232,137,0.22)');
+        ctx.fillStyle = sg; ctx.fillRect(sx - 70, 0, 90, H);
+
+        // show name text after 30%
+        if (t > 0.28 && !textShown) { textShown = true; lname.classList.add('show'); lrole.classList.add('show'); }
+
+        // progress bar
+        lbar.style.width = (t * 100) + '%';
+        lpct.textContent = Math.floor(t * 100) + '%';
+
+        if (t < 1) { requestAnimationFrame(draw); }
+        else {
+          setTimeout(() => {
+            const loader = document.getElementById('loader');
+            loader.style.transition = 'opacity 0.65s ease';
+            loader.style.opacity = '0';
+            setTimeout(() => {
+              loader.style.display = 'none';
+              document.body.classList.add('loaded');
+              initAnimations();
+            }, 650);
+          }, 280);
         }
-        ctx.fillStyle=n.sz>=4?'#00e889':n.sz>=2.5?'#00a860':'#006040';
-        ctx.beginPath();ctx.arc(n.x,n.y,n.sz,0,Math.PI*2);ctx.fill();
-        ctx.globalAlpha=1;
+      }
+      requestAnimationFrame(draw);
+    })();
+
+    // ── CURSOR ──────────────────────────────────────────────────────
+    const cur = document.getElementById('cursor');
+    const crng = document.getElementById('cring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    (function loop() {
+      cur.style.transform = `translate(${mx - 4}px,${my - 4}px)`;
+      rx += (mx - rx) * 0.1; ry += (my - ry) * 0.1;
+      crng.style.transform = `translate(${rx - 14}px,${ry - 14}px)`;
+      requestAnimationFrame(loop);
+    })();
+
+    // ── NAV ─────────────────────────────────────────────────────────
+    window.addEventListener('scroll', () =>
+      document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40));
+
+    // ── TYPEWRITER ──────────────────────────────────────────────────
+    const roles = ['PCB Layout Engineer', 'Mixed-Signal Designer', 'Motor Controller Designer', 'UAV Hardware Designer', 'Embedded Systems Designer'];
+    let ri = 0;
+    const tel = document.getElementById('typed');
+    function typeIt(txt, cb) { let i = 0; tel.textContent = ''; const iv = setInterval(() => { tel.textContent += txt[i++]; if (i >= txt.length) { clearInterval(iv); setTimeout(cb, 1800); } }, 55); }
+    function eraseIt(cb) { const iv = setInterval(() => { tel.textContent = tel.textContent.slice(0, -1); if (!tel.textContent.length) { clearInterval(iv); cb(); } }, 28); }
+    function cycle() { typeIt(roles[ri], () => eraseIt(() => { ri = (ri + 1) % roles.length; cycle(); })); }
+
+    // ── GSAP ANIMATIONS (called after loader) ──────────────────────
+    function initAnimations() {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // hero
+      gsap.set(['#htag', '#hname', '#hrole', '#hdesc', '#hbtns', '#hstats'], { y: 28, opacity: 0 });
+      gsap.timeline({ defaults: { ease: 'power3.out' } })
+        .to('#htag', { opacity: 1, y: 0, duration: 0.6, delay: 0.1 })
+        .to('#hname', { opacity: 1, y: 0, duration: 0.7 }, '-=0.3')
+        .to('#hrole', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+        .to('#hdesc', { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
+        .to('#hbtns', { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+        .to('#hstats', { opacity: 1, y: 0, duration: 0.5 }, '-=0.2')
+        .to('#scroll-hint', { opacity: 1, duration: 0.5 }, '-=0.2');
+
+      setTimeout(cycle, 1600);
+
+      // cursor hover
+      document.querySelectorAll('a,button').forEach(el => {
+        el.addEventListener('mouseenter', () => gsap.to(crng, { width: 40, height: 40, duration: 0.2 }));
+        el.addEventListener('mouseleave', () => gsap.to(crng, { width: 28, height: 28, duration: 0.2 }));
       });
 
-      // scan line (left to right once)
-      const sx=t*W*1.12-W*0.06;
-      const sg=ctx.createLinearGradient(sx-70,0,sx+20,0);
-      sg.addColorStop(0,'rgba(0,232,137,0)');sg.addColorStop(0.7,'rgba(0,232,137,0.1)');sg.addColorStop(1,'rgba(0,232,137,0.22)');
-      ctx.fillStyle=sg;ctx.fillRect(sx-70,0,90,H);
+      // about
+      gsap.to('#about-title', { scrollTrigger: { trigger: '#about', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.from('.about-photo-wrap', { scrollTrigger: { trigger: '#about', start: 'top 72%' }, x: -40, opacity: 0, duration: 0.9, ease: 'power3.out' });
+      gsap.from('.info-card', { scrollTrigger: { trigger: '#about', start: 'top 65%' }, x: -30, opacity: 0, duration: 0.8, delay: 0.2, ease: 'power3.out' });
+      gsap.to('.about-heading', { scrollTrigger: { trigger: '.about-heading', start: 'top 82%' }, opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
+      gsap.to('.about-para', { scrollTrigger: { trigger: '.about-right', start: 'top 74%' }, opacity: 1, y: 0, stagger: 0.14, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.edu-block', { scrollTrigger: { trigger: '.edu-block', start: 'top 86%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.counter-strip', { scrollTrigger: { trigger: '.counter-strip', start: 'top 88%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      document.querySelectorAll('.counter-num').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        ScrollTrigger.create({
+          trigger: el, start: 'top 92%', once: true, onEnter: () => {
+            let c = 0; const iv = setInterval(() => { c = Math.min(c + 1, target); el.textContent = c; if (c >= target) clearInterval(iv); }, 50);
+          }
+        });
+      });
 
-      // show name text after 30%
-      if(t>0.28&&!textShown){ textShown=true; lname.classList.add('show'); lrole.classList.add('show'); }
+      // skills
+      gsap.to('#skills-title', { scrollTrigger: { trigger: '#skills', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.skill-card', { scrollTrigger: { trigger: '.skills-grid', start: 'top 74%' }, opacity: 1, y: 0, stagger: 0.08, duration: 0.7, ease: 'power3.out' });
 
-      // progress bar
-      lbar.style.width=(t*100)+'%';
-      lpct.textContent=Math.floor(t*100)+'%';
+      // experience
+      gsap.to('#exp-title', { scrollTrigger: { trigger: '#experience', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.exp-item', { scrollTrigger: { trigger: '.exp-timeline', start: 'top 74%' }, opacity: 1, y: 0, stagger: 0.2, duration: 0.7, ease: 'power3.out' });
 
-      if(t<1){ requestAnimationFrame(draw); }
-      else{
-        setTimeout(()=>{
-          const loader=document.getElementById('loader');
-          loader.style.transition='opacity 0.65s ease';
-          loader.style.opacity='0';
-          setTimeout(()=>{
-            loader.style.display='none';
-            document.body.classList.add('loaded');
-            initAnimations();
-          },650);
-        },280);
-      }
+      // projects
+      gsap.to('#proj-title', { scrollTrigger: { trigger: '#projects', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.proj-card', { scrollTrigger: { trigger: '#projects-grid', start: 'top 76%' }, opacity: 1, y: 0, stagger: 0.08, duration: 0.6, ease: 'power3.out' });
+
+      // contact
+      gsap.to('#contact-title', { scrollTrigger: { trigger: '#contact', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.contact-heading', { scrollTrigger: { trigger: '.contact-left', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('.contact-sub', { scrollTrigger: { trigger: '.contact-left', start: 'top 75%' }, opacity: 1, y: 0, duration: 0.7, delay: 0.1, ease: 'power3.out' });
+      gsap.to('.contact-links', { scrollTrigger: { trigger: '.contact-links', start: 'top 80%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
+      gsap.to('#avail-card-wrap', { scrollTrigger: { trigger: '#avail-card-wrap', start: 'top 80%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
     }
-    requestAnimationFrame(draw);
-  })();
 
-  // ── CURSOR ──────────────────────────────────────────────────────
-  const cur=document.getElementById('cursor');
-  const crng=document.getElementById('cring');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-  (function loop(){
-    cur.style.transform=`translate(${mx-4}px,${my-4}px)`;
-    rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1;
-    crng.style.transform=`translate(${rx-14}px,${ry-14}px)`;
-    requestAnimationFrame(loop);
-  })();
-
-  // ── NAV ─────────────────────────────────────────────────────────
-  window.addEventListener('scroll',()=>
-    document.getElementById('navbar').classList.toggle('scrolled',scrollY>40));
-
-  // ── TYPEWRITER ──────────────────────────────────────────────────
-  const roles=['PCB Layout Engineer','Mixed-Signal Designer','Motor Controller Designer','UAV Hardware Designer','Embedded Systems Designer'];
-  let ri=0;
-  const tel=document.getElementById('typed');
-  function typeIt(txt,cb){let i=0;tel.textContent='';const iv=setInterval(()=>{tel.textContent+=txt[i++];if(i>=txt.length){clearInterval(iv);setTimeout(cb,1800);}},55);}
-  function eraseIt(cb){const iv=setInterval(()=>{tel.textContent=tel.textContent.slice(0,-1);if(!tel.textContent.length){clearInterval(iv);cb();}},28);}
-  function cycle(){typeIt(roles[ri],()=>eraseIt(()=>{ri=(ri+1)%roles.length;cycle();}));}
-
-  // ── GSAP ANIMATIONS (called after loader) ──────────────────────
-  function initAnimations(){
-    gsap.registerPlugin(ScrollTrigger);
-
-    // hero
-    gsap.set(['#htag','#hname','#hrole','#hdesc','#hbtns','#hstats'],{y:28,opacity:0});
-    gsap.timeline({defaults:{ease:'power3.out'}})
-      .to('#htag',{opacity:1,y:0,duration:0.6,delay:0.1})
-      .to('#hname',{opacity:1,y:0,duration:0.7},'-=0.3')
-      .to('#hrole',{opacity:1,y:0,duration:0.5},'-=0.3')
-      .to('#hdesc',{opacity:1,y:0,duration:0.6},'-=0.3')
-      .to('#hbtns',{opacity:1,y:0,duration:0.5},'-=0.3')
-      .to('#hstats',{opacity:1,y:0,duration:0.5},'-=0.2')
-      .to('#scroll-hint',{opacity:1,duration:0.5},'-=0.2');
-
-    setTimeout(cycle,1600);
-
-    // cursor hover
-    document.querySelectorAll('a,button').forEach(el=>{
-      el.addEventListener('mouseenter',()=>gsap.to(crng,{width:40,height:40,duration:0.2}));
-      el.addEventListener('mouseleave',()=>gsap.to(crng,{width:28,height:28,duration:0.2}));
-    });
-
-    // about
-    gsap.to('#about-title',{scrollTrigger:{trigger:'#about',start:'top 78%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.from('.about-photo-wrap',{scrollTrigger:{trigger:'#about',start:'top 72%'},x:-40,opacity:0,duration:0.9,ease:'power3.out'});
-    gsap.from('.info-card',{scrollTrigger:{trigger:'#about',start:'top 65%'},x:-30,opacity:0,duration:0.8,delay:0.2,ease:'power3.out'});
-    gsap.to('.about-heading',{scrollTrigger:{trigger:'.about-heading',start:'top 82%'},opacity:1,y:0,duration:0.8,ease:'power3.out'});
-    gsap.to('.about-para',{scrollTrigger:{trigger:'.about-right',start:'top 74%'},opacity:1,y:0,stagger:0.14,duration:0.7,ease:'power3.out'});
-    gsap.to('.edu-block',{scrollTrigger:{trigger:'.edu-block',start:'top 86%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('.counter-strip',{scrollTrigger:{trigger:'.counter-strip',start:'top 88%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    document.querySelectorAll('.counter-num').forEach(el=>{
-      const target=parseInt(el.dataset.target);
-      ScrollTrigger.create({trigger:el,start:'top 92%',once:true,onEnter:()=>{
-        let c=0;const iv=setInterval(()=>{c=Math.min(c+1,target);el.textContent=c;if(c>=target)clearInterval(iv);},50);
-      }});
-    });
-
-    // skills
-    gsap.to('#skills-title',{scrollTrigger:{trigger:'#skills',start:'top 78%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('.skill-group',{scrollTrigger:{trigger:'.skills-layout',start:'top 74%'},opacity:1,y:0,stagger:0.1,duration:0.7,ease:'power3.out'});
-    ScrollTrigger.create({trigger:'.skill-bars',start:'top 76%',once:true,onEnter:()=>{
-      document.querySelectorAll('.skill-bar-fill').forEach(b=>b.style.width=b.dataset.w+'%');
-    }});
-
-    // experience
-    gsap.to('#exp-title',{scrollTrigger:{trigger:'#experience',start:'top 78%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('.exp-item',{scrollTrigger:{trigger:'.exp-timeline',start:'top 74%'},opacity:1,y:0,stagger:0.2,duration:0.7,ease:'power3.out'});
-
-    // projects
-    gsap.to('#proj-title',{scrollTrigger:{trigger:'#projects',start:'top 78%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('.proj-card',{scrollTrigger:{trigger:'#projects-grid',start:'top 76%'},opacity:1,y:0,stagger:0.08,duration:0.6,ease:'power3.out'});
-
-    // contact
-    gsap.to('#contact-title',{scrollTrigger:{trigger:'#contact',start:'top 78%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('.contact-heading',{scrollTrigger:{trigger:'.contact-left',start:'top 78%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('.contact-sub',{scrollTrigger:{trigger:'.contact-left',start:'top 75%'},opacity:1,y:0,duration:0.7,delay:0.1,ease:'power3.out'});
-    gsap.to('.contact-links',{scrollTrigger:{trigger:'.contact-links',start:'top 80%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-    gsap.to('#avail-card-wrap',{scrollTrigger:{trigger:'#avail-card-wrap',start:'top 80%'},opacity:1,y:0,duration:0.7,ease:'power3.out'});
-  }
-
-  // ── PROJECT DATA ─────────────────────────────────────────────────
-  const PROJECTS=[
-    {
-      id:'foc',title:'Unified FOC Motor Controller',subtitle:'BLDC Motor Drive Platform',
-      cat:'Motor Control',catClass:'cat-motor',icon:'⚡',status:'Completed',statusClass:'status-done',
-      stls:[{label:'Controller Board',file:'FOC.stl'}],
-      layers:4,dims:'50mm × 50mm',
-      chips:['STM32G431','DRV8353R','CAN 2.0B'],
-      tags:['STM32G431','DRV8353R','FOC','CAN Bus','3-Phase Gate Drive','Current Sensing','50×50mm','4-Layer'],
-      desc:'A compact 4-layer BLDC motor controller built around the STM32G431 and DRV8353R gate driver. Implements real-time Field-Oriented Control with inline current sensing, over-current protection, regenerative braking, and CAN 2.0B closed-loop interface.',
-      highlights:['3-phase gate drive via DRV8353R with hardware fault protection','Inline shunt current sensing on all 3 phases for FOC torque control','CAN 2.0B interface for speed/torque commands and telemetry','50×50mm compact form factor for tight motor integration','Regenerative braking and configurable dead-time control'],
-      specs:[{k:'MCU',v:'STM32G431CBU6'},{k:'Gate Driver',v:'DRV8353RSRGZT'},{k:'Layers',v:'4-Layer'},{k:'Size',v:'50mm × 50mm'},{k:'Interface',v:'CAN 2.0B, SPI, UART'},{k:'Sensing',v:'Inline 3-phase current'}]
-    },
-    {
-      id:'fc',title:'Minima Flight Controller',subtitle:'CM5-Based UAV Flight Computer',
-      cat:'Aerospace',catClass:'cat-aero',icon:'🛩',status:'Ongoing',statusClass:'status-wip',
-      stls:[{label:'Flight Controller',file:'FC.stl'},{label:'CM5 Pi Adapter',file:'CM5 PI ADAPTER.stl'}],
-      layers:6,dims:'Compact form',
-      chips:['CM5','IMU','GPS','Baro'],
-      tags:['CM5','Raspberry Pi','UAV','6-Layer','IMU','Barometer','GPS','High-Density'],
-      desc:'A compact 6-layer UAV flight controller built around the Raspberry Pi Compute Module 5. Designed for UAVs requiring onboard compute with full sensor integration — IMU, barometer, GPS, multi-channel PWM/UART. The companion CM5 Pi Adapter board handles the high-density CM5 SO-DIMM interface.',
-      highlights:['6-layer stackup for power/ground integrity and EMI shielding','CM5 compute module enabling onboard AI and vision processing','Full IMU, baro, and GPS sensor suite on-board','Multi-channel PWM output for ESC and servo actuation','High-density BGA/QFN routing in constrained form factor'],
-      specs:[{k:'Compute',v:'Raspberry Pi CM5'},{k:'Layers',v:'6-Layer'},{k:'Sensors',v:'IMU · Baro · GPS'},{k:'Interfaces',v:'UART×4 · SPI×2 · I2C×2'},{k:'Outputs',v:'8+ PWM channels'},{k:'Status',v:'In Development'}]
-    },
-    {
-      id:'winch',title:'Nemo Winch V3.0',subtitle:'Drone Payload Delivery System',
-      cat:'UAV Systems',catClass:'cat-uav',icon:'🔩',status:'Completed',statusClass:'status-done',
-      stls:[{label:'Servo Winch',file:'SERVO_WINCH.stl'},{label:'Geared DC Winch',file:'GEARED DC WINCH.stl'},{label:'N20 Winch',file:'N20 WINCH.stl'}],
-      layers:2,dims:'Custom per variant',
-      chips:['Motor Driver','Encoder','Pixhawk UART'],
-      tags:['Motor Drive','Servo','Encoder','Pixhawk','MAVLink','3 Variants','Payload Release'],
-      desc:'A family of 3 control PCBs for UAV payload winch systems. Three board variants for different motor architectures — servo-driven, geared DC motor, and compact N20. Each handles motor drive, encoder feedback, servo actuation, and Pixhawk MAVLink integration for automated payload delivery.',
-      highlights:['Pixhawk MAVLink integration via UART for autonomous operation','Encoder feedback for precise payload altitude control','Three motor variants for different payload weight classes','Winch spool control with configurable tension limits','Compact under-drone mounting form factor'],
-      specs:[{k:'Variants',v:'Servo / Geared DC / N20'},{k:'Interface',v:'MAVLink · Pixhawk UART'},{k:'Feedback',v:'Encoder / Position'},{k:'Actuation',v:'Motor Drive + Servo'},{k:'Power',v:'2S–4S LiPo'},{k:'Boards',v:'3 variants'}]
-    },
-    {
-      id:'encoder',title:'MA732 Magnetic Encoder',subtitle:'Absolute Position Sensing Board',
-      cat:'Sensing',catClass:'cat-sense',icon:'◎',status:'Completed',statusClass:'status-done',
-      stls:[{label:'Encoder Board',file:'MA732 ENCODER.stl'}],
-      layers:2,dims:'Compact breakout',
-      chips:['MA732','SPI 25MHz'],
-      tags:['MA732','SPI','14-bit','Absolute Angle','FOC','Motor Position'],
-      desc:'A precision 14-bit magnetic absolute encoder breakout board using the MA732GGD IC. Provides full 360° absolute angle data over high-speed SPI. Designed as the position feedback companion to the FOC motor controller — enabling accurate rotor position for closed-loop torque control.',
-      highlights:['14-bit absolute angular resolution (16384 CPR)','SPI interface at up to 25 MHz clock','Compact layout for direct on-motor mounting','On-board decoupling capacitors and ESD protection'],
-      specs:[{k:'IC',v:'MA732GGD'},{k:'Resolution',v:'14-bit (16384 CPR)'},{k:'Interface',v:'SPI (≤25 MHz)'},{k:'Supply',v:'3.3V'},{k:'Range',v:'Full 360°'},{k:'Output',v:'Absolute angle'}]
-    },
-    {
-      id:'pepper',title:'Automated Security System',subtitle:'Detection & Actuation Platform',
-      cat:'Security',catClass:'cat-sec',icon:'👁',status:'Completed',statusClass:'status-done',
-      stls:[{label:'Deterrent Board',file:'PEPPER SPRAY BOARD.stl'}],
-      layers:2,dims:'PCB board',
-      chips:['ESP32-CAM','mmWave','PIR'],
-      tags:['ESP32-CAM','mmWave Radar','PIR','Servo Actuation','Dual-Rail Power','AI Vision'],
-      desc:'An integrated surveillance and active deterrent PCB combining ESP32-CAM for AI-based person detection, mmWave radar for range-gated sensing, PIR for passive motion detection, servo actuation for deterrent deployment, and dual-rail safety power gating for fail-safe operation.',
-      highlights:['ESP32-CAM with onboard inference for person detection','mmWave FMCW radar for through-barrier presence sensing','PIR + radar sensor fusion reduces false positive rate','Servo-controlled deployment mechanism','Dual-rail power gating with hardware safety interlock'],
-      specs:[{k:'SoC',v:'ESP32-CAM'},{k:'Radar',v:'mmWave FMCW'},{k:'Comms',v:'WiFi + Bluetooth 5'},{k:'Actuation',v:'2× Servo channels'},{k:'Power',v:'Dual-rail gated'},{k:'Safety',v:'Hardware interlock'}]
-    },
-    {
-      id:'tranq',title:'Tranquilizer Remote System',subtitle:'Remote Deployment Control Board',
-      cat:'Defence',catClass:'cat-def',icon:'🎯',status:'Completed',statusClass:'status-done',
-      stls:[{label:'Control Board',file:'TRAINQULIZER.stl'}],
-      layers:2,dims:'PCB board',
-      chips:['Wireless RX','Actuator Driver'],
-      tags:['Remote Control','Actuator Drive','Solenoid','Safety Interlock','Defence','Wireless'],
-      desc:'A remote-controlled deployment system control PCB designed for defence and security applications. Handles wireless command reception, actuator drive for deployment mechanisms, and hardware safety interlocks for controlled, authorized operation in field conditions.',
-      highlights:['Wireless command reception with validation logic','Actuator drive circuitry for solenoid/servo deployment','Hardware arm/disarm safety interlock','Compact rugged layout for field deployment','Low-power standby with wake-on-command'],
-      specs:[{k:'Category',v:'Defence / Security'},{k:'Interface',v:'Wireless remote'},{k:'Actuation',v:'Solenoid + Servo'},{k:'Safety',v:'Hardware interlock'},{k:'Power',v:'Battery-operated'},{k:'Form',v:'Compact field unit'}]
-    },
-    {
-      id:'eeg',title:'Wireless EEG Acquisition',subtitle:'4-Channel Neural Signal Platform',
-      cat:'BioSignal',catClass:'cat-bio',icon:'🧠',status:'Completed',statusClass:'status-done',
-      stls:[{label:'EEG Board',file:'EEG.stl'}],
-      layers:4,dims:'Mixed-signal 4-layer',
-      chips:['AD623','BLE 5.0','RLD'],
-      tags:['AD623','BLE 5.0','4-Channel','Mixed-Signal','Low-Noise','EEG','Differential Input'],
-      desc:'A low-noise mixed-signal EEG acquisition PCB with 4 differential input channels via AD623 instrumentation amplifiers. Features BLE 5.0 wireless streaming for untethered operation. Designed with careful analog layout, ground plane separation, and right-leg drive for microvolt-level noise performance.',
-      highlights:['AD623 instrumentation amp: CMRR >90dB at 60Hz','4 fully differential EEG input channels','BLE 5.0 wireless data streaming','Analog/digital ground plane separation on 4-layer board','Right-leg drive (RLD) circuit for common-mode rejection','Patient-safe isolated power design'],
-      specs:[{k:'AFE',v:'AD623 (×4 ch)'},{k:'Wireless',v:'BLE 5.0'},{k:'Channels',v:'4 differential'},{k:'Layers',v:'4 (analog/digital split)'},{k:'Bandwidth',v:'0.5–100 Hz (EEG)'},{k:'Noise',v:'<1μV input referred'}]
-    },
-    {
-      id:'helmet',title:'Smart Helmet',subtitle:'Accident & Health Monitoring',
-      cat:'Wearable',catClass:'cat-bio',icon:'⛑',status:'Completed',statusClass:'status-done',
-      stls:[],
-      layers:2,dims:'Wearable form',
-      chips:['ESP32','MAX30105','MPU6050','GPS'],
-      tags:['ESP32','MAX30105','MPU6050','GPS','GSM','IR Sensor','MATLAB','EEG Simulation'],
-      desc:'A wearable accident and health monitoring platform integrating ESP32, MAX30105 pulse oximeter, MPU6050 IMU, GPS, GSM, and IR sensors. Detects accidents via impact sensing and transmits health + location data over GSM. EEG-based health simulation and signal analysis performed in MATLAB.',
-      highlights:['MAX30105 for SpO2 and heart-rate monitoring','MPU6050 for accident detection via vibration/tilt thresholds','GPS + GSM for real-time emergency location alerts','IR sensor for helmet-wear detection','EEG simulation and signal analysis in MATLAB'],
-      specs:[{k:'MCU',v:'ESP32'},{k:'Health',v:'MAX30105 (SpO2/HR)'},{k:'IMU',v:'MPU6050 6-axis'},{k:'Comms',v:'GSM + GPS'},{k:'Power',v:'Li-ion battery'},{k:'Platform',v:'Wearable / Helmet'}]
-    },
-    {
-      id:'robot',title:'Vanguard MK1',subtitle:'Search & Rescue Crawling Robot',
-      cat:'Robotics',catClass:'cat-uav',icon:'🤖',status:'Ongoing',statusClass:'status-wip',
-      stls:[],
-      layers:2,dims:'Control PCB',
-      chips:['RPi 5','PCA9685','MG90','ToF LiDAR'],
-      tags:['Raspberry Pi 5','PCA9685','MG90 Servos','ToF LiDAR','12-DOF','S&R Robot'],
-      desc:'A 12-DOF crawling search and rescue robot controlled by Raspberry Pi 5 via PCA9685 PWM driver. Custom control PCB handles locomotion (12× MG90 servo channels), ToF LiDAR sensor interfacing, and distributed power distribution. Designed for navigating debris and confined spaces.',
-      highlights:['12 independently controlled servo channels via PCA9685 I2C','ToF LiDAR for obstacle detection and mapping','Raspberry Pi 5 onboard for real-time gait algorithms','Custom power distribution board for servo current demands','Modular design for sensor payload swapping'],
-      specs:[{k:'Compute',v:'Raspberry Pi 5'},{k:'PWM Driver',v:'PCA9685 (16ch I2C)'},{k:'Servos',v:'12× MG90S'},{k:'Sensing',v:'ToF LiDAR'},{k:'DOF',v:'12'},{k:'Status',v:'In Development'}]
-    },
-  ];
-
-  // ── BUILD PROJECT GRID ──────────────────────────────────────────
-  const grid=document.getElementById('projects-grid');
-  PROJECTS.forEach(p=>{
-    const hasStl=p.stls.length>0;
-    const card=document.createElement('div');
-    card.className='proj-card'+(hasStl?'':' no-stl');
-    card.innerHTML=`
+    // ── BUILD PROJECT GRID ──────────────────────────────────────────
+    // PROJECTS data is loaded from projects-data.js
+    const grid = document.getElementById('projects-grid');
+    PROJECTS.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'proj-card';
+      card.style.cursor = 'none';
+      card.innerHTML = `
       <div class="proj-visual">
         <div class="proj-visual-inner"><div class="proj-icon">${p.icon}</div></div>
         <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
@@ -955,253 +2752,22 @@
       <div class="proj-body">
         <div class="proj-title">${p.title}</div>
         <div class="proj-subtitle">${p.subtitle}</div>
-        <div class="proj-desc">${p.desc.substring(0,140)}${p.desc.length>140?'…':''}</div>
-        <div class="proj-chips">${p.chips.map(c=>`<span class="proj-chip">${c}</span>`).join('')}</div>
+        <div class="proj-desc">${p.desc.substring(0, 140)}${p.desc.length > 140 ? '…' : ''}</div>
+        <div class="proj-chips">${p.chips.map(c => {
+          const isIc = /STM32|DRV|ESP32|AD623|MA732|PCA9685|RPi|CM5|MAX30105|Wireless RX|Actuator Driver/i.test(c);
+          return '<span class="proj-chip ' + (isIc ? 'chip-ic' : '') + '">' + c + '</span>';
+        }).join('')}</div>
         <div class="proj-footer">
           <div class="proj-meta"><span>${p.layers}L</span> · ${p.dims}</div>
-          <div class="proj-cta">${hasStl?'VIEW 3D BOARD →':'SPECS ONLY'}</div>
+          <div class="proj-cta">View Case Study →</div>
         </div>
       </div>`;
-    if(hasStl) card.addEventListener('click',()=>openViewer(p));
-    grid.appendChild(card);
-  });
-
-  // ── VIEWER OPEN/CLOSE ───────────────────────────────────────────
-  let currentProject=null, currentBoardIdx=0;
-  document.getElementById('vm-close').addEventListener('click',closeViewer);
-  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeViewer(); });
-
-  function openViewer(project){
-    currentProject=project; currentBoardIdx=0;
-    document.getElementById('viewer-modal').classList.add('open');
-    document.body.style.overflow='hidden';
-    document.getElementById('vm-title').textContent=project.title;
-    document.getElementById('vm-subtitle').textContent=project.subtitle;
-    buildTabs(project);
-    buildDetails(project);
-    loadBoard(project,0);
-  }
-  function closeViewer(){
-    document.getElementById('viewer-modal').classList.remove('open');
-    document.body.style.overflow='';
-    if(window._viewerDispose) window._viewerDispose();
-  }
-  function buildTabs(project){
-    const tabs=document.getElementById('vm-board-tabs');
-    tabs.innerHTML='';
-    if(project.stls.length<2) return;
-    project.stls.forEach((s,i)=>{
-      const btn=document.createElement('button');
-      btn.className='vm-tab'+(i===0?' active':'');
-      btn.textContent=s.label;
-      btn.addEventListener('click',()=>{
-        tabs.querySelectorAll('.vm-tab').forEach((t,ti)=>t.classList.toggle('active',ti===i));
-        loadBoard(project,i);
+      card.addEventListener('click', () => {
+        window.location.href = 'project.html?id=' + p.id;
       });
-      tabs.appendChild(btn);
+      grid.appendChild(card);
     });
-  }
-  function buildDetails(project){
-    const d=document.getElementById('vm-details');
-    d.innerHTML=`
-      <div class="vm-section">
-        <div class="vm-sec-label">About this board</div>
-        <p class="vm-desc-text">${project.desc}</p>
-      </div>
-      <div class="vm-section">
-        <div class="vm-sec-label">Highlights</div>
-        <ul class="vm-highlights">${project.highlights.map(h=>`<li>${h}</li>`).join('')}</ul>
-      </div>
-      <div class="vm-section">
-        <div class="vm-sec-label">Specifications</div>
-        <div class="vm-specs-grid">${project.specs.map(s=>`<div class="vm-spec"><div class="vm-spec-k">${s.k}</div><div class="vm-spec-v">${s.v}</div></div>`).join('')}</div>
-      </div>
-      <div class="vm-section">
-        <div class="vm-sec-label">Tags</div>
-        <div class="vm-tags">${project.tags.map(t=>`<span class="vm-tag">${t}</span>`).join('')}</div>
-      </div>`;
-  }
-  function loadBoard(project,idx){
-    currentBoardIdx=idx;
-    if(window._loadStl) window._loadStl(project.stls[idx].file);
-  }
-  </script>
-
-  <!-- THREE.JS 3D VIEWER MODULE -->
-  <script type="module">
-  import * as THREE from 'three';
-  import { STLLoader } from 'three/addons/loaders/STLLoader.js';
-  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-  let scene, camera, renderer, controls, mesh, animId;
-  let autoRotate=true, autoRotateTimer=null;
-
-  const canvas=document.getElementById('viewer-canvas');
-  const loading=document.getElementById('vm-loading');
-  const fill=document.getElementById('vm-load-fill');
-  const pct=document.getElementById('vm-load-pct');
-
-  function initScene(){
-    if(renderer){ renderer.dispose(); }
-
-    const wrap=canvas.parentElement;
-    const W=wrap.clientWidth, H=wrap.clientHeight;
-
-    scene=new THREE.Scene();
-    scene.background=new THREE.Color(0x070a0f);
-    scene.fog=new THREE.FogExp2(0x070a0f,0.0012);
-
-    camera=new THREE.PerspectiveCamera(45,W/H,0.1,2000);
-    camera.position.set(0,120,200);
-
-    renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
-    renderer.setSize(W,H);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-    renderer.shadowMap.enabled=true;
-    renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    renderer.toneMapping=THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure=1.2;
-
-    // Lights
-    const ambient=new THREE.AmbientLight(0x112230,2.5);
-    scene.add(ambient);
-
-    const key=new THREE.DirectionalLight(0x00ffbb,3.5);
-    key.position.set(-100,200,150);
-    key.castShadow=true;
-    key.shadow.mapSize.set(2048,2048);
-    scene.add(key);
-
-    const fill2=new THREE.DirectionalLight(0x203050,1.8);
-    fill2.position.set(150,100,-100);
-    scene.add(fill2);
-
-    const rim=new THREE.PointLight(0xd4821c,2.5,800);
-    rim.position.set(0,-80,-200);
-    scene.add(rim);
-
-    const top=new THREE.DirectionalLight(0x406080,1.2);
-    top.position.set(0,300,0);
-    scene.add(top);
-
-    // Ground grid
-    const gridHelper=new THREE.GridHelper(400,30,0x0d1a10,0x0d1a10);
-    gridHelper.position.y=-50;
-    scene.add(gridHelper);
-
-    controls=new OrbitControls(camera,renderer.domElement);
-    controls.enableDamping=true;
-    controls.dampingFactor=0.06;
-    controls.enableZoom=true;
-    controls.enablePan=true;
-    controls.minDistance=30;
-    controls.maxDistance=800;
-    controls.autoRotate=true;
-    controls.autoRotateSpeed=1.2;
-
-    controls.addEventListener('start',()=>{
-      controls.autoRotate=false;
-      if(autoRotateTimer) clearTimeout(autoRotateTimer);
-    });
-    controls.addEventListener('end',()=>{
-      autoRotateTimer=setTimeout(()=>controls.autoRotate=true,3500);
-    });
-
-    window.addEventListener('resize',onResize);
-    animate();
-  }
-
-  function onResize(){
-    if(!renderer) return;
-    const wrap=canvas.parentElement;
-    const W=wrap.clientWidth, H=wrap.clientHeight;
-    camera.aspect=W/H; camera.updateProjectionMatrix();
-    renderer.setSize(W,H);
-  }
-
-  function animate(){
-    animId=requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene,camera);
-  }
-
-  function clearMesh(){
-    if(mesh){ scene.remove(mesh); mesh.geometry.dispose(); mesh.material.dispose(); mesh=null; }
-  }
-
-  window._loadStl=function(filename){
-    if(!renderer) initScene();
-    clearMesh();
-
-    loading.classList.remove('hidden');
-    fill.style.width='0%';
-    pct.textContent='0%';
-
-    const url=filename.split('').map(c=>c===' '?'%20':c).join('');
-    const loader=new STLLoader();
-    loader.load(url,
-      geo=>{
-        loading.classList.add('hidden');
-        geo.computeVertexNormals();
-        geo.center();
-
-        const mat=new THREE.MeshPhysicalMaterial({
-          color:0x0d2818,
-          emissive:0x001a0a,
-          emissiveIntensity:0.4,
-          metalness:0.25,
-          roughness:0.65,
-          clearcoat:0.4,
-          clearcoatRoughness:0.35,
-          side:THREE.DoubleSide,
-        });
-
-        mesh=new THREE.Mesh(geo,mat);
-        mesh.castShadow=true;
-        mesh.receiveShadow=true;
-
-        // scale to fit view
-        const box=new THREE.Box3().setFromObject(mesh);
-        const size=box.getSize(new THREE.Vector3());
-        const maxDim=Math.max(size.x,size.y,size.z);
-        const scale=120/maxDim;
-        mesh.scale.setScalar(scale);
-        mesh.rotation.x=-Math.PI*0.1;
-
-        scene.add(mesh);
-
-        // fit camera
-        const scaled=maxDim*scale;
-        camera.position.set(0,scaled*0.6,scaled*1.8);
-        controls.target.set(0,0,0);
-        controls.update();
-      },
-      xhr=>{
-        if(xhr.total){
-          const p=Math.round((xhr.loaded/xhr.total)*100);
-          fill.style.width=p+'%';
-          pct.textContent=p+'%';
-        }
-      },
-      err=>{
-        loading.classList.add('hidden');
-        console.error('STL load error',err);
-      }
-    );
-  };
-
-  window._viewerDispose=function(){
-    if(animId) cancelAnimationFrame(animId);
-    clearMesh();
-    if(controls){ controls.dispose(); }
-    if(renderer){ renderer.dispose(); renderer=null; }
-    window.removeEventListener('resize',onResize);
-    loading.classList.remove('hidden');
-    fill.style.width='0%';
-  };
-
-  // Init scene immediately so it's ready
-  initScene();
   </script>
 </body>
+
 </html>
