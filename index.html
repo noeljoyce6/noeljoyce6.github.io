@@ -49,8 +49,7 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font-body);
-      overflow-x: hidden;
-      cursor: none
+      overflow-x: hidden
     }
 
     body:not(.loaded) main {
@@ -144,14 +143,6 @@
       letter-spacing: 0.15em
     }
 
-    /* ─── CURSOR ─────────────────────────────────────────── */
-    #plasma-cursor {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none;
-      z-index: 9999;
-    }
 
     /* ─── NAV ────────────────────────────────────────────── */
     nav {
@@ -393,7 +384,6 @@
       align-items: center;
       gap: 8px;
       transition: all 0.25s;
-      cursor: none;
       font-family: var(--font-mono);
       letter-spacing: 0.06em
     }
@@ -1143,7 +1133,7 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      cursor: none;
+      cursor: pointer;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
       opacity: 0;
       transform: translateY(24px);
@@ -1653,7 +1643,7 @@
       font-size: 10px;
       color: var(--muted);
       letter-spacing: 0.12em;
-      cursor: none;
+      cursor: pointer;
       padding: 6px 12px;
       border: 1px solid var(--border);
       border-radius: 4px;
@@ -1699,7 +1689,7 @@
       border: 1px solid var(--border);
       color: var(--muted);
       background: none;
-      cursor: none;
+      cursor: pointer;
       transition: all 0.2s;
       letter-spacing: 0.1em;
       white-space: nowrap
@@ -2042,7 +2032,7 @@
   </div>
 
   <!-- CURSOR -->
-  <canvas id="plasma-cursor"></canvas>
+
 
   <main>
     <!-- NAV -->
@@ -2680,53 +2670,47 @@
       requestAnimationFrame(draw);
     })();
 
-    // ── PREMIUM CUSTOM CURSOR ───────────────────────────────────────
+
+    // ── MOUSE PARALLAX ─────────────────────────────────────────
+    // Subtle 3D parallax on the hero section based on mouse position.
+    // Elements at different depths shift at different rates for a layered feel.
     (function() {
-      const canvas = document.getElementById('plasma-cursor');
-      const ctx = canvas.getContext('2d');
-      let W = canvas.width = window.innerWidth;
-      let H = canvas.height = window.innerHeight;
-      window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+      let txMouse = 0, tyMouse = 0, txCur = 0, tyCur = 0;
+      const LAYERS = [
+        { sel: '#htag',   depth: 0.012 },
+        { sel: '#hname',  depth: 0.022 },
+        { sel: '#hrole',  depth: 0.018 },
+        { sel: '#hdesc',  depth: 0.014 },
+        { sel: '#hbtns',  depth: 0.010 },
+        { sel: '#hstats', depth: 0.008 }
+      ];
+      const els = LAYERS.map(l => ({ el: document.querySelector(l.sel), d: l.depth }));
 
-      let mx = W/2, my = H/2, px = W/2, py = H/2;
-      let hovered = false;
-
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-      document.querySelectorAll('a, button, .proj-card, .doc-tab').forEach(el => {
-        el.addEventListener('mouseenter', () => hovered = true);
-        el.addEventListener('mouseleave', () => hovered = false);
+      document.addEventListener('mousemove', e => {
+        txMouse = (e.clientX / window.innerWidth - 0.5) * 2;
+        tyMouse = (e.clientY / window.innerHeight - 0.5) * 2;
       });
 
-      function loop() {
-        ctx.clearRect(0, 0, W, H);
-
-        // Dot follows instantly
-        ctx.beginPath();
-        ctx.arc(mx, my, 4, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(0,232,137,1)';
-        ctx.fill();
-
-        // Ring follows with spring lerp
-        px += (mx - px) * 0.16;
-        py += (my - py) * 0.16;
-        
-        const r = hovered ? 22 : 14;
-        ctx.beginPath();
-        ctx.arc(px, py, r, 0, Math.PI*2);
-        ctx.strokeStyle = hovered ? 'rgba(0,232,137,0.7)' : 'rgba(0,232,137,0.3)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        if (hovered) {
-          ctx.fillStyle = 'rgba(0,232,137,0.08)';
-          ctx.fill();
+      // Only apply on hero section (within first viewport)
+      function tick() {
+        // Smooth lerp toward target
+        txCur += (txMouse - txCur) * 0.06;
+        tyCur += (tyMouse - tyCur) * 0.06;
+        const hero = document.getElementById('home');
+        if (hero) {
+          const rect = hero.getBoundingClientRect();
+          const inView = rect.bottom > 0 && rect.top < window.innerHeight;
+          if (inView) {
+            els.forEach(({ el, d }) => {
+              if (el) el.style.transform = `translate(${txCur * d * 60}px, ${tyCur * d * 40}px)`;
+            });
+          }
         }
-
-        requestAnimationFrame(loop);
+        requestAnimationFrame(tick);
       }
-      loop();
+      tick();
     })();
+
 
     // ── NAV ─────────────────────────────────────────────────────────
     window.addEventListener('scroll', () =>
@@ -2757,11 +2741,6 @@
 
       setTimeout(cycle, 1600);
 
-      // cursor hover
-      document.querySelectorAll('a,button').forEach(el => {
-        el.addEventListener('mouseenter', () => gsap.to(crng, { width: 40, height: 40, duration: 0.2 }));
-        el.addEventListener('mouseleave', () => gsap.to(crng, { width: 28, height: 28, duration: 0.2 }));
-      });
 
       // about
       gsap.to('#about-title', { scrollTrigger: { trigger: '#about', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
