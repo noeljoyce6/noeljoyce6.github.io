@@ -537,34 +537,49 @@
     (function() {
       const canvas = document.getElementById('plasma-cursor');
       const ctx = canvas.getContext('2d');
-      let W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
+    // ── PREMIUM CUSTOM CURSOR ───────────────────────────────────────
+    (function() {
+      const canvas = document.getElementById('plasma-cursor');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
       window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+
       let mx = W/2, my = H/2, px = W/2, py = H/2;
-      let isMoving = false, moveTimer;
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; isMoving = true; clearTimeout(moveTimer); moveTimer = setTimeout(() => isMoving = false, 120); });
-      const trail = []; const MAX_TRAIL = 18;
-      const sparks = [];
-      function spawnSpark(x, y, vx, vy) { sparks.push({ x, y, vx: vx+(Math.random()-.5)*3, vy: vy+(Math.random()-.5)*3, life:1, decay:.04+Math.random()*.04, size:1+Math.random()*2}); }
-      const arcNodes = Array.from({length:7},(_,i)=>({angle:(i/7)*Math.PI*2, wobble:Math.random()*.4, speed:.03+Math.random()*.04}));
-      let frame=0, hovered=false;
-      document.querySelectorAll('a,button').forEach(el=>{ el.addEventListener('mouseenter',()=>hovered=true); el.addEventListener('mouseleave',()=>hovered=false); });
-      function drawArcPath(fx,fy,tx,ty,segs,spread) {
-        let pts=[[fx,fy]];
-        for(let i=1;i<segs;i++){const t=i/segs,bx=fx+(tx-fx)*t,by=fy+(ty-fy)*t,perp=Math.atan2(ty-fy,tx-fx)+Math.PI/2,j=(Math.random()-.5)*spread;pts.push([bx+Math.cos(perp)*j,by+Math.sin(perp)*j]);}
-        pts.push([tx,ty]); return pts;
-      }
+      let hovered = false;
+
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+
+      document.querySelectorAll('a, button, .doc-tab').forEach(el => {
+        el.addEventListener('mouseenter', () => hovered = true);
+        el.addEventListener('mouseleave', () => hovered = false);
+      });
+
       function loop() {
-        ctx.clearRect(0,0,W,H); frame++;
-        px+=(mx-px)*.18; py+=(my-py)*.18;
-        trail.push({x:px,y:py}); if(trail.length>MAX_TRAIL) trail.shift();
-        const speed=Math.hypot(mx-px,my-py), ringR=hovered?20:14;
-        for(let i=1;i<trail.length;i++){const a=(i/trail.length)*.18,r=(i/trail.length)*3;ctx.beginPath();ctx.arc(trail[i].x,trail[i].y,Math.max(.5,r),0,Math.PI*2);ctx.fillStyle=`rgba(0,232,137,${a})`;ctx.fill();}
-        if(isMoving||speed>1){arcNodes.forEach((node,idx)=>{node.angle+=node.speed*(1+speed*.05);node.wobble=Math.sin(frame*.13+idx*1.1)*.5;const outerR=ringR+5+node.wobble*6+speed*.3,ax=px+Math.cos(node.angle)*outerR,ay=py+Math.sin(node.angle)*outerR,ix=px+Math.cos(node.angle)*ringR,iy=py+Math.sin(node.angle)*ringR,pts=drawArcPath(ix,iy,ax,ay,4,4);ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);pts.slice(1).forEach(p=>ctx.lineTo(p[0],p[1]));ctx.strokeStyle=`rgba(0,232,137,${.25+Math.random()*.35})`;ctx.lineWidth=.8;ctx.stroke();if(Math.random()<.15)spawnSpark(ax,ay,Math.cos(node.angle)*1.5,Math.sin(node.angle)*1.5);});}
-        const gg=ctx.createRadialGradient(px,py,0,px,py,ringR*2.5);gg.addColorStop(0,'rgba(0,232,137,.08)');gg.addColorStop(.5,'rgba(0,232,137,.03)');gg.addColorStop(1,'rgba(0,232,137,0)');ctx.beginPath();ctx.arc(px,py,ringR*2.5,0,Math.PI*2);ctx.fillStyle=gg;ctx.fill();
-        ctx.save();ctx.translate(px,py);ctx.rotate(frame*.018);ctx.beginPath();ctx.arc(0,0,ringR,0,Math.PI*2);ctx.setLineDash([4,6]);ctx.strokeStyle=`rgba(0,232,137,${.35+Math.sin(frame*.07)*.15})`;ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);ctx.restore();
-        const cg=ctx.createRadialGradient(px,py,0,px,py,5);cg.addColorStop(0,'rgba(220,255,240,1)');cg.addColorStop(.3,'rgba(0,232,137,1)');cg.addColorStop(1,'rgba(0,232,137,0)');ctx.beginPath();ctx.arc(px,py,4.5,0,Math.PI*2);ctx.fillStyle=cg;ctx.fill();
-        for(let i=sparks.length-1;i>=0;i--){const s=sparks[i];s.x+=s.vx;s.y+=s.vy;s.vx*=.92;s.vy*=.92;s.life-=s.decay;if(s.life<=0){sparks.splice(i,1);continue;}ctx.beginPath();ctx.arc(s.x,s.y,s.size*s.life,0,Math.PI*2);ctx.fillStyle=`rgba(0,232,137,${s.life*.9})`;ctx.fill();}
-        if(speed>4&&Math.random()<.4)spawnSpark(px,py,(mx-px)*.1+(Math.random()-.5)*2,(my-py)*.1+(Math.random()-.5)*2);
+        ctx.clearRect(0, 0, W, H);
+
+        // Dot follows instantly
+        ctx.beginPath();
+        ctx.arc(mx, my, 4, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(0,232,137,1)';
+        ctx.fill();
+
+        // Ring follows with spring lerp
+        px += (mx - px) * 0.16;
+        py += (my - py) * 0.16;
+        
+        const r = hovered ? 22 : 14;
+        ctx.beginPath();
+        ctx.arc(px, py, r, 0, Math.PI*2);
+        ctx.strokeStyle = hovered ? 'rgba(0,232,137,0.7)' : 'rgba(0,232,137,0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        if (hovered) {
+          ctx.fillStyle = 'rgba(0,232,137,0.08)';
+          ctx.fill();
+        }
+
         requestAnimationFrame(loop);
       }
       loop();
@@ -582,8 +597,20 @@
     document.title = `${proj.title} — Noel Joyce Varghese`;
     document.querySelector('meta[name="description"]').content = proj.desc;
 
-    // ── HERO PHOTO BACKGROUND ────────────────────────────────
-    if (proj.img) {
+    // ── HERO PHOTO / VIDEO BACKGROUND ────────────────────────
+    if (proj.video) {
+      const heroBg = document.createElement('video');
+      heroBg.className = 'hero-photo-bg';
+      heroBg.src = proj.video;
+      heroBg.autoplay = true;
+      heroBg.loop = true;
+      heroBg.muted = true;
+      heroBg.playsInline = true;
+      heroBg.style.objectFit = 'cover';
+      heroBg.style.width = '100%';
+      heroBg.style.height = '100%';
+      document.getElementById('proj-hero').insertBefore(heroBg, document.getElementById('proj-hero').firstChild);
+    } else if (proj.img) {
       const heroBg = document.createElement('div');
       heroBg.className = 'hero-photo-bg';
       heroBg.style.backgroundImage = `url('${proj.img}')`;

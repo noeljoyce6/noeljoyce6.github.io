@@ -230,7 +230,7 @@ const PROJECTS = [
   },
   {
     id: 'eeg',
-    img: 'img/eeg.png',      // ← user will drop eeg.png here (PCB board photo)
+    img: 'img/EEG.jpeg',
     title: 'Wireless EEG Acquisition',
     subtitle: '4-Channel Neural Signal Platform',
     cat: 'BioSignal', catClass: 'cat-bio', icon: '🧠',
@@ -261,26 +261,27 @@ const PROJECTS = [
       overview: `The Wireless EEG Acquisition Board is a 4-channel neural signal acquisition platform designed for research-grade brainwave measurement. It captures sub-microvolt EEG signals from scalp electrodes, amplifies them via precision instrumentation amplifiers, digitizes the signals at 250Hz, and streams data wirelessly over BLE 5.0. The design prioritizes analog signal integrity above all other concerns.`,
       architecture: `Each of the 4 channels uses an AD623 instrumentation amplifier (CMRR >90dB) for differential signal acquisition. A right-leg drive (RLD) circuit actively reduces common-mode interference from power line noise. The analog front-end outputs feed into a 24-bit ADC, with the digital section isolated from the analog domain via optocouplers. A Nordic nRF52840 SoC handles BLE communication.`,
       pcb: `4-layer stackup specifically optimized for mixed-signal performance: Analog Signal / Analog GND / Digital Power / Digital Signal. The analog ground plane is split from the digital ground plane with a single star connection point at the ADC. All electrode input traces are guarded by driven shields. No digital switching traces cross the analog signal domain.`,
-      testing: `Noise floor measured at 0.8μV RMS input-referred (0.5–100Hz bandwidth) — meeting research-grade EEG specifications. CMRR verified >90dB at 50/60Hz. Alpha wave detection (8–12Hz) tested with 10 electrode placements. BLE streaming verified at 4×250Hz = 1kSPS aggregate rate with <1 packet loss per 10,000 samples.`,
+      testing: `Noise floor measured at 0.8μV RMS input-referred (0.5–100Hz bandwidth) — meeting research-grade EEG specifications. CMRR verified >90dB at 50/60Hz. Alpha wave detection (8–12Hz) tested with 10 electrode placements. BLE streaming verified at 4×250Hz = 1kSPS aggregate rate with <1 packet loss per 10,000 samples.\n\n<img src="img/EEG SIMULATION RESULT.jpeg" style="width:100%; max-width:800px; border-radius:12px; margin-top:2rem; border:1px solid rgba(255,255,255,0.1);" alt="EEG Simulation Result">`,
       firmware: `Nordic SDK (nRF5 SDK 17.1). Custom BLE GATT service for EEG data streaming. Notch filter (50/60Hz selectable) implemented in firmware. Configurable gain and bandwidth per channel.`,
       future: `Scale to 8-channel system with ADS1299 dedicated EEG AFE chip. Add electrode impedance measurement for proper electrode-skin contact verification. Investigate SSVEP-based BCI (brain-computer interface) application.`
     }
   },
   {
     id: 'helmet',
-    img: 'img/helmet.png',       // ← user will drop helmet.png here
+    img: 'img/helmet.png',
     title: 'Smart Helmet',
     subtitle: 'Accident & Health Monitoring',
     cat: 'Wearable', catClass: 'cat-bio', icon: '⛑',
     status: 'Completed', statusClass: 'status-done',
-    isPCB: false,                // ← mini project: no PCB design, no 3D viewer
+    isPCB: false,
     stls: [],
-    docs: [],                    // ← user will add docs here
+    docs: [{ label: 'Research Paper', file: 'SMART HELMET EDITED[PAPER] DESKTOP WITH SIMULATING RESULTS ADDED FINAL.docx' }],
     layers: null, dims: 'Breadboard prototype',
     chips: ['ESP32', 'MAX30105', 'MPU6050', 'GPS'],
     tags: ['ESP32', 'MAX30105', 'MPU6050', 'GPS', 'GSM', 'IR Sensor', 'Wearable', 'Safety'],
-    desc: 'A wearable accident detection and health monitoring system built on a breadboard prototype using ESP32. Integrates pulse oximetry, 6-axis IMU impact detection, GPS location tracking, and automatic GSM emergency alerts — designed for workers in high-risk environments.',
+    desc: 'A wearable accident detection and health monitoring system built on a breadboard prototype using ESP32. Integrates pulse oximetry, 6-axis IMU impact detection, GPS location tracking, and automatic GSM emergency alerts — designed for workers in high-risk environments. This project won the YIP7.0 District Level (Team ID: YIPGI:26795).',
     highlights: [
+      'Won YIP7.0 District Level (Team ID: YIPGI:26795)',
       'Real-time SpO2 and heart-rate monitoring via MAX30105',
       'Accident detection using MPU6050 impact thresholds (>3g)',
       'Automatic GPS + GSM emergency alert on accident detection',
@@ -306,23 +307,25 @@ const PROJECTS = [
   },
   {
     id: 'robot',
-    img: 'img/robot.png',        // ← user will drop robot.png here
+    img: 'img/VANGUARD ROBOT.jpeg',
+    video: 'img/VANGUARD VIDEO.mp4',
     title: 'Vanguard MK1',
     subtitle: 'Search & Rescue Crawling Robot',
     cat: 'Robotics', catClass: 'cat-uav', icon: '🤖',
     status: 'Completed', statusClass: 'status-done',
     isPCB: false,
     stls: [],
-    docs: [],                    // ← user will add robot documentation here
+    docs: [{ label: 'Vanguard Report', file: 'VANGUARD REPORT.docx' }],
     layers: 2, dims: 'Control PCB',
     chips: ['RPi 5', 'PCA9685', 'MG90', 'ToF LiDAR'],
-    tags: ['Raspberry Pi 5', 'PCA9685', 'MG90 Servos', 'ToF LiDAR', '12-DOF', 'S&R Robot'],
-    desc: 'A 12-DOF crawling search and rescue robot controlled by Raspberry Pi 5 via PCA9685 PWM driver. Custom control PCB handles locomotion (12× MG90 servo channels), ToF LiDAR sensor interfacing, and distributed power distribution. Designed for navigating debris and confined spaces.',
+    tags: ['Raspberry Pi 5', 'VTOL', 'Winch Integration', 'PSYC Funded', 'PCA9685', 'MG90 Servos', 'ToF LiDAR', '12-DOF', 'S&R Robot'],
+    desc: 'A 12-DOF crawling search and rescue robot funded by PSYC. Controlled by Raspberry Pi 5 via PCA9685 PWM driver. Features VTOL capabilities and winch integration. Custom control PCB handles locomotion (12× MG90 servo channels), ToF LiDAR sensor interfacing, and distributed power. Designed for navigating debris and confined spaces.',
     highlights: [
+      'Funded by PSYC (internship company)',
+      'VTOL capabilities and winch integration for complex deployments',
       '12 independently controlled servo channels via PCA9685 I2C',
       'ToF LiDAR for obstacle detection and mapping',
       'Raspberry Pi 5 onboard for real-time gait algorithms',
-      'Custom power distribution board for servo current demands',
       'Modular design for sensor payload swapping'
     ],
     specs: [
