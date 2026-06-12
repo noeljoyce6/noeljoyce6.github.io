@@ -4849,11 +4849,33 @@
         return indicator;
       }
 
-      function getAIResponse(userMessage) {
+      async function getAIResponse(userMessage) {
         const apiKey = localStorage.getItem('noel_gemini_api_key');
         if (apiKey) {
           return callGeminiAPI(userMessage, apiKey);
-        } else {
+        }
+
+        // Try local backend server first
+        try {
+          const res = await fetch("http://localhost:5000/api/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: userMessage }),
+          });
+
+          if (!res.ok) {
+            throw new Error(`Server returned status ${res.status}`);
+          }
+          const data = await res.json();
+          if (data.reply) {
+            return data.reply;
+          }
+          throw new Error("Invalid backend response");
+        } catch (err) {
+          console.warn("Backend server not available, falling back to Local AI:", err);
+          
           return new Promise((resolve) => {
             // Local matching engine fallback
             for (const item of localDatabase) {
