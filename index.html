@@ -4929,7 +4929,7 @@ Keep responses concise, matching the tone of a professional chat widget.`;
         if (history.length > 12) history.shift();
         history.push({ role: 'user', parts: [{ text: message }] });
 
-        return fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+        return fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${key}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
