@@ -233,7 +233,7 @@ const PROJECTS = [
     status: 'Completed', statusClass: 'status-done',
     stls: [{ label: 'EEG Board', file: 'EEG.stl' }],
     docs: [],
-    layers: 4, dims: 'Mixed-signal 4-layer',
+    layers: 2, dims: 'Mixed-signal 2-layer',
     chips: ['AD623', 'BLE 5.0', 'RLD'],
     tags: ['AD623', 'BLE 5.0', '4-Channel', 'Mixed-Signal', 'Low-Noise', 'EEG', 'Differential Input'],
     desc: 'A low-noise mixed-signal EEG acquisition PCB with 4 differential input channels via AD623 instrumentation amplifiers. Features BLE 5.0 wireless streaming for untethered operation. Designed with careful analog layout, ground plane separation, and right-leg drive for microvolt-level noise performance.',
@@ -241,7 +241,7 @@ const PROJECTS = [
       'AD623 instrumentation amp: CMRR >90dB at 60Hz',
       '4 fully differential EEG input channels',
       'BLE 5.0 wireless data streaming',
-      'Analog/digital ground plane separation on 4-layer board',
+      'Analog/digital ground plane separation on 2-layer board',
       'Right-leg drive (RLD) circuit for common-mode rejection',
       'Patient-safe isolated power design'
     ],
@@ -249,14 +249,14 @@ const PROJECTS = [
       { k: 'AFE', v: 'AD623 (×4 ch)' },
       { k: 'Wireless', v: 'BLE 5.0' },
       { k: 'Channels', v: '4 differential' },
-      { k: 'Layers', v: '4 (analog/digital split)' },
+      { k: 'Layers', v: '2 (analog/digital split)' },
       { k: 'Bandwidth', v: '0.5–100 Hz (EEG)' },
       { k: 'Noise', v: '<1μV input referred' }
     ],
     documentation: {
       overview: `The Wireless EEG Acquisition Board is a 4-channel neural signal acquisition platform designed for research-grade brainwave measurement. It captures sub-microvolt EEG signals from scalp electrodes, amplifies them via precision instrumentation amplifiers, digitizes the signals at 250Hz, and streams data wirelessly over BLE 5.0. The design prioritizes analog signal integrity above all other concerns.`,
       architecture: `Each of the 4 channels uses an AD623 instrumentation amplifier (CMRR >90dB) for differential signal acquisition. A right-leg drive (RLD) circuit actively reduces common-mode interference from power line noise. The analog front-end outputs feed into a 24-bit ADC, with the digital section isolated from the analog domain via optocouplers. A Nordic nRF52840 SoC handles BLE communication.`,
-      pcb: `4-layer stackup specifically optimized for mixed-signal performance: Analog Signal / Analog GND / Digital Power / Digital Signal. The analog ground plane is split from the digital ground plane with a single star connection point at the ADC. All electrode input traces are guarded by driven shields. No digital switching traces cross the analog signal domain.`,
+      pcb: `2-layer stackup optimized for mixed-signal performance. The analog ground plane is split from the digital ground plane with a single star connection point at the ADC. All electrode input traces are guarded by driven shields. No digital switching traces cross the analog signal domain.`,
       testing: `Noise floor measured at 0.8μV RMS input-referred (0.5–100Hz bandwidth) — meeting research-grade EEG specifications. CMRR verified >90dB at 50/60Hz. Alpha wave detection (8–12Hz) tested with 10 electrode placements. BLE streaming verified at 4×250Hz = 1kSPS aggregate rate with <1 packet loss per 10,000 samples.\n\n<img src="img/EEG SIMULATION RESULT.jpeg" style="width:100%; max-width:800px; border-radius:12px; margin-top:2rem; border:1px solid rgba(255,255,255,0.1);" alt="EEG Simulation Result">`,
       firmware: `Nordic SDK (nRF5 SDK 17.1). Custom BLE GATT service for EEG data streaming. Notch filter (50/60Hz selectable) implemented in firmware. Configurable gain and bandwidth per channel.`,
       future: `Scale to 8-channel system with ADS1299 dedicated EEG AFE chip. Add electrode impedance measurement for proper electrode-skin contact verification. Investigate SSVEP-based BCI (brain-computer interface) application.`
