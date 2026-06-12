@@ -2106,6 +2106,427 @@
       }
       
       /* cursor: none removed — standard Windows pointer is preserved alongside the fluid canvas */
+
+      /* ─── AI CHAT WIDGET ─────────────────────────────────── */
+      #ai-chat-widget {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 100000;
+        font-family: var(--font-body);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+      }
+      body.loaded #ai-chat-widget {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      /* Floating Action Button */
+      .chat-trigger {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: 0 4px 20px rgba(0, 232, 137, 0.15);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .chat-trigger:hover {
+        transform: translateY(-3px) scale(1.05);
+        border-color: var(--green);
+        box-shadow: 0 6px 24px rgba(0, 232, 137, 0.3);
+      }
+      .chat-trigger svg {
+        width: 24px;
+        height: 24px;
+        stroke: var(--green);
+        transition: transform 0.3s ease;
+      }
+      .chat-trigger.active svg {
+        transform: rotate(90deg);
+      }
+
+      /* Notification badge / pulse */
+      .chat-pulse {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 8px var(--green);
+        animation: pulse-ring 1.8s infinite;
+      }
+      @keyframes pulse-ring {
+        0% { transform: scale(0.95); opacity: 1; }
+        50% { transform: scale(1.3); opacity: 0.5; }
+        100% { transform: scale(0.95); opacity: 1; }
+      }
+
+      /* Chat Window Container */
+      .chat-window {
+        position: absolute;
+        bottom: 72px;
+        right: 0;
+        width: 360px;
+        height: 520px;
+        background: rgba(15, 21, 32, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .chat-window.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: all;
+      }
+
+      /* Header */
+      .chat-header {
+        padding: 16px;
+        background: var(--surface2);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .chat-header-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .chat-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--green);
+        object-fit: cover;
+        background: var(--bg);
+      }
+      .chat-header-text {
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-title {
+        font-family: var(--font-head);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .chat-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        display: inline-block;
+        box-shadow: 0 0 6px var(--green);
+      }
+      .chat-subtitle {
+        font-size: 11px;
+        color: var(--muted);
+        font-family: var(--font-mono);
+      }
+      .chat-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .chat-header-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: var(--muted);
+        transition: color 0.2s ease;
+        display: flex;
+        align-items: center;
+      }
+      .chat-header-btn:hover {
+        color: var(--green);
+      }
+      .chat-header-btn svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+      }
+
+      /* Message List */
+      .chat-messages {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        scroll-behavior: smooth;
+      }
+      .chat-messages::-webkit-scrollbar {
+        width: 4px;
+      }
+      .chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .chat-messages::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 2px;
+      }
+      .chat-messages::-webkit-scrollbar-thumb:hover {
+        background: var(--green);
+      }
+
+      /* Bubbles */
+      .chat-bubble {
+        max-width: 82%;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13.5px;
+        line-height: 1.45;
+        word-wrap: break-word;
+      }
+      .chat-bubble.user {
+        background: var(--green3);
+        color: #fff;
+        border: 1px solid var(--green2);
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+      }
+      .chat-bubble.ai {
+        background: var(--surface2);
+        color: var(--text);
+        border: 1px solid var(--border);
+        align-self: flex-start;
+        border-bottom-left-radius: 2px;
+      }
+      .chat-bubble p {
+        margin-bottom: 6px;
+      }
+      .chat-bubble p:last-child {
+        margin-bottom: 0;
+      }
+      .chat-bubble strong {
+        color: var(--green);
+      }
+      .chat-bubble ul, .chat-bubble ol {
+        margin-left: 16px;
+        margin-bottom: 6px;
+      }
+      .chat-bubble li {
+        margin-bottom: 3px;
+      }
+
+      /* Quick Suggestion Pills */
+      .chat-suggestions {
+        padding: 8px 16px 12px 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        border-top: 1px solid rgba(28, 37, 53, 0.3);
+      }
+      .chat-sug-pill {
+        font-size: 11px;
+        font-family: var(--font-mono);
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+      .chat-sug-pill:hover {
+        color: var(--green);
+        border-color: var(--green);
+        background: var(--surface);
+        transform: translateY(-1px);
+      }
+
+      /* Typing bubble animation */
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 10px 14px;
+      }
+      .typing-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--muted);
+        animation: typing-bounce 1.4s infinite ease-in-out;
+      }
+      .typing-dot:nth-child(1) { animation-delay: 0s; }
+      .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+      .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes typing-bounce {
+        0%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-6px); }
+      }
+
+      /* Input Area */
+      .chat-input-area {
+        padding: 12px 16px;
+        border-top: 1px solid var(--border);
+        background: var(--bg2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .chat-input {
+        flex: 1;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        color: var(--text);
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+      .chat-input:focus {
+        border-color: var(--green);
+      }
+      .chat-send-btn {
+        background: var(--green);
+        color: var(--bg);
+        border: none;
+        border-radius: 8px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+      }
+      .chat-send-btn:hover {
+        background: #fff;
+        transform: scale(1.05);
+      }
+      .chat-send-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        fill: none;
+      }
+
+      /* Settings Overlay panel inside Chat Window */
+      .chat-settings-panel {
+        position: absolute;
+        inset: 0;
+        background: rgba(7, 10, 15, 0.96);
+        z-index: 10;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .chat-settings-panel.open {
+        transform: translateX(0);
+      }
+      .chat-settings-title {
+        font-family: var(--font-head);
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .chat-settings-desc {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .chat-settings-input {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px;
+        color: var(--text);
+        font-size: 12px;
+        outline: none;
+        width: 100%;
+      }
+      .chat-settings-input:focus {
+        border-color: var(--green);
+      }
+      .chat-settings-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 8px;
+      }
+      .chat-settings-btn {
+        flex: 1;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+      }
+      .chat-settings-btn.save {
+        background: var(--green);
+        color: var(--bg);
+      }
+      .chat-settings-btn.save:hover {
+        background: #fff;
+      }
+      .chat-settings-btn.cancel {
+        background: var(--surface2);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .chat-settings-btn.cancel:hover {
+        border-color: var(--muted);
+      }
+
+      /* Responsive adjustment for Mobile */
+      @media (max-width: 480px) {
+        #ai-chat-widget {
+          bottom: 16px;
+          right: 16px;
+        }
+        .chat-window {
+          position: fixed;
+          bottom: 0;
+          right: 0;
+          width: 100vw;
+          height: 100vh;
+          border-radius: 0;
+          max-width: 100vw;
+          max-height: 100vh;
+        }
+        .chat-window.open {
+          transform: none;
+        }
+      }
   </style>
 </head>
 
@@ -3005,6 +3426,9 @@
           if (window.triggerFluidSplat) {
             window.triggerFluidSplat(e.clientX, e.clientY, 80, 20);
           }
+          if (window.toggleAIChat) {
+            window.toggleAIChat(true);
+          }
         }
       });
 
@@ -3014,11 +3438,14 @@
           const undY = bY + Math.sin(bX * 0.018) * 9;
           const localMouseX = (t.clientX - bX) * (bVX < 0 ? -1 : 1);
           const localMouseY = t.clientY - undY;
-          if (localMouseX >= -60 && localMouseX <= 25 && localMouseY >= -30 && localMouseY <= 35) {
+          if (localMouseX >= -76 && localMouseX <= 25 && localMouseY >= -30 && localMouseY <= 35) {
             if (loopProgress === -1) {
               loopProgress = 0;
               if (window.triggerFluidSplat) {
                 window.triggerFluidSplat(t.clientX, t.clientY, 80, 20);
+              }
+              if (window.toggleAIChat) {
+                window.toggleAIChat(true);
               }
             }
           }
@@ -3058,7 +3485,7 @@
         bx.stroke();
 
         // Trailing Ribbon sign
-        const sx = -52, sy = 16, sw = 64, sh = 16;
+        const sx = -68, sy = 16, sw = 80, sh = 16;
         bx.fillStyle = 'rgba(7, 10, 15, 0.85)';
         bx.strokeStyle = isBirdHovered ? 'rgba(0, 255, 160, 0.95)' : 'rgba(0, 232, 137, 0.6)';
         bx.lineWidth = 1;
@@ -3071,12 +3498,12 @@
         bx.fill();
         bx.stroke();
 
-        // Sign text "TAP ME!"
+        // Sign text "CHAT WITH ME"
         bx.font = '8px "Share Tech Mono", monospace';
         bx.fillStyle = isBirdHovered ? '#00e889' : 'rgba(0, 255, 160, 0.8)';
         bx.textAlign = 'center';
         bx.textBaseline = 'middle';
-        bx.fillText('TAP ME!', sx + sw/2, sy + sh/2);
+        bx.fillText('CHAT WITH ME', sx + sw/2, sy + sh/2);
 
         // Left wing (main)
         bx.save();
@@ -3144,7 +3571,7 @@
         // Hover detection in local coordinates
         const localMouseX = (mouseX - bX) * (bVX < 0 ? -1 : 1);
         const localMouseY = mouseY - undY;
-        if (localMouseX >= -60 && localMouseX <= 25 && localMouseY >= -30 && localMouseY <= 35) {
+        if (localMouseX >= -76 && localMouseX <= 25 && localMouseY >= -30 && localMouseY <= 35) {
           if (!isBirdHovered) {
             isBirdHovered = true;
             document.body.classList.add('bird-hovered');
@@ -4171,6 +4598,437 @@
       window.addEventListener('touchmove', handleTouchMove, false);
 
       updateFrame();
+    })();
+  </script>
+
+  <!-- AI CHAT WIDGET HTML -->
+  <div id="ai-chat-widget">
+    <!-- Close / Trigger Button -->
+    <button class="chat-trigger" id="chat-trigger-btn" aria-label="Toggle Chat Bot">
+      <div class="chat-pulse" id="chat-pulse-indicator"></div>
+      <svg id="chat-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chat-box-window">
+      <!-- Header -->
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <img class="chat-avatar" src="noel.jpg" alt="Noel Joyce Varghese" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="chat-avatar" style="display:none; align-items:center; justify-content:center; background:var(--surface); border:1px solid var(--green); color:var(--green); font-family:var(--font-mono); font-size:12px; font-weight:bold; border-radius:50%; width:36px; height:36px;">NJV</div>
+          <div class="chat-header-text">
+            <span class="chat-title">Noel's AI Twin <span class="chat-status-dot"></span></span>
+            <span class="chat-subtitle">Hardware Assistant</span>
+          </div>
+        </div>
+        <div class="chat-header-actions">
+          <!-- Settings (API Key) -->
+          <button class="chat-header-btn" id="chat-settings-trigger" title="AI Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+          </button>
+          <!-- Close Window -->
+          <button class="chat-header-btn" id="chat-close-btn" title="Close Chat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings Panel Overlay -->
+      <div class="chat-settings-panel" id="chat-settings-overlay">
+        <div class="chat-settings-title">
+          <span>AI Chat Settings</span>
+          <button class="chat-header-btn" id="chat-settings-close" style="padding:0">✕</button>
+        </div>
+        <p class="chat-settings-desc">
+          By default, this chat twin uses a fast client-side keyword matching engine.
+          <br><br>
+          To enable full generative replies, paste your <strong>Gemini API Key</strong> below. The key is stored <em>only locally</em> in your own browser's local storage.
+        </p>
+        <div style="flex:1">
+          <label style="font-size:11px; font-family:var(--font-mono); color:var(--green); display:block; margin-bottom:6px">GEMINI API KEY</label>
+          <input type="password" class="chat-settings-input" id="gemini-key-input" placeholder="AIzaSy...">
+        </div>
+        <div class="chat-settings-actions">
+          <button class="chat-settings-btn save" id="gemini-key-save">Save Key</button>
+          <button class="chat-settings-btn cancel" id="gemini-key-clear">Clear Key</button>
+        </div>
+      </div>
+
+      <!-- Messages Area -->
+      <div class="chat-messages" id="chat-messages-container"></div>
+
+      <!-- Suggestion Tags -->
+      <div class="chat-suggestions" id="chat-quick-suggestions">
+        <button class="chat-sug-pill" data-query="Who is Noel?">Who is Noel?</button>
+        <button class="chat-sug-pill" data-query="Tell me about HIVE-X">Honey Extractor</button>
+        <button class="chat-sug-pill" data-query="What are your PCB skills?">PCB Skills</button>
+        <button class="chat-sug-pill" data-query="Show me contact info">Contact Info</button>
+      </div>
+
+      <!-- Input Bar -->
+      <form class="chat-input-area" id="chat-input-form" onsubmit="return false;">
+        <input type="text" class="chat-input" id="chat-text-input" placeholder="Ask about projects, PCB skills, resume..." autocomplete="off">
+        <button type="submit" class="chat-send-btn" id="chat-send-btn-el" aria-label="Send Message">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- AI CHAT WIDGET SCRIPT -->
+  <script>
+    (function() {
+      const triggerBtn = document.getElementById('chat-trigger-btn');
+      const pulseIndicator = document.getElementById('chat-pulse-indicator');
+      const chatBox = document.getElementById('chat-box-window');
+      const closeBtn = document.getElementById('chat-close-btn');
+      const settingsBtn = document.getElementById('chat-settings-trigger');
+      const settingsPanel = document.getElementById('chat-settings-overlay');
+      const settingsClose = document.getElementById('chat-settings-close');
+      const keyInput = document.getElementById('gemini-key-input');
+      const saveKeyBtn = document.getElementById('gemini-key-save');
+      const clearKeyBtn = document.getElementById('gemini-key-clear');
+      const msgContainer = document.getElementById('chat-messages-container');
+      const quickSuggestions = document.getElementById('chat-quick-suggestions');
+      const chatForm = document.getElementById('chat-input-form');
+      const textInput = document.getElementById('chat-text-input');
+      const chatIconSvg = document.getElementById('chat-icon-svg');
+
+      let chatOpen = false;
+      let history = []; // Message history format for Gemini API
+
+      // Noel's complete profile database for client-side search matching
+      const localDatabase = [
+        {
+          keys: [/hello/i, /hi/i, /hey/i, /greetings/i, /help/i, /who are you/i],
+          reply: "Hello! I am the digital twin of **Noel Joyce Varghese**. 🛠️ I'm an Embedded Hardware Design Engineer specializing in custom PCBs for aerospace, robotics, and defence platforms.\\n\\nAsk me about my projects like **HIVE-X**, **Minima Flight Controller**, or my **technical skills**!"
+        },
+        {
+          keys: [/hive-x/i, /hivex/i, /honey/i, /extractor/i, /vanthen/i, /amal jyothi/i],
+          reply: "**HIVE-X (Honey Extractor)** is an ongoing project under Amal Jyothi College of Engineering. 🐝 It is a fully automated honey extraction system aimed at small-scale farmers.\\n\\n**Key Features:**\\n- Automated honeycomb rotation using ESP32 & stepper motors\\n- Adjustable RPM (50–350 RPM)\\n- Heating mechanism (30–35°C) to maintain honey quality\\n- Real-time telemetry via 2.8\" SPI TFT screen\\n- Powered by a 4200mAh LiPo battery with IMAX B6 charger support\\n- Published Design Patent!"
+        },
+        {
+          keys: [/minima/i, /flight controller/i, /flight computer/i, /uav/i, /drone/i, /cm5/i, /raspberry pi/i],
+          reply: "The **Minima Flight Controller** is an ongoing aerospace project. 🛩️ It is a high-compute flight controller designed to support onboard AI and vision processing directly via a **Raspberry Pi Compute Module 5 (CM5)**.\\n\\n**Technical Details:**\\n- 6-Layer stackup for optimized signal/power integrity and EMI shielding\\n- Custom schematic/layout for SO-DIMM high-density connector interface\\n- Integrated sensor suite: IMU, barometer, GPS\\n- 8+ PWM output channels for ESC/servo actuation\\n- Multilayer high-density BGA/QFN component layout"
+        },
+        {
+          keys: [/winch/i, /nemo/i, /payload/i],
+          reply: "**Nemo Winch V3.0** is a payload delivery winch system for UAVs. 🔩 It consists of three custom control PCBs designed for different payload classes.\\n\\n**Features:**\\n- Three motor variants: servo, geared DC, and N20 motor drives\\n- High-resolution encoder feedback for precise payload altitude control\\n- Pixhawk MAVLink integration over UART for autonomous mission release\\n- All board designs are verified; frame integration and release testing is ongoing!"
+        },
+        {
+          keys: [/csro/i, /pll/i, /vco/i, /kottayam/i, /cadence/i, /virtuoso/i, /analog/i, /ic design/i],
+          reply: "During my internship at **IIIT Kottayam**, I worked on analog IC design simulating a **CSRO PLL VCO Block**. 🔬\\n\\n**Key Details:**\\n- Process node: gpdk90nm Cadence Virtuoso\\n- Custom sizing targeting a 5GHz frequency (achieved 7GHz post-layout frequency)\\n- Designed multi-finger, DRC/LVS-compliant layouts\\n- Extracted parasitic resistors/capacitors (PEX)\\n- Validated performance via Transient, PSS, and PNOISE simulations"
+        },
+        {
+          keys: [/energy meter/i, /low power/i, /ina219/i, /micro sd/i, /sd card/i, /adc/i],
+          reply: "The **Low Power DC Energy Meter** is a course project designed at Amal Jyothi College of Engineering (Dec 2023). ⚡\\n\\n**Highlights:**\\n- Integrates an Arduino Nano, INA219 current/voltage sensor, Micro SD card logger, and SSD1306 OLED display\\n- Uses Timer1 interrupts (10Hz) for precise sampling\\n- Optimized power consumption down to micro-amps via sleep modes and turning off internal ADC/unused peripherals\\n- **Project Document:** You can find the staged PDF report directly in the projects downloads section!"
+        },
+        {
+          keys: [/pcb/i, /skills/i, /tools/i, /altium/i, /kicad/i, /orcad/i, /ltspice/i, /routing/i],
+          reply: "I specialize in premium PCB development and precision electronics: 🛠️\\n\\n**Hardware Design:**\\n- Multilayer layouts (up to 6 layers), controlled impedance routing, mixed-signal designs, high-current routing, DFM/DFA compliance\\n\\n**EDA Tools:**\\n- Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice\\n\\n**Embedded Tech:**\\n- STM32, ESP32, Arduino, CAN Bus 2.0B, MAVLink/Pixhawk, I2C/SPI/UART"
+        },
+        {
+          keys: [/experience/i, /internship/i, /job/i, /psyc/i, /aerospace/i, /bengaluru/i],
+          reply: "I am an Embedded Hardware Design Engineer Intern at **PSYC Aerospace and Defence Industries** in Bengaluru. 🚀\\n\\nIn this role, I design custom multilayer PCBs (up to 6 layers) for aerospace flight computers, flight controllers, and robotic platforms. I handle everything from schematic capture and component selection to board bring-up, hand-soldering, and oscilloscope validation."
+        },
+        {
+          keys: [/contact/i, /email/i, /phone/i, /reach/i, /hire/i],
+          reply: "Let's connect! You can reach Noel Joyce Varghese via: 🤝\\n\\n📧 **noeljoyce6@gmail.com**\\n📞 **+91 8590607872**\\n🔗 [LinkedIn](https://linkedin.com/in/noel-joyce-varghese)\\n🐙 [GitHub](https://github.com/noeljoyce6)"
+        },
+        {
+          keys: [/resume/i, /cv/i],
+          reply: "You can download Noel's resume PDF from the top navigation bar, or click [here](Noel_Joyce_Varghese_Resume .pdf) to download it directly. 📄"
+        },
+        {
+          keys: [/education/i, /degree/i, /college/i, /university/i, /btech/i, /b.tech/i],
+          reply: "I am graduating with a **B.Tech in Electronics & Communication Engineering (ECE)** from **Amal Jyothi College of Engineering (Autonomous)** in Kerala, India (Class of 2026). 🎓"
+        }
+      ];
+
+      // Global toggle function
+      window.toggleAIChat = function(state) {
+        chatOpen = (state !== undefined) ? state : !chatOpen;
+        if (chatOpen) {
+          chatBox.classList.add('open');
+          triggerBtn.classList.add('active');
+          pulseIndicator.style.display = 'none'; // Clear pulse
+          chatIconSvg.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+          textInput.focus();
+        } else {
+          chatBox.classList.remove('open');
+          triggerBtn.classList.remove('active');
+          settingsPanel.classList.remove('open');
+          chatIconSvg.innerHTML = '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>';
+        }
+      };
+
+      // Toggle events
+      triggerBtn.addEventListener('click', () => window.toggleAIChat());
+      closeBtn.addEventListener('click', () => window.toggleAIChat(false));
+      settingsBtn.addEventListener('click', () => settingsPanel.classList.toggle('open'));
+      settingsClose.addEventListener('click', () => settingsPanel.classList.remove('open'));
+
+      // Save / Clear API Key
+      saveKeyBtn.addEventListener('click', () => {
+        const key = keyInput.value.trim();
+        if (key) {
+          localStorage.setItem('noel_gemini_api_key', key);
+          settingsPanel.classList.remove('open');
+          addSystemMessage("🔑 Gemini API enabled! Generative twin is online.");
+        }
+      });
+      clearKeyBtn.addEventListener('click', () => {
+        localStorage.removeItem('noel_gemini_api_key');
+        keyInput.value = '';
+        settingsPanel.classList.remove('open');
+        addSystemMessage("🔑 Key cleared. Using offline search matching.");
+      });
+
+      // Load saved key on boot
+      const savedKey = localStorage.getItem('noel_gemini_api_key');
+      if (savedKey) keyInput.value = savedKey;
+
+      // Add Welcome Message
+      window.addEventListener('DOMContentLoaded', () => {
+        addMessage("Hi! 👋 I'm Noel's AI twin. Ask me anything about my hardware design projects, internships, or technical skills!", 'ai');
+      });
+
+      // Handle Quick Suggestions
+      quickSuggestions.addEventListener('click', (e) => {
+        if (e.target.classList.contains('chat-sug-pill')) {
+          const query = e.target.getAttribute('data-query');
+          submitMessage(query);
+        }
+      });
+
+      // Submit Message
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = textInput.value.trim();
+        if (text) {
+          submitMessage(text);
+          textInput.value = '';
+        }
+      });
+
+      function submitMessage(text) {
+        addMessage(text, 'user');
+        
+        // Show typing indicator
+        const typingEl = showTypingIndicator();
+        
+        setTimeout(() => {
+          getAIResponse(text).then(reply => {
+            typingEl.remove();
+            addMessage(reply, 'ai', true); // true = typewriter animation
+          }).catch(err => {
+            typingEl.remove();
+            addMessage("Oops! I had a connection issue. Please try again or click the settings gear to check your API key.", 'ai');
+          });
+        }, 600);
+      }
+
+      function showTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.className = 'chat-bubble ai typing-indicator';
+        indicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+        msgContainer.appendChild(indicator);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+        return indicator;
+      }
+
+      function getAIResponse(userMessage) {
+        const apiKey = localStorage.getItem('noel_gemini_api_key');
+        if (apiKey) {
+          return callGeminiAPI(userMessage, apiKey);
+        } else {
+          return new Promise((resolve) => {
+            // Local matching engine fallback
+            for (const item of localDatabase) {
+              for (const rx of item.keys) {
+                if (rx.test(userMessage)) {
+                  resolve(item.reply);
+                  return;
+                }
+              }
+            }
+            // Fallback response if no keywords match
+            resolve("That's a great question! I'm running in local matching mode, so I can only answer queries about my projects (**HIVE-X, Minima, Nemo Winch, PLL VCO, DC Energy Meter**), my **PCB skills**, **internships**, **contact details**, and **education**.\\n\\n💡 *Tip: Click the gear icon in the header and paste a Gemini API Key to unlock unlimited generative answers!*");
+          });
+        }
+      }
+
+      function callGeminiAPI(message, key) {
+        // System instruction loaded with full bio
+        const systemPrompt = `You are the Digital Twin AI Assistant of Noel Joyce Varghese, an Embedded Hardware Design Engineer based in Kerala, India. Respond in first-person as Noel, keeping your answers concise, professional, friendly, and highly knowledgeable.
+
+Details about you:
+- Current role: Intern at PSYC Aerospace and Defence Industries in Bengaluru. You design custom PCBs for aerospace, robotics, and defence.
+- Education: B.Tech in Electronics & Communication Engineering (ECE) from Amal Jyothi College of Engineering (Autonomous), Kerala (2022 - 2026).
+- Skills: Multilayer PCB layout (up to 6 layers), high-current routing, DFM/DFA, impedance matching. EDA Tools: Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice. Embedded: STM32, Arduino, ESP32, Stepper motor drives, CAN bus, MAVLink.
+- Key Projects:
+  1. HIVE-X Honey Extractor: Fully automated honeycomb rotation system using stepper motor and ESP32. Adjustable RPM (50-350 RPM), heating regulation (30-35°C), 2.8" SPI TFT screen. Design patent published.
+  2. Minima Flight Controller: CM5-based UAV flight computer with 6-layer PCB stackup, IMU, barometer, GPS, BGA/QFN high-density routing.
+  3. Nemo Winch V3.0: Payload winch control system with three variants (servo, geared DC, N20). Pixhawk MAVLink integration over UART.
+  4. CSRO PLL VCO Block: Internship at IIIT Kottayam. custom schematics and DRC/LVS layout in gpdk90nm Cadence Virtuoso (5GHz targeted/7GHz post-layout).
+  5. Low Power DC Energy Meter: Arduino Nano, INA219, SD logger, OLED display. Optimized power via sleep modes, shutdown peripherals. Staged report PDF.
+- Contact Details:
+  Email: noeljoyce6@gmail.com
+  Phone: +91 8590607872
+  LinkedIn: linkedin.com/in/noel-joyce-varghese
+  GitHub: github.com/noeljoyce6
+  Resume PDF: Noel_Joyce_Varghese_Resume .pdf
+
+Rule: If asked about private repositories or code, note that they are private under NDA but source code portions can be shared on request for verified recruiters.
+Keep responses concise, matching the tone of a professional chat widget.`;
+
+        // Maintain up to 6 turns of memory
+        if (history.length > 12) history.shift();
+        history.push({ role: 'user', parts: [{ text: message }] });
+
+        return fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: history,
+            systemInstruction: {
+              parts: [{ text: systemPrompt }]
+            },
+            generationConfig: {
+              temperature: 0.5,
+              maxOutputTokens: 300
+            }
+          })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error("API call failed");
+          return response.json();
+        })
+        .then(data => {
+          if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+            const reply = data.candidates[0].content.parts[0].text;
+            history.push({ role: 'model', parts: [{ text: reply }] });
+            return reply;
+          }
+          throw new Error("Invalid structure returned");
+        });
+      }
+
+      function addSystemMessage(text) {
+        const msg = document.createElement('div');
+        msg.style.cssText = 'align-self: center; font-size: 10px; font-family: var(--font-mono); color: var(--muted); padding: 4px 8px; border: 1px dashed var(--border); border-radius: 4px; background: rgba(0,0,0,0.1); margin: 4px 0; text-align: center; max-width: 90%;';
+        msg.textContent = text;
+        msgContainer.appendChild(msg);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+      }
+
+      function addMessage(text, sender, typewriter = false) {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble ${sender}`;
+        
+        if (sender === 'ai' && typewriter) {
+          bubble.innerHTML = '';
+          msgContainer.appendChild(bubble);
+          
+          let parsed = parseMarkdown(text);
+          let tempDiv = document.createElement('div');
+          tempDiv.innerHTML = parsed;
+          let flatNodes = flattenNodes(tempDiv);
+          
+          let nodeIdx = 0, charIdx = 0;
+          let activeNode = null;
+          
+          function typeStep() {
+            if (nodeIdx >= flatNodes.length) {
+              msgContainer.scrollTop = msgContainer.scrollHeight;
+              return;
+            }
+            
+            const node = flatNodes[nodeIdx];
+            if (node.nodeType === 3) { // Text Node
+              if (charIdx === 0) {
+                activeNode = document.createTextNode('');
+                bubble.appendChild(activeNode);
+              }
+              activeNode.nodeValue += node.nodeValue[charIdx];
+              charIdx++;
+              if (charIdx >= node.nodeValue.length) {
+                nodeIdx++;
+                charIdx = 0;
+              }
+            } else { // Element Node
+              const clone = node.cloneNode(false);
+              bubble.appendChild(clone);
+              
+              const innerText = node.textContent;
+              let innerIdx = 0;
+              
+              function typeInner() {
+                if (innerIdx >= innerText.length) {
+                  nodeIdx++;
+                  typeStep();
+                  return;
+                }
+                clone.textContent += innerText[innerIdx];
+                innerIdx++;
+                msgContainer.scrollTop = msgContainer.scrollHeight;
+                setTimeout(typeInner, 8);
+              }
+              typeInner();
+              return;
+            }
+            
+            msgContainer.scrollTop = msgContainer.scrollHeight;
+            setTimeout(typeStep, 10);
+          }
+          
+          typeStep();
+        } else {
+          bubble.innerHTML = parseMarkdown(text);
+          msgContainer.appendChild(bubble);
+          msgContainer.scrollTop = msgContainer.scrollHeight;
+        }
+      }
+
+      function flattenNodes(parent) {
+        let list = [];
+        for (let child of parent.childNodes) {
+          if (child.nodeType === 3) {
+            list.push(child);
+          } else {
+            list.push(child);
+          }
+        }
+        return list;
+      }
+
+      function parseMarkdown(text) {
+        let formatted = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+        
+        formatted = formatted
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+          .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+          .replace(/\n/g, '<br>');
+        
+        return formatted;
+      }
     })();
   </script>
 </body>
