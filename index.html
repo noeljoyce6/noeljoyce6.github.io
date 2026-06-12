@@ -4834,7 +4834,8 @@
             addMessage(reply, 'ai', true); // true = typewriter animation
           }).catch(err => {
             typingEl.remove();
-            addMessage("Oops! I had a connection issue. Please try again or click the settings gear to check your API key.", 'ai');
+            console.error("AI Twin Error:", err);
+            addMessage(`Oops! I had a connection issue: <strong>${err.message || 'Check browser console (F12) for details.'}</strong><br><br>Please verify your API key in the settings gear.`, 'ai');
           });
         }, 600);
       }
@@ -4913,8 +4914,20 @@ Keep responses concise, matching the tone of a professional chat widget.`;
             }
           })
         })
-        .then(response => {
-          if (!response.ok) throw new Error("API call failed");
+        .then(async response => {
+          if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Gemini API Request Failed:", response.status, errorText);
+            try {
+              const errJson = JSON.parse(errorText);
+              if (errJson.error && errJson.error.message) {
+                throw new Error(errJson.error.message);
+              }
+            } catch(e) {
+              throw e;
+            }
+            throw new Error(`API call failed with status ${response.status}`);
+          }
           return response.json();
         })
         .then(data => {
