@@ -28,11 +28,18 @@ About Noel:
 - EDA Tools: Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice.
 - Embedded Tech: STM32, Arduino, ESP32, Stepper motor drive, CAN bus, MAVLink.
 - Key Projects:
-  1. HIVE-X Honey Extractor: Stepper motor & ESP32 control (50-350 RPM), heating regulation (30-35°C), 2.8" SPI TFT screen, published Design Patent.
+  1. HIVE-X Honey Extractor: Stepper motor & ESP32 control (50-350 RPM), heating regulation (30-35°C), 2.8" SPI TFT screen. Published Design Patent (202441074582), won i2U Winner 2024 and YIP 5.0 State Level.
   2. Minima Flight Controller: CM5-based UAV flight computer with 6-layer PCB stackup, IMU, GPS, barometer, high-density SO-DIMM/BGA routing.
   3. Nemo Winch V3.0: Drone payload winch system with 3 variants (servo, geared DC, N20), Pixhawk MAVLink integration over UART.
-  4. CSRO PLL VCO Block: Internship project at IIIT Kottayam. Simulated gpdk90nm Cadence Virtuoso schematic and layout (5GHz target/7GHz post-layout).
-  5. Low Power DC Energy Meter: Arduino Nano, INA219, Micro SD logging, sleep mode optimization.
+  4. CSRO PLL VCO Block: Internship project at IIIT Kottayam. Simulated gpdk90nm Cadence Virtuoso schematic and layout (5GHz target/7GHz post-layout, 23ps stage delay).
+  5. Low Power DC Energy Meter: Arduino Nano, INA219, Micro SD logging (SdFat), sleep mode optimization (disabling internal ADC).
+  6. Unified FOC Motor Controller: Compact 4-layer BLDC motor controller using STM32G431 and DRV8353R. Implements Field-Oriented Control with inline shunt current sensing and CAN 2.0B speed/torque commanding.
+  7. MA732 Magnetic Encoder: 14-bit absolute position sensing breakout board using MA732GGD over SPI (≤25 MHz) for motor position feedback.
+  8. Automated Security System: Surveillance and deterrent board combining ESP32-CAM (TF Lite person detection), mmWave FMCW radar, PIR motion sensing, servo deployment control, and dual-rail power safety relay.
+  9. Tranquilizer Remote System: Patent-pending wireless actuation board for defence (technical details are restricted under patent review).
+  10. Wireless EEG Acquisition: 4-channel neural signal acquisition board using AD623 instrumentation amplifiers (CMRR >90dB), Right-Leg Drive (RLD) circuit, BLE 5.0 streaming, and star-split analog/digital ground planes.
+  11. Smart Helmet: Wearable health and accident monitoring helmet (YIP 7.0 District Level Winner) using ESP32, MAX30105 (SpO2/HR), MPU6050 (impact detection >3g), GPS location, and GSM SMS emergency alerts.
+  12. Vanguard MK1: 12-DOF crawling search and rescue hexapod robot (funded by PSYC) with Raspberry Pi 5, PCA9685 PWM driver, MG90S servos, and ToF LiDAR.
 - Contact Details:
   Email: noeljoyce6@gmail.com
   Phone: +91 8590607872
