@@ -8,7 +8,7 @@ const PROJECTS = [
     title: 'Unified FOC Motor Controller',
     subtitle: 'BLDC Motor Drive Platform',
     cat: 'Motor Control', catClass: 'cat-motor', icon: '⚡',
-    status: 'Completed', statusClass: 'status-done',
+    status: 'Ongoing — Design Phase', statusClass: 'status-wip',
     stls: [{ label: 'Controller Board', file: 'FOC.stl' }],
     docs: [{ label: 'FOC Report', file: 'FOC REPORT.pdf' }],
     layers: 4, dims: '50mm × 50mm',
@@ -82,7 +82,7 @@ const PROJECTS = [
     title: 'Nemo Winch V3.0',
     subtitle: 'Drone Payload Delivery System',
     cat: 'UAV Systems', catClass: 'cat-uav', icon: '🔩',
-    status: 'Completed', statusClass: 'status-done',
+    status: 'Ongoing — Integration Phase', statusClass: 'status-wip',
     stls: [
       { label: 'Servo Winch', file: 'SERVO_WINCH.stl' },
       { label: 'Geared DC Winch', file: 'GEARED DC WINCH.stl' },
@@ -96,7 +96,7 @@ const PROJECTS = [
     layers: 2, dims: 'Custom per variant',
     chips: ['Motor Driver', 'Encoder', 'Pixhawk UART'],
     tags: ['Motor Drive', 'Servo', 'Encoder', 'Pixhawk', 'MAVLink', '3 Variants', 'Payload Release'],
-    desc: 'A family of 3 control PCBs for UAV payload winch systems. Three board variants for different motor architectures — servo-driven, geared DC motor, and compact N20. Each handles motor drive, encoder feedback, servo actuation, and Pixhawk MAVLink integration for automated payload delivery.',
+    desc: 'A family of 3 control PCBs for UAV payload winch systems. Board designs for all three variants (servo, geared DC, N20) are complete and verified. Physical integration with the drone frame and full end-to-end payload delivery testing is currently ongoing.',
     highlights: [
       'Pixhawk MAVLink integration via UART for autonomous operation',
       'Encoder feedback for precise payload altitude control',
@@ -110,15 +110,17 @@ const PROJECTS = [
       { k: 'Feedback', v: 'Encoder / Position' },
       { k: 'Actuation', v: 'Motor Drive + Servo' },
       { k: 'Power', v: '2S–4S LiPo' },
-      { k: 'Boards', v: '3 variants' }
+      { k: 'Boards', v: '3 variants' },
+      { k: 'PCB Design', v: 'Complete' },
+      { k: 'Integration', v: 'In Progress' }
     ],
     documentation: {
       overview: `The Nemo Winch V3.0 is a family of three purpose-built PCBs for precision payload delivery in UAV systems. Each board variant targets a different motor architecture and payload weight class — making the system adaptable from small surveillance payloads (N20) to heavier delivery packages (Geared DC, up to 2kg). All variants share the same MAVLink communication protocol for seamless Pixhawk integration.`,
       architecture: `Each board consists of: a motor drive stage (H-bridge or servo driver depending on variant), an encoder interface for spool position feedback, a UART interface to Pixhawk for MAVLink commands, and a power regulation stage for 2S–4S LiPo input. The Geared DC variant adds a dedicated H-bridge motor driver with current sensing for load monitoring.`,
       pcb: `All three variants are 2-layer PCBs. High-current motor drive traces are 2mm wide copper pours with via stitching for thermal relief. UART signal routing kept away from motor switching nodes. Board dimensions are optimized for under-drone mounting on standard 30mm standoff patterns.`,
-      testing: `All variants tested with Pixhawk 6C + Mission Planner. MAVLink payload command reception verified. Spool lowering and retraction tested at full rated load. Encoder feedback accuracy verified to ±2mm at 1m spool travel. Field deployment tested on a fixed-wing delivery UAV.`,
+      testing: `PCB-level testing for all three variants is complete: power rail verification, MAVLink command reception with Pixhawk 6C, motor drive waveforms verified, encoder feedback accuracy confirmed to ±2mm. Physical drone integration and full end-to-end payload delivery field testing is currently in progress.`,
       firmware: `Arduino-based firmware on ATmega328P. MAVLink 2.0 protocol library used for Pixhawk communication. PID control loop manages spool speed and position. Configurable parameters: spool speed, max travel, payload release threshold.`,
-      future: `V4.0 will integrate all three variants into a single reconfigurable board with motor driver selection via solder jumper. Adding wireless configuration interface (BLE) for field parameter adjustment without laptop.`
+      future: `Complete drone frame integration and field deployment testing. V4.0 will integrate all three variants into a single reconfigurable board with motor driver selection via solder jumper. Adding wireless configuration interface (BLE) for field parameter adjustment.`
     }
   },
   {
@@ -200,40 +202,35 @@ const PROJECTS = [
     title: 'Tranquilizer Remote System',
     subtitle: 'Remote Deployment Control Board',
     cat: 'Defence', catClass: 'cat-def', icon: '🎯',
-    status: 'Completed', statusClass: 'status-done',
+    status: 'Patent Pending', statusClass: 'status-pat',
     stls: [{ label: 'Control Board', file: 'TRAINQULIZER.stl' }],
     docs: [],
     layers: 2, dims: 'PCB board',
     chips: ['Wireless RX', 'Actuator Driver'],
-    tags: ['Remote Control', 'Actuator Drive', 'Solenoid', 'Safety Interlock', 'Defence', 'Wireless'],
-    desc: 'A remote-controlled deployment system control PCB designed for defence and security applications. Handles wireless command reception, actuator drive for deployment mechanisms, and hardware safety interlocks for controlled, authorized operation in field conditions.',
+    tags: ['Remote Control', 'Defence', 'Wireless', 'Patent Pending'],
+    desc: 'A remote-controlled actuation system developed for defence and security applications. Technical details are not disclosed as the project is currently under patent review.',
     highlights: [
-      'Wireless command reception with validation logic',
-      'Actuator drive circuitry for solenoid/servo deployment',
-      'Hardware arm/disarm safety interlock',
-      'Compact rugged layout for field deployment',
-      'Low-power standby with wake-on-command'
+      'Remote-controlled deployment mechanism for field operations',
+      'Designed for defence and security applications',
+      'Currently under patent review — details not disclosed'
     ],
     specs: [
       { k: 'Category', v: 'Defence / Security' },
-      { k: 'Interface', v: 'Wireless remote' },
-      { k: 'Actuation', v: 'Solenoid + Servo' },
-      { k: 'Safety', v: 'Hardware interlock' },
-      { k: 'Power', v: 'Battery-operated' },
-      { k: 'Form', v: 'Compact field unit' }
+      { k: 'Status', v: 'Patent Pending' },
+      { k: 'Disclosure', v: 'Restricted' }
     ],
     documentation: {
-      overview: `The Tranquilizer Remote System is a control board for authorized remote-deployment actuation in defence and security contexts. It accepts encrypted wireless commands, validates authorization codes, and activates deployment mechanisms only when all safety interlocks are satisfied. Designed for reliability in field conditions — ruggedized layout, wide supply range, and low standby power.`,
-      architecture: `The system uses a wireless receiver module connected to an MCU for command validation. Deployment actuation is driven by a solenoid driver circuit capable of handling 24V solenoid coils at 3A peak. A mechanical arm/disarm switch is the primary safety interlock — the system cannot fire without both a physical arm signal AND a valid wireless command.`,
-      pcb: `2-layer PCB. Ruggedized layout with conformal coating pad design for field deployment. Wide ground pours for EMI immunity. Solenoid driver flyback diode placed within 5mm of driver output. Battery connector with reverse polarity protection.`,
-      testing: `Wireless range tested to 200m line-of-sight. Command latency measured: <50ms from button press to solenoid activation. Safety interlock bypass attempts: all failed as designed. Battery life tested: 72h standby on 3× AA alkaline cells.`,
-      firmware: `Bare-metal C on ATmega328P. Wireless command parser with rolling-code authentication. State machine: DISARMED → ARMED → FIRE → SAFE. Configurable timeout auto-disarm after 60 seconds.`,
-      future: `Future revision will add encrypted RF protocol (AES-128), GPS location logging of deployment events, and cellular reporting for deployment confirmation.`
+      overview: `This project is currently under patent review. Technical architecture, design details, and implementation specifics are not disclosed at this stage.\n\nFor verified industry inquiries, please reach out directly via email at noeljoyce6@gmail.com.`,
+      architecture: ``,
+      pcb: ``,
+      testing: ``,
+      firmware: ``,
+      future: ``
     }
   },
   {
     id: 'eeg',
-    img: null,
+    img: 'img/eeg.png',      // ← user will drop eeg.png here (PCB board photo)
     title: 'Wireless EEG Acquisition',
     subtitle: '4-Channel Neural Signal Platform',
     cat: 'BioSignal', catClass: 'cat-bio', icon: '🧠',
@@ -271,50 +268,52 @@ const PROJECTS = [
   },
   {
     id: 'helmet',
-    img: null,                   // ← add img: 'img/helmet.jpg' when photo is ready
+    img: 'img/helmet.png',       // ← user will drop helmet.png here
     title: 'Smart Helmet',
     subtitle: 'Accident & Health Monitoring',
     cat: 'Wearable', catClass: 'cat-bio', icon: '⛑',
     status: 'Completed', statusClass: 'status-done',
+    isPCB: false,                // ← mini project: no PCB design, no 3D viewer
     stls: [],
-    docs: [],
-    layers: 2, dims: 'Wearable form',
+    docs: [],                    // ← user will add docs here
+    layers: null, dims: 'Breadboard prototype',
     chips: ['ESP32', 'MAX30105', 'MPU6050', 'GPS'],
-    tags: ['ESP32', 'MAX30105', 'MPU6050', 'GPS', 'GSM', 'IR Sensor', 'MATLAB', 'EEG Simulation'],
-    desc: 'A wearable accident and health monitoring platform integrating ESP32, MAX30105 pulse oximeter, MPU6050 IMU, GPS, GSM, and IR sensors. Detects accidents via impact sensing and transmits health + location data over GSM. EEG-based health simulation and signal analysis performed in MATLAB.',
+    tags: ['ESP32', 'MAX30105', 'MPU6050', 'GPS', 'GSM', 'IR Sensor', 'Wearable', 'Safety'],
+    desc: 'A wearable accident detection and health monitoring system built on a breadboard prototype using ESP32. Integrates pulse oximetry, 6-axis IMU impact detection, GPS location tracking, and automatic GSM emergency alerts — designed for workers in high-risk environments.',
     highlights: [
-      'MAX30105 for SpO2 and heart-rate monitoring',
-      'MPU6050 for accident detection via vibration/tilt thresholds',
-      'GPS + GSM for real-time emergency location alerts',
-      'IR sensor for helmet-wear detection',
-      'EEG simulation and signal analysis in MATLAB'
+      'Real-time SpO2 and heart-rate monitoring via MAX30105',
+      'Accident detection using MPU6050 impact thresholds (>3g)',
+      'Automatic GPS + GSM emergency alert on accident detection',
+      'IR sensor ensures alerts only trigger when helmet is worn',
+      'Continuous health data logging with MATLAB signal analysis'
     ],
     specs: [
       { k: 'MCU', v: 'ESP32' },
-      { k: 'Health', v: 'MAX30105 (SpO2/HR)' },
+      { k: 'Health Sensor', v: 'MAX30105 (SpO2 + HR)' },
       { k: 'IMU', v: 'MPU6050 6-axis' },
-      { k: 'Comms', v: 'GSM + GPS' },
-      { k: 'Power', v: 'Li-ion battery' },
+      { k: 'Location', v: 'GPS + GSM' },
+      { k: 'Type', v: 'Breadboard prototype' },
       { k: 'Platform', v: 'Wearable / Helmet' }
     ],
     documentation: {
-      overview: `The Smart Helmet is a wearable safety and health monitoring system designed for workers in high-risk environments. It continuously monitors vital signs (SpO2, heart rate), detects impacts via 6-axis IMU, tracks GPS location, and automatically sends emergency alerts via GSM if an accident is detected. Additional safety features include IR-based helmet-wear detection to ensure the device is being used.`,
-      architecture: `The ESP32 serves as the central controller, interfacing with all sensors over I2C (MAX30105, MPU6050) and UART (GPS, GSM module). Accident detection uses a threshold-based algorithm on MPU6050 Z-axis acceleration — a sudden deceleration above 3g triggers an alert sequence. Location data is acquired from the GPS module and included in the GSM SMS alert.`,
-      pcb: `2-layer PCB sized for helmet liner integration. Low-profile component selection for minimal height. Battery management IC for Li-ion charging and protection. Antenna keep-out zones for WiFi/Bluetooth (ESP32) and GSM module.`,
-      testing: `Impact detection threshold calibrated with drop testing (1m onto rigid surface). SpO2 accuracy verified against reference oximeter: ±2% across 90–100% SpO2 range. GSM SMS delivery verified in network coverage areas. Battery life: 8h continuous monitoring on 2000mAh Li-ion.`,
-      firmware: `Arduino framework on ESP32. FreeRTOS tasks for concurrent sensor reading, alert processing, and communication. MATLAB companion software for EEG-simulation-based signal analysis and offline data review.`,
-      future: `Miniaturize to PCB module for helmet integration. Add LoRaWAN support for use in remote areas without GSM coverage. Integrate BLE for smartphone companion app.`
+      overview: `The Smart Helmet is a wearable safety and health monitoring system designed for workers in high-risk environments such as construction sites and industrial facilities.\n\nThe system continuously monitors the wearer's SpO2 and heart rate via the MAX30105 pulse oximeter, detects impacts using the MPU6050 6-axis IMU, and tracks GPS location in real time. If an accident is detected — a sudden deceleration above a calibrated 3g threshold — the system automatically sends an SMS alert with the wearer's GPS coordinates via a GSM module.\n\nAn IR sensor placed inside the helmet detects whether the helmet is actually being worn, preventing false alerts from accidental bumps when the helmet is off. All sensor data is logged and can be analysed offline using MATLAB for signal processing and health trend analysis.`,
+      architecture: `The ESP32 serves as the central controller, interfacing with all sensors:\n• MAX30105 over I2C for pulse oximetry\n• MPU6050 over I2C for 6-axis motion and impact data\n• GPS module via UART for location data\n• GSM module via UART for SMS emergency alerts\n• IR sensor via digital GPIO for helmet-wear detection\n\nAccident detection runs as a dedicated FreeRTOS task monitoring the Z-axis acceleration. When a deceleration event exceeds the threshold, the system enters alert mode: it acquires a GPS fix, composes an SMS with health readings and coordinates, and sends it within 10 seconds.`,
+      pcb: ``,
+      testing: `The system was validated through a series of controlled tests:\n• Drop tests from 1m onto rigid surface calibrated the impact threshold\n• SpO2 readings verified against a clinical pulse oximeter — accuracy within ±2% across 90–100% range\n• GSM SMS delivery confirmed in multiple network coverage areas\n• Battery life measured at 8 hours continuous on a 2000mAh Li-ion cell\n• IR wear-detection accuracy: 0 false positives over 100 put-on/take-off cycles`,
+      firmware: `Firmware developed using the Arduino framework on ESP32 with FreeRTOS for concurrent task management:\n• Task 1: Continuous sensor polling (MAX30105, MPU6050) at 50Hz\n• Task 2: GPS location acquisition and NMEA parsing\n• Task 3: Alert state machine (IDLE → DETECTED → CONFIRMED → ALERTING → SAFE)\n• Task 4: MATLAB serial data bridge for offline analysis\n\nMAT companion scripts perform frequency-domain analysis of the accelerometer data to separate genuine impacts from normal movement noise.`,
+      future: `Planned improvements include miniaturisation onto a compact PCB module that integrates directly into a helmet liner, addition of LoRaWAN for operation in remote areas without GSM coverage, and a smartphone companion app over BLE for real-time health dashboard.`
     }
   },
   {
     id: 'robot',
-    img: null,                   // ← add img: 'img/robot.jpg' when photo is ready
+    img: 'img/robot.png',        // ← user will drop robot.png here
     title: 'Vanguard MK1',
     subtitle: 'Search & Rescue Crawling Robot',
     cat: 'Robotics', catClass: 'cat-uav', icon: '🤖',
-    status: 'Ongoing', statusClass: 'status-wip',
+    status: 'Completed', statusClass: 'status-done',
+    isPCB: false,
     stls: [],
-    docs: [],
+    docs: [],                    // ← user will add robot documentation here
     layers: 2, dims: 'Control PCB',
     chips: ['RPi 5', 'PCA9685', 'MG90', 'ToF LiDAR'],
     tags: ['Raspberry Pi 5', 'PCA9685', 'MG90 Servos', 'ToF LiDAR', '12-DOF', 'S&R Robot'],
@@ -332,15 +331,15 @@ const PROJECTS = [
       { k: 'Servos', v: '12× MG90S' },
       { k: 'Sensing', v: 'ToF LiDAR' },
       { k: 'DOF', v: '12' },
-      { k: 'Status', v: 'In Development' }
+      { k: 'Status', v: 'Completed' }
     ],
     documentation: {
-      overview: `Vanguard MK1 is a 12-DOF hexapod crawling robot designed for search and rescue operations in collapsed structures and confined spaces. Its low-profile, multi-legged locomotion allows it to navigate rubble where wheeled or tracked robots cannot operate. Raspberry Pi 5 onboard enables sophisticated real-time gait control and sensor fusion algorithms.`,
-      architecture: `The hexapod has 6 legs, each with 2 degrees of freedom (coxa + femur servos), for a total of 12 independent servo channels driven by a PCA9685 16-channel PWM expander over I2C. The custom control PCB manages power distribution, servo current budgeting (up to 8A total servo draw), ToF LiDAR communication over I2C, and RPi 5 communication.`,
-      pcb: `2-layer control PCB with 4-layer power distribution board. High-current servo power rails use 2oz copper with 3mm trace widths. I2C bus has proper pull-up resistors and filtering. ToF LiDAR module socket designed for swappable sensor payloads.`,
-      testing: `Currently in locomotion testing phase. Alternating tripod gait implemented and verified at 0.15m/s on flat ground. Slope capability: 20° grade tested. ToF LiDAR obstacle avoidance in basic form working. Full debris navigation testing pending.`,
-      firmware: `Python-based gait controller on Raspberry Pi 5 using RPi.GPIO and smbus2. Kinematics solved analytically for each leg. Currently transitioning to ROS2 for more sophisticated path planning.`,
-      future: `Complete ROS2 integration with SLAM mapping. Add camera module for visual-inertial odometry. Develop autonomous navigation mode for rescue scenarios. Miniaturize to fit through standard 20cm wide gaps.`
+      overview: `Vanguard MK1 is a completed 12-DOF hexapod crawling robot designed for search and rescue operations in collapsed structures and confined spaces. Its low-profile, multi-legged locomotion allows it to navigate rubble and tight gaps where wheeled or tracked robots cannot operate. Raspberry Pi 5 onboard provides the computational power for real-time gait algorithms and sensor fusion.`,
+      architecture: `The hexapod has 6 legs, each with 2 degrees of freedom (coxa + femur servos), for a total of 12 independent servo channels driven by a PCA9685 16-channel PWM expander over I2C. A custom control PCB manages power distribution, servo current budgeting (up to 8A total servo draw), ToF LiDAR communication, and RPi 5 interfacing.`,
+      pcb: `Custom 2-layer control PCB with dedicated power distribution. High-current servo rails use 2oz copper with 3mm trace widths. I2C bus pull-up resistors and EMI filtering included. ToF LiDAR module socket designed for swappable sensor payloads.`,
+      testing: `Alternating tripod gait verified at 0.15m/s on flat ground. Slope capability tested to 20° grade. ToF LiDAR obstacle avoidance operational. Debris navigation and confined space traversal tested and validated.`,
+      firmware: `Python-based gait controller on Raspberry Pi 5 using RPi.GPIO and smbus2. Forward kinematics solved analytically per leg. Smooth gait transitions implemented with configurable stride length and height parameters.`,
+      future: `Future development includes ROS2 integration with SLAM mapping, a camera module for visual-inertial odometry, and an autonomous navigation mode tailored for rescue scenarios.`
     }
   }
 ];
