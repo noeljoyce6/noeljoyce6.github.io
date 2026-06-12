@@ -45,16 +45,10 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font-body);
-      overflow-x: hidden;
-      cursor: none
+      overflow-x: hidden
     }
 
-    /* ─── CURSOR ─────────────────────────────────────────── */
-    #plasma-cursor {
-      position: fixed; top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      pointer-events: none; z-index: 9999;
-    }
+    /* ─── CURSOR CSS removed: using native cursor ─────────────── */
 
     /* ─── STATUS BADGES ─────────────────────────────────── */
     .status-pat {
@@ -252,7 +246,7 @@
     .viewer-tab {
       font-family: var(--font-mono); font-size: 9px; padding: 5px 12px;
       border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
-      background: none; cursor: none; transition: all 0.2s; letter-spacing: 0.1em;
+      background: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.1em;
     }
     .viewer-tab.active, .viewer-tab:hover {
       border-color: var(--green); color: var(--green); background: rgba(0,232,137,0.08)
@@ -315,7 +309,7 @@
     .doc-tab {
       font-family: var(--font-mono); font-size: 9px; padding: 6px 14px;
       border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
-      background: none; cursor: none; transition: all 0.2s; letter-spacing: 0.1em
+      background: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.1em
     }
     .doc-tab.active { border-color: var(--green); color: var(--green); background: rgba(0,232,137,0.08) }
     .doc-panels { }
@@ -422,8 +416,7 @@
 
 <body>
 
-  <!-- CURSOR -->
-  <canvas id="plasma-cursor"></canvas>
+
 
   <!-- NAV -->
   <nav>
@@ -533,57 +526,34 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
-    // ── PLASMA ARC CURSOR ────────────────────────────────────
+    // ── MOUSE PARALLAX on project hero ─────────────────────────────
+    // Subtle depth shift on hero content layers when the mouse moves.
     (function() {
-      const canvas = document.getElementById('plasma-cursor');
-      const ctx = canvas.getContext('2d');
-    // ── PREMIUM CUSTOM CURSOR ───────────────────────────────────────
-    (function() {
-      const canvas = document.getElementById('plasma-cursor');
-      const ctx = canvas.getContext('2d');
-      let W = canvas.width = window.innerWidth;
-      let H = canvas.height = window.innerHeight;
-      window.addEventListener('resize', () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
+      let txM = 0, tyM = 0, txC = 0, tyC = 0;
+      const LAYERS = [
+        { sel: '#hero-cat',      depth: 0.008 },
+        { sel: '#hero-title',    depth: 0.018 },
+        { sel: '#hero-subtitle', depth: 0.013 },
+        { sel: '#hero-specs',    depth: 0.007 }
+      ];
+      const els = LAYERS.map(l => ({ el: document.querySelector(l.sel), d: l.depth }));
 
-      let mx = W/2, my = H/2, px = W/2, py = H/2;
-      let hovered = false;
-
-      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-
-      document.querySelectorAll('a, button, .doc-tab').forEach(el => {
-        el.addEventListener('mouseenter', () => hovered = true);
-        el.addEventListener('mouseleave', () => hovered = false);
+      document.addEventListener('mousemove', e => {
+        txM = (e.clientX / window.innerWidth - 0.5) * 2;
+        tyM = (e.clientY / window.innerHeight - 0.5) * 2;
       });
 
-      function loop() {
-        ctx.clearRect(0, 0, W, H);
-
-        // Dot follows instantly
-        ctx.beginPath();
-        ctx.arc(mx, my, 4, 0, Math.PI*2);
-        ctx.fillStyle = 'rgba(0,232,137,1)';
-        ctx.fill();
-
-        // Ring follows with spring lerp
-        px += (mx - px) * 0.16;
-        py += (my - py) * 0.16;
-        
-        const r = hovered ? 22 : 14;
-        ctx.beginPath();
-        ctx.arc(px, py, r, 0, Math.PI*2);
-        ctx.strokeStyle = hovered ? 'rgba(0,232,137,0.7)' : 'rgba(0,232,137,0.3)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        if (hovered) {
-          ctx.fillStyle = 'rgba(0,232,137,0.08)';
-          ctx.fill();
-        }
-
-        requestAnimationFrame(loop);
+      function tick() {
+        txC += (txM - txC) * 0.06;
+        tyC += (tyM - tyC) * 0.06;
+        els.forEach(({ el, d }) => {
+          if (el) el.style.transform = `translate(${txC * d * 55}px, ${tyC * d * 35}px)`;
+        });
+        requestAnimationFrame(tick);
       }
-      loop();
+      tick();
     })();
+
 
 
     // ── GET PROJECT FROM URL ────────────────────────────────
