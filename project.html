@@ -110,6 +110,41 @@
     }
 
 
+    /* ─── YOUTUBE DEMO BUTTON ──────────────────────────── */
+    .yt-demo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-top: 1.4rem;
+      padding: 0.6rem 1.4rem;
+      background: rgba(255, 0, 0, 0.1);
+      border: 1px solid rgba(255, 60, 60, 0.35);
+      border-radius: 30px;
+      color: #ff6b6b;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.25s;
+    }
+    .yt-demo-btn:hover {
+      background: rgba(255, 0, 0, 0.2);
+      border-color: rgba(255, 60, 60, 0.65);
+      color: #ff9999;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(255, 0, 0, 0.15);
+    }
+    .yt-demo-btn .yt-icon {
+      width: 18px; height: 18px;
+      background: #ff3c3c;
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
     /* ─── AWARD BANNER ──────────────────────────────────── */
     .award-banner {
       display: inline-flex;
@@ -635,20 +670,8 @@
     document.title = `${proj.title} — Noel Joyce Varghese`;
     document.querySelector('meta[name="description"]').content = proj.desc;
 
-    // ── HERO PHOTO / VIDEO BACKGROUND ────────────────────────
-    if (proj.video) {
-      const heroBg = document.createElement('video');
-      heroBg.className = 'hero-photo-bg';
-      heroBg.src = proj.video;
-      heroBg.autoplay = true;
-      heroBg.loop = true;
-      heroBg.muted = true;
-      heroBg.playsInline = true;
-      heroBg.style.objectFit = 'cover';
-      heroBg.style.width = '100%';
-      heroBg.style.height = '100%';
-      document.getElementById('proj-hero').insertBefore(heroBg, document.getElementById('proj-hero').firstChild);
-    } else if (proj.img) {
+    // ── HERO PHOTO BACKGROUND ──────────────────────────────
+    if (proj.img) {
       const heroBg = document.createElement('div');
       heroBg.className = 'hero-photo-bg';
       heroBg.style.backgroundImage = `url('${proj.img}')`;
@@ -684,6 +707,18 @@
     keySpecs.forEach(s => {
       specStrip.innerHTML += `<div class="hero-spec"><div class="hero-spec-k">${s.k}</div><div class="hero-spec-v">${s.v}</div></div>`;
     });
+
+    // ── YOUTUBE DEMO BUTTON (if project has a YouTube demo) ────────
+    if (proj.youtubeUrl) {
+      const ytBtn = document.createElement('a');
+      ytBtn.href = proj.youtubeUrl;
+      ytBtn.target = '_blank';
+      ytBtn.rel = 'noopener noreferrer';
+      ytBtn.className = 'yt-demo-btn';
+      ytBtn.innerHTML = `<span class="yt-icon">▶</span> Watch Demo on YouTube`;
+      specStrip.parentNode.insertBefore(ytBtn, specStrip.nextSibling);
+    }
+
 
     // ── INJECT OVERVIEW ─────────────────────────────────────
     const overviewBody = document.getElementById('overview-body');
