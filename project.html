@@ -1417,19 +1417,19 @@
       const canvas = document.getElementById('custom-cursor-canvas');
       if (!canvas) return;
 
-      // WebGL Fluid Simulation parameters
+      // WebGL Fluid Simulation parameters — tuned for minimal/subtle effect
       const config = {
-        SIM_RESOLUTION: 128,
-        DYE_RESOLUTION: 1024,
-        CAPTURE_RESOLUTION: 512,
-        DENSITY_DISSIPATION: 3.5,
-        VELOCITY_DISSIPATION: 2.0,
+        SIM_RESOLUTION: 64,
+        DYE_RESOLUTION: 512,
+        CAPTURE_RESOLUTION: 256,
+        DENSITY_DISSIPATION: 5.5,
+        VELOCITY_DISSIPATION: 3.5,
         PRESSURE: 0.1,
-        PRESSURE_ITERATIONS: 20,
-        CURL: 3.0,
-        SPLAT_RADIUS: 0.18,
-        SPLAT_FORCE: 6000,
-        SHADING: true,
+        PRESSURE_ITERATIONS: 10,
+        CURL: 1.5,
+        SPLAT_RADIUS: 0.10,
+        SPLAT_FORCE: 2500,
+        SHADING: false,
         COLOR_UPDATE_SPEED: 10,
         PAUSED: false,
         BACK_COLOR: { r: 0, g: 0, b: 0 },
@@ -2180,11 +2180,11 @@
 
       function clickSplat(pointer) {
         const color = generateColor();
-        color.r *= 10.0;
-        color.g *= 10.0;
-        color.b *= 10.0;
-        let dx = 10 * (Math.random() - 0.5);
-        let dy = 30 * (Math.random() - 0.5);
+        color.r *= 3.5;
+        color.g *= 3.5;
+        color.b *= 3.5;
+        let dx = 5 * (Math.random() - 0.5);
+        let dy = 12 * (Math.random() - 0.5);
         splat(pointer.texcoordX, pointer.texcoordY, dx, dy, color);
       }
 
@@ -2217,11 +2217,11 @@
         targets.forEach(el => {
           el.addEventListener('mouseenter', () => {
             isHovered = true;
-            config.SPLAT_RADIUS = 0.28;
+            config.SPLAT_RADIUS = 0.14;
           });
           el.addEventListener('mouseleave', () => {
             isHovered = false;
-            config.SPLAT_RADIUS = 0.18;
+            config.SPLAT_RADIUS = 0.10;
           });
         });
       }
@@ -2265,12 +2265,12 @@
       }
 
       function generateColor() {
-        // Generate shades of green (hue 0.33 to 0.43) to match portfolio theme
+        // Generate shades of green (hue 0.33 to 0.43) to match portfolio theme — low intensity
         let hue = 0.33 + Math.random() * 0.10;
         let c = HSVtoRGB(hue, 1.0, 1.0);
-        c.r *= 0.15;
-        c.g *= 0.15;
-        c.b *= 0.15;
+        c.r *= 0.06;
+        c.g *= 0.06;
+        c.b *= 0.06;
         return c;
       }
 
@@ -2335,6 +2335,11 @@
         let pointer = pointers[0];
         let posX = scaleByPixelRatio(e.clientX);
         let posY = scaleByPixelRatio(e.clientY);
+        
+        if (!isHovered) {
+          config.SPLAT_RADIUS = 0.10;
+        }
+
         if (!firstMouseMoveHandled) {
           let color = generateColor();
           updatePointerMoveData(pointer, posX, posY, color);
