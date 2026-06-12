@@ -77,6 +77,39 @@
     .patent-notice-body a { color: #b478ff; text-decoration: none }
     .patent-notice-body a:hover { text-decoration: underline }
 
+    /* Documentation inquiry notice (shown when docs are protected) */
+    .doc-inquiry-notice {
+      margin: 2rem 0;
+      padding: 2.2rem 2.5rem;
+      border: 1px solid rgba(0, 232, 137, 0.15);
+      border-radius: 12px;
+      background: rgba(0, 232, 137, 0.04);
+      display: flex; align-items: flex-start; gap: 1.5rem;
+    }
+    .doc-inquiry-icon { font-size: 2rem; flex-shrink: 0; opacity: 0.7; margin-top: 2px }
+    .doc-inquiry-body h4 {
+      font-family: var(--font-head); font-size: 1rem; font-weight: 700;
+      color: var(--text); margin-bottom: 0.6rem; letter-spacing: -0.02em
+    }
+    .doc-inquiry-body p {
+      font-size: 0.85rem; color: var(--muted); line-height: 1.75; margin-bottom: 0.4rem
+    }
+    .doc-inquiry-link {
+      display: inline-block; margin-top: 0.8rem;
+      padding: 0.5rem 1.2rem;
+      background: rgba(0, 232, 137, 0.08);
+      border: 1px solid rgba(0, 232, 137, 0.25);
+      border-radius: 6px;
+      color: var(--green); font-family: var(--font-mono);
+      font-size: 0.8rem; text-decoration: none;
+      letter-spacing: 0.05em; transition: all 0.2s
+    }
+    .doc-inquiry-link:hover {
+      background: rgba(0, 232, 137, 0.14);
+      border-color: rgba(0, 232, 137, 0.5)
+    }
+
+
     /* ─── NAV ────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
@@ -686,7 +719,16 @@
               panelContent += `<p style="margin-top:1rem;font-size:0.8rem">3D models are available for interactive viewing above. Files are not available for download.</p>`;
             }
           } else {
-            panelContent = `<p>Documentation is under NDA. Source files and documentation are available on request for verified recruiters. Please reach out via email at <strong>noeljoyce6@gmail.com</strong>.</p>`;
+            panelContent = `
+              <div class="doc-inquiry-notice">
+                <div class="doc-inquiry-icon">🔐</div>
+                <div class="doc-inquiry-body">
+                  <h4>Documentation Available on Request</h4>
+                  <p>Project documentation, schematics, and source files are protected and not available for public download.</p>
+                  <p>For inquiries about this project, please contact:</p>
+                  <a href="mailto:noeljoyce6@gmail.com" class="doc-inquiry-link">noeljoyce6@gmail.com</a>
+                </div>
+              </div>`;
           }
         } else {
           const paras = (sec.content || '').split('\n').filter(Boolean);
