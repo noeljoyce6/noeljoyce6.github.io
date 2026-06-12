@@ -146,90 +146,49 @@
 
     /* ─── NAV ────────────────────────────────────────────── */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.3rem 5rem;
-      transition: background 0.4s, border-color 0.4s;
-      border-bottom: 1px solid transparent
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: center; align-items: flex-start;
+      padding: 1rem 2rem; pointer-events: none;
     }
-
-    nav.scrolled {
-      background: rgba(7, 10, 15, 0.92);
-      backdrop-filter: blur(16px);
-      border-color: var(--border)
+    .nav-pill {
+      display: flex; align-items: center;
+      background: rgba(9,14,23,0.78);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(39,51,69,0.85);
+      border-radius: 100px;
+      padding: 0.42rem 0.42rem 0.42rem 1.5rem;
+      pointer-events: all;
+      transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+      gap: 0.15rem;
     }
-
+    nav.scrolled .nav-pill {
+      background: rgba(7,10,15,0.94);
+      border-color: rgba(0,232,137,0.22);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,232,137,0.07);
+    }
     .nav-logo {
-      font-family: var(--font-head);
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em
+      font-family: var(--font-head); font-size: 1rem; font-weight: 800;
+      color: var(--text); text-decoration: none; letter-spacing: -0.02em;
+      margin-right: 0.8rem; flex-shrink: 0;
     }
-
-    .nav-logo span {
-      color: var(--green)
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none
-    }
-
+    .nav-logo span { color: var(--green); }
+    .nav-links { display: flex; gap: 0; list-style: none; }
     .nav-links a {
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-decoration: none;
-      font-weight: 400;
-      transition: color 0.2s;
-      position: relative;
-      letter-spacing: 0.02em
+      font-size: 0.8rem; color: var(--muted); text-decoration: none;
+      font-weight: 400; padding: 0.5rem 0.85rem; border-radius: 100px;
+      transition: background 0.18s, color 0.18s; cursor: none;
     }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--green);
-      transition: width 0.3s
+    .nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .nav-resume {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+      padding: 0.62rem 1.25rem; border-radius: 100px;
+      background: var(--green); color: #000;
+      text-decoration: none; transition: all 0.22s;
+      letter-spacing: 0.07em; display: flex; align-items: center;
+      gap: 5px; margin-left: 0.6rem; white-space: nowrap; flex-shrink: 0;
+      cursor: none;
     }
-
-    .nav-links a:hover {
-      color: var(--text)
-    }
-
-    .nav-links a:hover::after {
-      width: 100%
-    }
-
-    .nav-cta {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.55rem 1.4rem;
-      border: 1px solid var(--green2);
-      border-radius: 4px;
-      color: var(--green);
-      text-decoration: none;
-      transition: all 0.25s;
-      letter-spacing: 0.08em
-    }
-
-    .nav-cta:hover {
-      background: var(--green);
-      color: #000
-    }
+    .nav-resume:hover { background: #00ffaa; box-shadow: 0 0 20px rgba(0,232,137,0.4); transform: scale(1.04); }
 
     /* ─── HERO ───────────────────────────────────────────── */
     #hero {
@@ -1117,34 +1076,55 @@
 
     /* ─── PROJECTS ───────────────────────────────────────── */
     #projects {
-      padding: 7rem 5rem;
+      padding: 7rem 0 7rem;
       background: var(--bg);
-      border-top: 1px solid var(--border)
+      border-top: 1px solid var(--border);
+      overflow: hidden;
+    }
+    #projects .section-header,
+    #projects #proj-title {
+      padding: 0 5rem;
+    }
+    @media(max-width:768px){
+      #projects .section-header,
+      #projects #proj-title { padding: 0 1.5rem; }
     }
 
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.5rem
+    /* ─── MARQUEE ────────────────────────────────────────── */
+    .marquee-container {
+      overflow: hidden; display: flex; flex-direction: column; gap: 1.4rem;
+      -webkit-mask-image: linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%);
+      mask-image: linear-gradient(90deg,transparent 0%,#000 7%,#000 93%,transparent 100%);
     }
+    .marquee-row { overflow: hidden; }
+    .marquee-row:hover .marquee-track,
+    .marquee-row:hover .marquee-track-r { animation-play-state: paused; }
+    .marquee-track {
+      display: flex; gap: 1.2rem; width: max-content;
+      animation: mLeft 38s linear infinite;
+    }
+    .marquee-track-r {
+      display: flex; gap: 1.2rem; width: max-content;
+      animation: mRight 44s linear infinite;
+    }
+    @keyframes mLeft { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
+    @keyframes mRight { 0% { transform: translateX(-50%) } 100% { transform: translateX(0) } }
 
     .proj-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      cursor: pointer;
+      cursor: none;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
-      opacity: 0;
-      transform: translateY(24px);
-      display: flex;
-      flex-direction: column
+      display: flex; flex-direction: column;
+      width: 298px; flex-shrink: 0;
     }
 
     .proj-card:hover {
-      border-color: rgba(0, 232, 137, 0.35);
-      transform: translateY(-4px);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(0, 232, 137, 0.1)
+      border-color: rgba(0, 232, 137, 0.38);
+      transform: translateY(-5px) scale(1.015);
+      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 232, 137, 0.12), 0 0 32px rgba(0,232,137,0.05);
     }
 
     .proj-visual {
@@ -1421,6 +1401,20 @@
     .no-stl .proj-cta {
       color: var(--muted);
       cursor: default
+    }
+
+    /* ─── BIRD CANVAS ───────────────────────────────────── */
+    #bird-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 45;
+    }
+
+    /* ─── STATUS EXTRAS ─────────────────────────────────── */
+    .status-pat {
+      background: rgba(180,120,255,0.12);
+      color: #b478ff;
+      border: 1px solid rgba(180,120,255,0.28)
     }
 
     /* ─── CONTACT ────────────────────────────────────────── */
@@ -2003,9 +1997,11 @@
 
       @media(max-width:768px) {
         nav {
-          padding: 1rem 1.5rem
+          padding: 0.8rem 1rem
         }
-
+        .nav-pill {
+          padding: 0.4rem 0.4rem 0.4rem 1.1rem;
+        }
         .nav-links {
           display: none
         }
@@ -2082,18 +2078,23 @@
   <!-- CURSOR -->
 
 
+  <!-- BIRD CANVAS -->
+  <canvas id="bird-canvas"></canvas>
+
   <main>
     <!-- NAV -->
     <nav id="navbar">
-      <a href="#hero" class="nav-logo">Noel<span>.</span></a>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-      <a href="#contact" class="nav-cta">Get in Touch</a>
+      <div class="nav-pill">
+        <a href="#hero" class="nav-logo">N<span>.</span></a>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="Noel_Joyce_Varghese_Resume .pdf" download class="nav-resume">↓ Resume</a>
+      </div>
     </nav>
 
     <!-- HERO -->
@@ -2527,7 +2528,10 @@
         <div class="section-line"></div>
       </div>
       <h2 class="section-title" id="proj-title">Projects &amp; Boards</h2>
-      <div class="projects-grid" id="projects-grid"></div>
+      <div class="marquee-container" id="marquee-container">
+        <div class="marquee-row" id="mrow-1"><div class="marquee-track" id="mtrack-1"></div></div>
+        <div class="marquee-row" id="mrow-2"><div class="marquee-track-r" id="mtrack-2"></div></div>
+      </div>
     </section>
 
     <!-- CONTACT -->
@@ -2830,7 +2834,7 @@
 
       // projects
       gsap.to('#proj-title', { scrollTrigger: { trigger: '#projects', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
-      gsap.to('.proj-card', { scrollTrigger: { trigger: '#projects-grid', start: 'top 76%' }, opacity: 1, y: 0, stagger: 0.08, duration: 0.6, ease: 'power3.out' });
+      gsap.from('#marquee-container', { scrollTrigger: { trigger: '#projects', start: 'top 80%' }, opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
 
       // contact
       gsap.to('#contact-title', { scrollTrigger: { trigger: '#contact', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
@@ -2840,42 +2844,153 @@
       gsap.to('#avail-card-wrap', { scrollTrigger: { trigger: '#avail-card-wrap', start: 'top 80%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
     }
 
-    // ── BUILD PROJECT GRID ──────────────────────────────────────────
-    // PROJECTS data is loaded from projects-data.js
-    const grid = document.getElementById('projects-grid');
-    PROJECTS.forEach(p => {
+    // ── BUILD MARQUEE ROWS ──────────────────────────────────────────
+    function buildCard(p) {
       const card = document.createElement('div');
       card.className = 'proj-card';
-      card.style.cursor = 'pointer';
       card.innerHTML = `
-      <div class="proj-visual">
-        ${p.img
-          ? `<img class="proj-board-img" src="${p.img}" alt="${p.title} board" loading="lazy" />
-             <div class="proj-img-overlay"></div>`
-          : `<div class="proj-visual-fallback"><div class="proj-icon">${p.icon}</div></div>`
-        }
-        <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
-        <span class="proj-status ${p.statusClass}">${p.status}</span>
-        ${p.award ? `<span class="proj-award-badge">🏆 ${p.award.label.replace('🏆 ', '')}</span>` : ''}
-      </div>
-      <div class="proj-body">
-        <div class="proj-title">${p.title}</div>
-        <div class="proj-subtitle">${p.subtitle}</div>
-        <div class="proj-desc">${p.desc.substring(0, 140)}${p.desc.length > 140 ? '…' : ''}</div>
-        <div class="proj-chips">${p.chips.map(c => {
-          const isIc = /STM32|DRV|ESP32|AD623|MA732|PCA9685|RPi|CM5|MAX30105|Wireless RX|Actuator Driver/i.test(c);
-          return '<span class="proj-chip ' + (isIc ? 'chip-ic' : '') + '">' + c + '</span>';
-        }).join('')}</div>
-        <div class="proj-footer">
-          <div class="proj-meta">${p.layers ? `<span>${p.layers}L</span> · ` : ''}${p.dims}</div>
-          <div class="proj-cta">View Case Study →</div>
+        <div class="proj-visual">
+          ${p.img
+            ? `<img class="proj-board-img" src="${p.img}" alt="${p.title}" loading="lazy"/><div class="proj-img-overlay"></div>`
+            : `<div class="proj-visual-fallback"><div class="proj-icon">${p.icon}</div></div>`}
+          <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
+          <span class="proj-status ${p.statusClass}">${p.status}</span>
+          ${p.award ? `<span class="proj-award-badge">🏆 ${p.award.label.replace('🏆 ','')}</span>` : ''}
         </div>
-      </div>`;
-      card.addEventListener('click', () => {
-        window.location.href = 'project.html?id=' + p.id;
+        <div class="proj-body">
+          <div class="proj-title">${p.title}</div>
+          <div class="proj-subtitle">${p.subtitle}</div>
+          <div class="proj-desc">${p.desc.substring(0,120)}${p.desc.length>120?'…':''}</div>
+          <div class="proj-chips">${p.chips.map(c=>`<span class="proj-chip">${c}</span>`).join('')}</div>
+          <div class="proj-footer">
+            <div class="proj-meta">${p.layers?`<span>${p.layers}L</span> · `:''}${p.dims}</div>
+            <div class="proj-cta">View Case Study →</div>
+          </div>
+        </div>`;
+      card.addEventListener('click', () => { window.location.href = 'project.html?id=' + p.id; });
+      return card;
+    }
+
+    const track1 = document.getElementById('mtrack-1');
+    const track2 = document.getElementById('mtrack-2');
+    const rev = [...PROJECTS].reverse();
+    // Duplicate each row for seamless infinite loop
+    [...PROJECTS, ...PROJECTS].forEach(p => track1.appendChild(buildCard(p)));
+    [...rev, ...rev].forEach(p => track2.appendChild(buildCard(p)));
+
+    // ── FLYING BIRD ANIMATION ───────────────────────────────────────
+    (function(){
+      const bc = document.getElementById('bird-canvas');
+      const bx = bc.getContext('2d');
+      let W = window.innerWidth, H = window.innerHeight;
+      bc.width = W; bc.height = H;
+
+      let bX = -80, bY = H * 0.18, bTargetY = H * 0.18;
+      let bVX = 145, bFlap = 0, bPrevY = bY;
+      let lastT = null;
+
+      // Scroll → update target Y
+      window.addEventListener('scroll', () => {
+        const pct = Math.min(window.scrollY / Math.max(1, document.documentElement.scrollHeight - H), 1);
+        bTargetY = H * (0.12 + pct * 0.72);
       });
-      grid.appendChild(card);
-    });
+
+      window.addEventListener('resize', () => {
+        W = bc.width = window.innerWidth;
+        H = bc.height = window.innerHeight;
+      });
+
+      function drawBird(x, y, vx, flap) {
+        bx.save();
+        bx.translate(x, y);
+        if (vx < 0) bx.scale(-1, 1); // flip when going left
+
+        const dy = y - bPrevY;
+        const pitch = Math.atan2(dy, Math.abs(vx)) * 0.6;
+        bx.rotate(pitch);
+
+        const wUp = Math.sin(flap) * 0.55;       // wing angle (+ = up)
+        const alpha = 0.72;
+        const col = `rgba(0,232,137,${alpha})`;
+        const colDim = `rgba(0,180,100,${alpha * 0.6})`;
+
+        // Glow
+        const g = bx.createRadialGradient(0, 0, 0, 0, 0, 30);
+        g.addColorStop(0, 'rgba(0,232,137,0.08)');
+        g.addColorStop(1, 'rgba(0,232,137,0)');
+        bx.fillStyle = g;
+        bx.beginPath(); bx.arc(0, 0, 30, 0, Math.PI * 2); bx.fill();
+
+        // Left wing (main)
+        bx.save();
+        bx.rotate(-wUp);
+        bx.beginPath();
+        bx.moveTo(-2, 0);
+        bx.bezierCurveTo(-8, -4, -22, -14 - wUp * 8, -30, -6 + wUp * 4);
+        bx.bezierCurveTo(-20, 4, -8, 3, -2, 2);
+        bx.fillStyle = col; bx.fill();
+        bx.restore();
+
+        // Right wing
+        bx.save();
+        bx.rotate(wUp * 0.7);
+        bx.beginPath();
+        bx.moveTo(2, 0);
+        bx.bezierCurveTo(8, -3, 18, -12 + wUp * 6, 22, -3 + wUp * 3);
+        bx.bezierCurveTo(16, 4, 8, 3, 2, 2);
+        bx.fillStyle = colDim; bx.fill();
+        bx.restore();
+
+        // Body
+        bx.beginPath();
+        bx.ellipse(0, 0, 13, 4, 0, 0, Math.PI * 2);
+        bx.fillStyle = col; bx.fill();
+
+        // Head
+        bx.beginPath(); bx.arc(13, -3, 4.5, 0, Math.PI * 2);
+        bx.fill();
+
+        // Beak
+        bx.beginPath();
+        bx.moveTo(17, -3); bx.lineTo(24, -5); bx.lineTo(17, -1);
+        bx.fillStyle = `rgba(0,255,160,${alpha})`; bx.fill();
+
+        // Eye
+        bx.beginPath(); bx.arc(15, -4, 1, 0, Math.PI * 2);
+        bx.fillStyle = '#000'; bx.fill();
+
+        // Tail
+        bx.beginPath();
+        bx.moveTo(-13, 0); bx.lineTo(-22, -4); bx.lineTo(-21, 1); bx.lineTo(-22, 5); bx.lineTo(-13, 2);
+        bx.fillStyle = col; bx.fill();
+
+        bx.restore();
+      }
+
+      function animBird(now) {
+        if (!lastT) lastT = now;
+        const dt = Math.min((now - lastT) / 1000, 0.05);
+        lastT = now;
+
+        bPrevY = bY;
+        bX += bVX * dt;
+        bY += (bTargetY - bY) * 0.028;
+        bFlap += dt * 4.5;
+
+        // Bounce off edges
+        if (bX > W + 80) { bX = W + 80; bVX = -Math.abs(bVX); }
+        if (bX < -80)     { bX = -80;    bVX =  Math.abs(bVX); }
+
+        // Natural undulation along flight path
+        const undY = bY + Math.sin(bX * 0.018) * 9;
+
+        bx.clearRect(0, 0, W, H);
+        drawBird(bX, undY, bVX, bFlap);
+
+        requestAnimationFrame(animBird);
+      }
+      requestAnimationFrame(animBird);
+    })();
   </script>
 </body>
 
