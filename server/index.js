@@ -45,25 +45,44 @@ Rule: If someone asks unrelated questions, politely redirect them back to Noel's
 
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message } = req.body;
+    const { message, history } = req.body;
 
     if (!message || typeof message !== "string") {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    // Call Gemini 2.5 Flash using the official @google/genai SDK
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: [
+    let contents;
+    if (history && Array.isArray(history) && history.length > 0) {
+      contents = [...history];
+      const lastTurn = contents[contents.length - 1];
+      if (!lastTurn || lastTurn.role !== "user" || !lastTurn.parts || lastTurn.parts[0].text !== message) {
+        contents.push({
+          role: "user",
+          parts: [{ text: message }]
+        });
+      }
+    } else {
+      contents = [
         {
           role: "user",
           parts: [
             {
-              text: `${SYSTEM_PROMPT}\n\nUser question: ${message}`,
+              text: message,
             },
           ],
         },
-      ],
+      ];
+    }
+
+    // Call Gemini 2.5 Flash using the official @google/genai SDK
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: contents,
+      config: {
+        systemInstruction: SYSTEM_PROMPT,
+        temperature: 0.5,
+        maxOutputTokens: 300,
+      }
     });
 
     res.json({

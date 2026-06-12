@@ -4857,21 +4857,30 @@
 
         // Try local backend server first
         try {
+          if (history.length > 12) history.shift();
+          history.push({ role: 'user', parts: [{ text: userMessage }] });
+
           const res = await fetch("http://localhost:5000/api/chat", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: userMessage }),
+            body: JSON.stringify({ 
+              message: userMessage,
+              history: history 
+            }),
           });
 
           if (!res.ok) {
+            history.pop(); // Remove user turn on failure
             throw new Error(`Server returned status ${res.status}`);
           }
           const data = await res.json();
           if (data.reply) {
+            history.push({ role: 'model', parts: [{ text: data.reply }] });
             return data.reply;
           }
+          history.pop();
           throw new Error("Invalid backend response");
         } catch (err) {
           console.warn("Backend server not available, falling back to Local AI:", err);
