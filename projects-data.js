@@ -264,7 +264,7 @@ const PROJECTS = [
   },
   {
     id: 'helmet',
-    img: 'img/helmet.png',
+    img: 'img/neuro track.png',
     title: 'Smart Helmet',
     subtitle: 'Accident & Health Monitoring',
     cat: 'Wearable', catClass: 'cat-bio', icon: '⛑',
@@ -340,6 +340,122 @@ const PROJECTS = [
       testing: `Alternating tripod gait verified at 0.15m/s on flat ground. Slope capability tested to 20° grade. ToF LiDAR obstacle avoidance operational. Debris navigation and confined space traversal tested and validated.`,
       firmware: `Python-based gait controller on Raspberry Pi 5 using RPi.GPIO and smbus2. Forward kinematics solved analytically per leg. Smooth gait transitions implemented with configurable stride length and height parameters.`,
       future: `Future development includes ROS2 integration with SLAM mapping, a camera module for visual-inertial odometry, and an autonomous navigation mode tailored for rescue scenarios.`
+    }
+  },
+  {
+    id: 'hivex',
+    img: null,
+    title: 'HIVE-X Honey Extractor',
+    subtitle: 'Automated Honey Extractor Platform',
+    cat: 'Automation', catClass: 'cat-motor', icon: '🍯',
+    status: 'Ongoing', statusClass: 'status-wip',
+    stls: [],
+    docs: [],
+    award: { label: '🏆 YIP 5.0 State Winner & i2U Winner 2024', id: 'Patent: 202441074582' },
+    layers: null, dims: 'Vanthen Extractor',
+    chips: ['ESP32', 'Stepper Motor', '2.8" SPI TFT', 'LiPo 4200mAh'],
+    tags: ['ESP32', 'Stepper Motor', 'Automation', 'Honey Extractor', '2.8" TFT', 'Patent Published', 'LiPo Powered'],
+    desc: 'A fully automated honey extraction system ("Vanthen Extractor") that rotates honeycombs at adjustable RPM (50–350) using a stepper motor and ESP32, integrating a 30–35°C heating mechanism and data logging via a 2.8" TFT screen.',
+    highlights: [
+      'Automated honeycomb rotation using stepper motor and ESP32',
+      'Adjustable extraction speed from 50 to 350 RPM',
+      'Integrated heating mechanism (30–35°C) to improve honey viscosity',
+      'Real-time parameter display on a 2.8" SPI TFT screen',
+      'Heating and filtering unit for removing moisture content',
+      'Published Design Patent (Patent No: 202441074582)',
+      'Won i2U Winner 2024, IGNITE 2024, and YIP 5.0 State Level'
+    ],
+    specs: [
+      { k: 'Controller', v: 'ESP32' },
+      { k: 'Actuation', v: 'Stepper Motor (50–350 RPM)' },
+      { k: 'Heating', v: '30–35°C regulated' },
+      { k: 'Display', v: '2.8" SPI TFT' },
+      { k: 'Power Source', v: 'LiPo 4200mAh (B6 IMAX charger)' },
+      { k: 'Patent Status', v: 'Design Patent Published (202441074582)' }
+    ],
+    documentation: {
+      overview: `The HIVE-X (known commercially as "Vanthen Extractor") is an automated honey extraction system designed to address the inefficiencies and manual labor of traditional honey harvesting. Developed under Amal Jyothi College of Engineering, the project specifically targets small-scale beekeepers and agricultural cooperatives by offering a controlled, automated rotation and heating extraction process that preserves honey quality while maximizing yield.`,
+      architecture: `The control system is built around an ESP32 microcontroller, which regulates a stepper motor drive stage to achieve smooth acceleration curves between 50 and 350 RPM, preventing honeycomb breakage. A closed-loop heating element keeps the chamber at a stable 30–35°C, reducing honey viscosity without degrading enzymes. System status, speed, temperature, and extraction progress are displayed on a 2.8" SPI TFT screen. The system is powered by a high-capacity 4200mAh LiPo battery pack.`,
+      pcb: ``,
+      testing: `The system underwent trials with small-scale farmers. RPM ramping profiles were verified to ensure honeycombs remained intact during start/stop phases. The heating element closed-loop control maintained 32°C ± 1°C under ambient loads. Battery performance was validated for up to 6 hours of continuous field operation on a single charge. The honey extracted showed lower moisture levels and higher clarity than manual methods.`,
+      firmware: `Firmware written in C++ using ESP-IDF. A PID control loop handles the stepper motor speed acceleration ramps and timing profile. A second hysteresis control loop monitors a thermistor and gates a MOSFET power stage for the heating element. Display updates are optimized using DMA over SPI for smooth UI rendering.`,
+      future: `Future work involves deploying the Vanthen Extractor in larger cooperatives, integrating a wireless mesh node for hive telemetry, and adding cloud-based yield prediction analytics based on density data.`
+    }
+  },
+  {
+    id: 'csro',
+    img: null,
+    title: 'CSRO PLL VCO Block',
+    subtitle: '3-Stage Current Starved Ring Oscillator',
+    cat: 'Analog IC', catClass: 'cat-sense', icon: '📳',
+    status: 'Completed', statusClass: 'status-done',
+    stls: [],
+    docs: [],
+    layers: null, dims: '90nm gpdk Virtuoso',
+    chips: ['Cadence Virtuoso', 'gpdk90nm', 'Ring Osc'],
+    tags: ['Cadence Virtuoso', 'gpdk90nm', 'CSRO', 'VCO', 'PLL', 'Analog Layout', 'Post-Layout Sim'],
+    desc: 'A 3-stage Current Starved Ring Oscillator (CSRO) designed and simulated in gpdk90nm Cadence Virtuoso for PLL VCO applications, achieving 7GHz measured frequency and ~23ps stage delay.',
+    highlights: [
+      'Designed 3-stage CSRO in gpdk90nm technology node',
+      'Targeted 5GHz oscillation frequency with a measured output of 7GHz',
+      'Achieved stage propagation delay of approximately 23ps',
+      'Completed full custom analog flow: schematic sizing, layout, and parasitic extraction',
+      'Performed Transient, DC, PSS, and PNOISE simulations for phase noise validation',
+      'Implemented multi-finger layout techniques for area optimization and DRC/LVS compliance'
+    ],
+    specs: [
+      { k: 'Software', v: 'Cadence Virtuoso' },
+      { k: 'Technology Node', v: 'gpdk 90nm' },
+      { k: 'Topology', v: '3-Stage Current Starved Ring' },
+      { k: 'Target Freq', v: '5 GHz' },
+      { k: 'Measured Freq', v: '7 GHz (post-layout)' },
+      { k: 'Stage Delay', v: '~23 ps' }
+    ],
+    documentation: {
+      overview: `This project covers the full custom analog design, layout, and post-layout verification of a 3-Stage Current Starved Ring Oscillator (CSRO) during an internship at IIIT Kottayam. The CSRO functions as the core Voltage Controlled Oscillator (VCO) building block for Phase-Locked Loops (PLLs), where tuning voltage regulates the current starved bias transistors to adjust oscillation frequency.`,
+      architecture: `The oscillator topology uses three inverter stages where the charging and discharging current is restricted by current sources controlled by a bias network. Transistor sizing was calculated to balance frequency range, power consumption, and phase noise. Symbols and cells were created hierarchically, and bias mismatch issues were simulated and resolved during transient sweeps.`,
+      pcb: `gpdk90nm custom layout with multi-finger transistor fingers to minimize gate resistance and junction capacitance. Area optimization and matching layouts were drawn to ensure DRC and LVS compliance. PEX (Parasitic Extraction) was run to capture parasitic resistance and capacitance for back-annotation.`,
+      testing: `Simulation results: DRC and LVS checks passed with zero errors. Extracted simulations (PEX) validated the design against parasitic loading. Phase noise was evaluated using Periodic Steady State (PSS) and Periodic Noise (PNOISE) analyses. Stage delay was measured at ~23ps, leading to a post-layout oscillation frequency of 7GHz. Current consumption was optimized for low-power operation.`,
+      firmware: ``,
+      future: `Currently extending the project to integrate the VCO into a complete Phase-Locked Loop (PLL) synthesizer block. Sizing of inverter stages can be dynamically scaled for specific frequency bands.`
+    }
+  },
+  {
+    id: 'energymeter',
+    img: null,
+    title: 'Low Power DC Energy Meter',
+    subtitle: 'INA219 Power Logger & Meter',
+    cat: 'Sensing', catClass: 'cat-sense', icon: '🔌',
+    status: 'Completed', statusClass: 'status-done',
+    stls: [],
+    docs: [{ label: 'Project Report', file: 'Low Power DC Energy Meter.28 .pdf' }],
+    layers: null, dims: 'Breadboard & Soldered PCB',
+    chips: ['ATmega328P', 'INA219', 'OLED SSD1306', 'SdFat'],
+    tags: ['Arduino Nano', 'INA219', 'OLED I2C', 'Micro SD Card', 'Low-Power', 'Interrupt Driven', 'SdFat'],
+    desc: 'An interrupt-driven 5V DC energy meter and data logger built on Arduino Nano and INA219. Features real-time OLED monitoring and microSD data logging, optimizing power consumption by disabling ADC and utilizing sleep modes.',
+    highlights: [
+      'Precise current, voltage, and power logging using INA219 IC',
+      '10Hz interrupt-driven data acquisition using Timer1 CTC mode',
+      'Low-power optimization: disables on-chip ADC to conserve power',
+      'Local data logging in CSV format to Micro SD card using SdFat library',
+      'Real-time metric visualization (V, mA, mW, mWh) on an OLED display',
+      'Developed as a B.Tech Logic Circuit Design course project'
+    ],
+    specs: [
+      { k: 'Controller', v: 'Arduino Nano (ATmega328P)' },
+      { k: 'Sensor IC', v: 'INA219 Power Monitor' },
+      { k: 'Storage', v: 'Micro SD Module (SPI, SdFat)' },
+      { k: 'Display', v: '4-Pin I2C OLED (SSD1306)' },
+      { k: 'Power Source', v: '9V Battery + 7805 Regulator' },
+      { k: 'Sampling Rate', v: '10 Hz (Timer1 Interrupt)' }
+    ],
+    documentation: {
+      overview: `The Low Power DC Energy Meter is a B.Tech course project designed for the ECT 203 Logic Circuit Design course at Amal Jyothi College of Engineering. The objective was to design a highly accurate, portable 5V DC power monitor and data logger that records load consumption metrics (voltage, current, power, and accumulated energy) to an SD card while maintaining a low-power design footprint.`,
+      architecture: `The system pairs an Arduino Nano with an INA219 current/voltage monitor IC connected in-line with the load. Data logging is performed over SPI to a Micro SD Card reader, while real-time metrics are rendered on an SSD1306 OLED display over I2C. Power efficiency is achieved by using a Timer1 interrupt to trigger measurements at 10Hz, allowing the MCU to save clock cycles, and explicitly disabling the unused on-chip ADC peripheral.`,
+      pcb: `Prototype developed on breadboard and subsequently soldered onto a prototyping matrix board. The layout maintains separate routing paths for the power supply (9V battery regulated by 7805 to 5V) and sensor buses. De-noising capacitors are placed at the inputs and outputs of the 7805 regulator.`,
+      testing: `Validated using a 3V warm-white LED chip load. The INA219 logged current and bus voltages accurately. CSV logging to "MEAS.csv" on the SD card was verified with time-stamped entries. Current consumption of the meter itself was analyzed, confirming power savings from disabling the internal ADC.`,
+      firmware: `Written in Arduino C++ utilizing the Adafruit_INA219, SSD1306AsciiAvrI2c, and SdFat libraries. Low-level AVR registers are modified: Timer1 is configured in CTC (Clear Timer on Compare Match) mode to fire at 10Hz, setting a volatile trigger flag. ADC circuitry is turned off via ADCSRA = 0. SPI buffer syncing is queued every 10 measurement cycles to minimize SD card write overhead.`,
+      future: `Future enhancements include designing a dedicated custom PCB layout, integrating an onboard LiPo charging circuit, and adding BLE communication for remote telemetry viewing on a mobile app.`
     }
   }
 ];
