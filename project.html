@@ -634,10 +634,9 @@
           panelContent = `<p>Documentation files available for download:</p><div class="doc-download">` +
             proj.docs.map(d => `<a href="${d.file}" target="_blank" class="doc-dl-btn"><span class="doc-dl-icon">📄</span>${d.label}</a>`).join('') +
             `</div>`;
+          // Note: STL 3D models are view-only — no download links provided
           if (proj.stls && proj.stls.length > 0) {
-            panelContent += `<div class="doc-download" style="margin-top:0.6rem">` +
-              proj.stls.map(s => `<a href="${s.file}" download class="doc-dl-btn"><span class="doc-dl-icon">🧊</span>${s.label} (.stl)</a>`).join('') +
-              `</div>`;
+            panelContent += `<p style="margin-top:1rem;font-size:0.8rem">3D models are available for interactive viewing above. Files are not available for download.</p>`;
           }
         } else {
           panelContent = `<p>Documentation is under NDA. Source files and documentation are available on request for verified recruiters. Please reach out via email at <strong>noeljoyce6@gmail.com</strong>.</p>`;
@@ -941,123 +940,152 @@
     }
 
     function loadStl(filename, scene, onDone, fillEl, pctEl) {
+      // Fetch as ArrayBuffer — never exposes URL in DOM, prevents easy downloading
       const url = filename.split('').map(c => c === ' ' ? '%20' : c).join('');
-      const loader = new STLLoader();
+      if (fillEl) fillEl.style.width = '5%';
+      if (pctEl) pctEl.textContent = '5%';
 
-      loader.load(url, geo => {
-        geo.computeVertexNormals();
-        geo.center();
-
-        geo.computeBoundingBox();
-        const bbox = geo.boundingBox;
-        const localSize = new THREE.Vector3().subVectors(bbox.max, bbox.min);
-
-        let heightAxis = 'z';
-        let minVal = bbox.min.z;
-        let getVal = (i) => geo.attributes.position.getZ(i);
-        let getNorm = (i) => Math.abs(geo.attributes.normal.getZ(i));
-
-        if (localSize.x < localSize.y && localSize.x < localSize.z) {
-          heightAxis = 'x'; minVal = bbox.min.x;
-          getVal = (i) => geo.attributes.position.getX(i);
-          getNorm = (i) => Math.abs(geo.attributes.normal.getX(i));
-        } else if (localSize.y < localSize.x && localSize.y < localSize.z) {
-          heightAxis = 'y'; minVal = bbox.min.y;
-          getVal = (i) => geo.attributes.position.getY(i);
-          getNorm = (i) => Math.abs(geo.attributes.normal.getY(i));
-        }
-
-        const heightCounts = {};
-        const posAttr = geo.attributes.position;
-        const step = Math.max(1, Math.floor(posAttr.count / 20000));
-        for (let i = 0; i < posAttr.count; i += step) {
-          if (getNorm(i) > 0.95) {
-            const val = getVal(i);
-            const rounded = Math.round(val * 10) / 10;
-            heightCounts[rounded] = (heightCounts[rounded] || 0) + 1;
+      fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const total = parseInt(res.headers.get('content-length') || '0');
+          let loaded = 0;
+          const reader = res.body.getReader();
+          const chunks = [];
+          function pump() {
+            return reader.read().then(({ done, value }) => {
+              if (done) return;
+              chunks.push(value);
+              loaded += value.byteLength;
+              if (total > 0) {
+                const pct = Math.round((loaded / total) * 95) + 5;
+                if (fillEl) fillEl.style.width = pct + '%';
+                if (pctEl) pctEl.textContent = pct + '%';
+              }
+              return pump();
+            });
           }
-        }
+          return pump().then(() => {
+            const combined = new Uint8Array(loaded);
+            let offset = 0;
+            chunks.forEach(c => { combined.set(c, offset); offset += c.byteLength; });
+            return combined.buffer;
+          });
+        })
+        .then(arrayBuffer => {
+          if (fillEl) fillEl.style.width = '100%';
+          if (pctEl) pctEl.textContent = '100%';
 
-        const peaks = Object.entries(heightCounts)
-          .map(([h, count]) => ({ h: parseFloat(h), count }))
-          .sort((a, b) => b.count - a.count);
+          const loader = new STLLoader();
+          const geo = loader.parse(arrayBuffer); // parse from memory, no URL needed
 
-        let pcbTop = minVal + 1.6;
-        if (peaks.length > 0) {
-          const maxCount = peaks[0].count;
-          const significant = peaks.filter(p => p.count > maxCount * 0.05);
-          if (significant.length > 1) {
-            const top2 = significant.slice(0, 2);
-            pcbTop = Math.min(top2[0].h, top2[1].h);
-          } else {
-            pcbTop = significant[0].h;
+          geo.computeVertexNormals();
+          geo.center();
+
+          geo.computeBoundingBox();
+          const bbox = geo.boundingBox;
+          const localSize = new THREE.Vector3().subVectors(bbox.max, bbox.min);
+
+          let heightAxis = 'z';
+          let minVal = bbox.min.z;
+          let getVal = (i) => geo.attributes.position.getZ(i);
+          let getNorm = (i) => Math.abs(geo.attributes.normal.getZ(i));
+
+          if (localSize.x < localSize.y && localSize.x < localSize.z) {
+            heightAxis = 'x'; minVal = bbox.min.x;
+            getVal = (i) => geo.attributes.position.getX(i);
+            getNorm = (i) => Math.abs(geo.attributes.normal.getX(i));
+          } else if (localSize.y < localSize.x && localSize.y < localSize.z) {
+            heightAxis = 'y'; minVal = bbox.min.y;
+            getVal = (i) => geo.attributes.position.getY(i);
+            getNorm = (i) => Math.abs(geo.attributes.normal.getY(i));
           }
-        }
 
-        const mat = new THREE.MeshPhysicalMaterial({
-          roughness: 0.5, metalness: 0.5,
-          clearcoat: 1.0, clearcoatRoughness: 0.12, side: THREE.DoubleSide
-        });
-
-        const axisInt = heightAxis === 'x' ? 0 : (heightAxis === 'y' ? 1 : 2);
-
-        mat.onBeforeCompile = (shader) => {
-          shader.uniforms.uHeightAxis = { value: axisInt };
-          shader.uniforms.uPcbTop = { value: pcbTop };
-          shader.uniforms.uThickness = { value: 1.6 };
-
-          shader.vertexShader = shader.vertexShader.replace('#include <common>',
-            `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;`);
-          shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>',
-            `#include <begin_vertex>\nvLocalPosition = position;\nvLocalNormal = normal;`);
-          shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
-            `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;\nuniform int uHeightAxis;\nuniform float uPcbTop;\nuniform float uThickness;`);
-          shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>',
-            `#include <color_fragment>
-            float h = vLocalPosition.z; float n = abs(vLocalNormal.z);
-            if (uHeightAxis == 0) { h = vLocalPosition.x; n = abs(vLocalNormal.x); }
-            else if (uHeightAxis == 1) { h = vLocalPosition.y; n = abs(vLocalNormal.y); }
-            vec3 baseGreen = vec3(0.02, 0.16, 0.06);
-            vec3 icColor = vec3(0.08, 0.08, 0.08);
-            vec3 metalColor = vec3(0.85, 0.85, 0.85);
-            vec3 copperColor = vec3(0.83, 0.51, 0.11);
-            vec3 silkColor = vec3(0.95, 0.95, 0.95);
-            vec3 finalColor = baseGreen;
-            float finalRoughness = 0.12; float finalMetalness = 0.1;
-            if (h > uPcbTop) {
-              if (n > 0.85) { finalColor = icColor; finalRoughness = 0.75; finalMetalness = 0.05; }
-              else if (n < 0.3) {
-                if (h < uPcbTop + 1.5) { finalColor = metalColor; finalRoughness = 0.2; finalMetalness = 0.95; }
-                else { finalColor = icColor; finalRoughness = 0.8; finalMetalness = 0.05; }
-              } else { finalColor = metalColor; finalRoughness = 0.15; finalMetalness = 0.95; }
-            } else if (h < uPcbTop - uThickness) {
-              if (n > 0.85) { finalColor = icColor; finalRoughness = 0.75; finalMetalness = 0.05; }
-              else { finalColor = metalColor; finalRoughness = 0.15; finalMetalness = 0.95; }
-            } else {
-              if (h > uPcbTop - 0.15) {
-                float tp = sin(vLocalPosition.x * 2.5) * cos(vLocalPosition.y * 2.5);
-                float sp = sin(vLocalPosition.x * 0.4) * sin(vLocalPosition.y * 0.4);
-                if (tp > 0.93) { finalColor = copperColor; finalRoughness = 0.25; finalMetalness = 0.8; }
-                else if (sp > 0.985) { finalColor = silkColor; finalRoughness = 0.85; finalMetalness = 0.0; }
-                else { finalColor = baseGreen; finalRoughness = 0.12; finalMetalness = 0.1; }
-              } else { finalColor = baseGreen; finalRoughness = 0.15; finalMetalness = 0.05; }
+          const heightCounts = {};
+          const posAttr = geo.attributes.position;
+          const step = Math.max(1, Math.floor(posAttr.count / 20000));
+          for (let i = 0; i < posAttr.count; i += step) {
+            if (getNorm(i) > 0.95) {
+              const val = getVal(i);
+              const rounded = Math.round(val * 10) / 10;
+              heightCounts[rounded] = (heightCounts[rounded] || 0) + 1;
             }
-            diffuseColor.rgb = finalColor;`
-          );
-        };
+          }
 
-        const m = new THREE.Mesh(geo, mat);
-        m.castShadow = true; m.receiveShadow = true;
-        scene.add(m);
-        onDone(m);
-      }, xhr => {
-        if (xhr.total) {
-          const p = Math.round((xhr.loaded / xhr.total) * 100);
-          if (fillEl) fillEl.style.width = p + '%';
-          if (pctEl) pctEl.textContent = p + '%';
-        }
-      }, err => {
-        console.error('STL load error', err);
+          const peaks = Object.entries(heightCounts)
+            .map(([h, count]) => ({ h: parseFloat(h), count }))
+            .sort((a, b) => b.count - a.count);
+
+          let pcbTop = minVal + 1.6;
+          if (peaks.length > 0) {
+            const maxCount = peaks[0].count;
+            const significant = peaks.filter(p => p.count > maxCount * 0.05);
+            if (significant.length > 1) {
+              const top2 = significant.slice(0, 2);
+              pcbTop = Math.min(top2[0].h, top2[1].h);
+            } else {
+              pcbTop = significant[0].h;
+            }
+          }
+
+          const mat = new THREE.MeshPhysicalMaterial({
+            roughness: 0.5, metalness: 0.5,
+            clearcoat: 1.0, clearcoatRoughness: 0.12, side: THREE.DoubleSide
+          });
+
+          const axisInt = heightAxis === 'x' ? 0 : (heightAxis === 'y' ? 1 : 2);
+
+          mat.onBeforeCompile = (shader) => {
+            shader.uniforms.uHeightAxis = { value: axisInt };
+            shader.uniforms.uPcbTop = { value: pcbTop };
+            shader.uniforms.uThickness = { value: 1.6 };
+
+            shader.vertexShader = shader.vertexShader.replace('#include <common>',
+              `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;`);
+            shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>',
+              `#include <begin_vertex>\nvLocalPosition = position;\nvLocalNormal = normal;`);
+            shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
+              `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;\nuniform int uHeightAxis;\nuniform float uPcbTop;\nuniform float uThickness;`);
+            shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>',
+              `#include <color_fragment>
+              float h = vLocalPosition.z; float n = abs(vLocalNormal.z);
+              if (uHeightAxis == 0) { h = vLocalPosition.x; n = abs(vLocalNormal.x); }
+              else if (uHeightAxis == 1) { h = vLocalPosition.y; n = abs(vLocalNormal.y); }
+              vec3 baseGreen = vec3(0.02, 0.16, 0.06);
+              vec3 icColor = vec3(0.08, 0.08, 0.08);
+              vec3 metalColor = vec3(0.85, 0.85, 0.85);
+              vec3 copperColor = vec3(0.83, 0.51, 0.11);
+              vec3 silkColor = vec3(0.95, 0.95, 0.95);
+              vec3 finalColor = baseGreen;
+              float finalRoughness = 0.12; float finalMetalness = 0.1;
+              if (h > uPcbTop) {
+                if (n > 0.85) { finalColor = icColor; finalRoughness = 0.75; finalMetalness = 0.05; }
+                else if (n < 0.3) {
+                  if (h < uPcbTop + 1.5) { finalColor = metalColor; finalRoughness = 0.2; finalMetalness = 0.95; }
+                  else { finalColor = icColor; finalRoughness = 0.8; finalMetalness = 0.05; }
+                } else { finalColor = metalColor; finalRoughness = 0.15; finalMetalness = 0.95; }
+              } else if (h < uPcbTop - uThickness) {
+                if (n > 0.85) { finalColor = icColor; finalRoughness = 0.75; finalMetalness = 0.05; }
+                else { finalColor = metalColor; finalRoughness = 0.15; finalMetalness = 0.95; }
+              } else {
+                if (h > uPcbTop - 0.15) {
+                  float tp = sin(vLocalPosition.x * 2.5) * cos(vLocalPosition.y * 2.5);
+                  float sp = sin(vLocalPosition.x * 0.4) * sin(vLocalPosition.y * 0.4);
+                  if (tp > 0.93) { finalColor = copperColor; finalRoughness = 0.25; finalMetalness = 0.8; }
+                  else if (sp > 0.985) { finalColor = silkColor; finalRoughness = 0.85; finalMetalness = 0.0; }
+                  else { finalColor = baseGreen; finalRoughness = 0.12; finalMetalness = 0.1; }
+                } else { finalColor = baseGreen; finalRoughness = 0.15; finalMetalness = 0.05; }
+              }
+              diffuseColor.rgb = finalColor;`
+            );
+          };
+
+          const m = new THREE.Mesh(geo, mat);
+          m.castShadow = true; m.receiveShadow = true;
+          scene.add(m);
+          onDone(m);
+        })
+        .catch(err => {
       });
     }
 
