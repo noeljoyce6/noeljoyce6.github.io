@@ -1513,13 +1513,36 @@
 
     .cl-val {
       font-size: 0.85rem;
-      color: var(--text);
-      font-weight: 500
-    }
-
     .contact-right {
       opacity: 0;
       transform: translateY(20px)
+    }
+
+    .proj-status {
+      position: absolute; bottom: 10px; right: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      padding: 4px 10px;
+      border-radius: 3px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-weight: 600
+    }
+
+    /* Award badge on project card */
+    .proj-award-badge {
+      position: absolute; bottom: 10px; left: 10px;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px;
+      background: linear-gradient(135deg, rgba(255,185,0,0.18) 0%, rgba(255,140,0,0.1) 100%);
+      border: 1px solid rgba(255,185,0,0.4);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      color: #ffd555;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      text-transform: uppercase;
     }
 
     .avail-card {
@@ -2785,7 +2808,7 @@
     PROJECTS.forEach(p => {
       const card = document.createElement('div');
       card.className = 'proj-card';
-      card.style.cursor = 'none';
+      card.style.cursor = 'pointer';
       card.innerHTML = `
       <div class="proj-visual">
         ${p.img
@@ -2795,6 +2818,7 @@
         }
         <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
         <span class="proj-status ${p.statusClass}">${p.status}</span>
+        ${p.award ? `<span class="proj-award-badge">🏆 ${p.award.label.replace('🏆 ', '')}</span>` : ''}
       </div>
       <div class="proj-body">
         <div class="proj-title">${p.title}</div>
@@ -2805,7 +2829,7 @@
           return '<span class="proj-chip ' + (isIc ? 'chip-ic' : '') + '">' + c + '</span>';
         }).join('')}</div>
         <div class="proj-footer">
-          <div class="proj-meta"><span>${p.layers}L</span> · ${p.dims}</div>
+          <div class="proj-meta">${p.layers ? `<span>${p.layers}L</span> · ` : ''}${p.dims}</div>
           <div class="proj-cta">View Case Study →</div>
         </div>
       </div>`;

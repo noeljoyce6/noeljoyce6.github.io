@@ -110,6 +110,41 @@
     }
 
 
+    /* ─── AWARD BANNER ──────────────────────────────────── */
+    .award-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 1.1rem;
+      padding: 0.45rem 1rem 0.45rem 0.75rem;
+      background: linear-gradient(135deg, rgba(255,185,0,0.14) 0%, rgba(255,140,0,0.08) 100%);
+      border: 1px solid rgba(255,185,0,0.35);
+      border-radius: 30px;
+      animation: awardPulse 2.8s ease-in-out infinite;
+    }
+    @keyframes awardPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,185,0,0.18); }
+      50% { box-shadow: 0 0 0 8px rgba(255,185,0,0); }
+    }
+    .award-trophy { font-size: 1rem; }
+    .award-text {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #ffd555;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+    .award-id {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: rgba(255,185,0,0.55);
+      letter-spacing: 0.05em;
+      padding-left: 0.4rem;
+      border-left: 1px solid rgba(255,185,0,0.25);
+      margin-left: 0.1rem;
+    }
+
     /* ─── NAV ────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
@@ -625,6 +660,18 @@
     document.getElementById('hero-cat').textContent = proj.cat + ' · ' + proj.status;
     document.getElementById('hero-title').textContent = proj.title;
     document.getElementById('hero-subtitle').textContent = proj.subtitle;
+
+    // ── AWARD BANNER (if project won an award) ────────────────
+    if (proj.award) {
+      const heroContent = document.querySelector('.hero-content') || document.querySelector('#proj-hero .hero-inner');
+      const catEl = document.getElementById('hero-cat');
+      const banner = document.createElement('div');
+      banner.className = 'award-banner';
+      banner.innerHTML = `<span class="award-trophy">🏆</span><span class="award-text">${proj.award.label.replace('🏆 ', '')}</span><span class="award-id">${proj.award.id}</span>`;
+      if (catEl && catEl.parentNode) {
+        catEl.parentNode.insertBefore(banner, catEl);
+      }
+    }
 
     // Hero spec strip — skip Layers for non-PCB projects
     const keySpecs = [
