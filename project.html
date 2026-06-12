@@ -56,6 +56,33 @@
       pointer-events: none; z-index: 9999;
     }
 
+    /* ─── STATUS BADGES ─────────────────────────────────── */
+    .status-pat {
+      background: rgba(180, 120, 255, 0.12);
+      color: #b478ff;
+      border: 1px solid rgba(180, 120, 255, 0.25)
+    }
+
+    /* Patent pending notice banner */
+    .patent-notice {
+      margin: 3rem 0;
+      padding: 2.5rem 3rem;
+      border: 1px solid rgba(180, 120, 255, 0.25);
+      border-radius: 12px;
+      background: rgba(180, 120, 255, 0.05);
+      display: flex; align-items: flex-start; gap: 1.5rem;
+    }
+    .patent-notice-icon { font-size: 2.5rem; flex-shrink: 0; opacity: 0.8 }
+    .patent-notice-body h3 {
+      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
+      color: #b478ff; margin-bottom: 0.5rem; letter-spacing: -0.02em
+    }
+    .patent-notice-body p {
+      font-size: 0.88rem; color: var(--muted); line-height: 1.8
+    }
+    .patent-notice-body a { color: #b478ff; text-decoration: none }
+    .patent-notice-body a:hover { text-decoration: underline }
+
     /* ─── NAV ────────────────────────────────────────────── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
@@ -569,10 +596,11 @@
     document.getElementById('hero-title').textContent = proj.title;
     document.getElementById('hero-subtitle').textContent = proj.subtitle;
 
+    // Hero spec strip — skip Layers for non-PCB projects
     const keySpecs = [
       { k: 'Category', v: proj.cat },
-      { k: 'Layers', v: proj.layers + 'L' },
-      { k: 'Dimensions', v: proj.dims },
+      ...(proj.isPCB === false || !proj.layers ? [] : [{ k: 'Layers', v: proj.layers + 'L' }]),
+      { k: 'Type', v: proj.dims },
       { k: 'Status', v: proj.status }
     ];
     const specStrip = document.getElementById('hero-specs');
@@ -605,52 +633,75 @@
 
     // ── INJECT DOCUMENTATION ─────────────────────────────────
     const docDef = proj.documentation;
-    const docSections = [
-      { id: 'overview', label: 'Overview', content: docDef.overview },
-      { id: 'architecture', label: 'Architecture', content: docDef.architecture },
-      { id: 'pcb', label: 'PCB Design', content: docDef.pcb },
-      { id: 'testing', label: 'Testing', content: docDef.testing },
-      { id: 'firmware', label: 'Firmware', content: docDef.firmware },
-      { id: 'downloads', label: 'Downloads', content: null },
-      { id: 'future', label: 'Future Work', content: docDef.future }
-    ];
+    const isPatent = proj.statusClass === 'status-pat';
+    const isPCBProject = proj.isPCB !== false;
 
-    const docTabs = document.getElementById('doc-tabs');
-    const docPanels = document.getElementById('doc-panels');
+    // For patent-pending projects: show a notice instead of documentation
+    if (isPatent) {
+      const docSection = document.getElementById('section-docs');
+      docSection.innerHTML = `
+        <div class="cs-section-label">04 · Status</div>
+        <div class="patent-notice">
+          <div class="patent-notice-icon">🔒</div>
+          <div class="patent-notice-body">
+            <h3>Patent Pending — Technical Details Restricted</h3>
+            <p>This project is currently undergoing the patent application process. Technical specifications, circuit architecture, firmware details, and design documentation are confidential and cannot be publicly disclosed at this stage.</p>
+            <p style="margin-top:0.8rem">For verified industry or academic inquiries, please contact directly: <a href="mailto:noeljoyce6@gmail.com">noeljoyce6@gmail.com</a></p>
+          </div>
+        </div>`;
+      // Hide spec and highlight sections for patent projects (keep overview only)
+      document.getElementById('section-highlights').style.display = 'none';
+    } else {
+      // Build doc tabs, filtering out empty or PCB-only sections
+      const allDocSections = [
+        { id: 'overview', label: 'Overview', content: docDef.overview },
+        { id: 'architecture', label: 'Architecture', content: docDef.architecture },
+        ...(isPCBProject ? [{ id: 'pcb', label: 'PCB Design', content: docDef.pcb }] : []),
+        { id: 'testing', label: 'Testing & Results', content: docDef.testing },
+        ...(isPCBProject ? [{ id: 'firmware', label: 'Firmware', content: docDef.firmware }] : []),
+        { id: 'downloads', label: 'Downloads', content: null },
+        { id: 'future', label: 'Future Work', content: docDef.future }
+      ];
+      // Only keep sections that have content (or are 'downloads')
+      const docSections = allDocSections.filter(s => s.id === 'downloads' || (s.content && s.content.trim()));
 
-    docSections.forEach((sec, i) => {
-      const tab = document.createElement('button');
-      tab.className = 'doc-tab' + (i === 0 ? ' active' : '');
-      tab.textContent = sec.label;
-      tab.addEventListener('click', () => {
-        docTabs.querySelectorAll('.doc-tab').forEach((t, ti) => t.classList.toggle('active', ti === i));
-        docPanels.querySelectorAll('.doc-panel').forEach((p, pi) => p.classList.toggle('active', pi === i));
-      });
-      docTabs.appendChild(tab);
+      const docTabs = document.getElementById('doc-tabs');
+      const docPanels = document.getElementById('doc-panels');
 
-      let panelContent = '';
-      if (sec.id === 'downloads') {
-        if (proj.docs && proj.docs.length > 0) {
-          panelContent = `<p>Documentation files available for download:</p><div class="doc-download">` +
-            proj.docs.map(d => `<a href="${d.file}" target="_blank" class="doc-dl-btn"><span class="doc-dl-icon">📄</span>${d.label}</a>`).join('') +
-            `</div>`;
-          // Note: STL 3D models are view-only — no download links provided
-          if (proj.stls && proj.stls.length > 0) {
-            panelContent += `<p style="margin-top:1rem;font-size:0.8rem">3D models are available for interactive viewing above. Files are not available for download.</p>`;
+      docSections.forEach((sec, i) => {
+        const tab = document.createElement('button');
+        tab.className = 'doc-tab' + (i === 0 ? ' active' : '');
+        tab.textContent = sec.label;
+        tab.addEventListener('click', () => {
+          docTabs.querySelectorAll('.doc-tab').forEach((t, ti) => t.classList.toggle('active', ti === i));
+          docPanels.querySelectorAll('.doc-panel').forEach((p, pi) => p.classList.toggle('active', pi === i));
+        });
+        docTabs.appendChild(tab);
+
+        let panelContent = '';
+        if (sec.id === 'downloads') {
+          if (proj.docs && proj.docs.length > 0) {
+            panelContent = `<p>Documentation files available for download:</p><div class="doc-download">` +
+              proj.docs.map(d => `<a href="${d.file}" target="_blank" class="doc-dl-btn"><span class="doc-dl-icon">📄</span>${d.label}</a>`).join('') +
+              `</div>`;
+            // Note: STL 3D models are view-only — no download links provided
+            if (proj.stls && proj.stls.length > 0) {
+              panelContent += `<p style="margin-top:1rem;font-size:0.8rem">3D models are available for interactive viewing above. Files are not available for download.</p>`;
+            }
+          } else {
+            panelContent = `<p>Documentation is under NDA. Source files and documentation are available on request for verified recruiters. Please reach out via email at <strong>noeljoyce6@gmail.com</strong>.</p>`;
           }
         } else {
-          panelContent = `<p>Documentation is under NDA. Source files and documentation are available on request for verified recruiters. Please reach out via email at <strong>noeljoyce6@gmail.com</strong>.</p>`;
+          const paras = (sec.content || '').split('\n').filter(Boolean);
+          panelContent = paras.map(p => `<p>${p.trim()}</p>`).join('');
         }
-      } else {
-        const paras = (sec.content || '').split('\n').filter(Boolean);
-        panelContent = paras.map(p => `<p>${p.trim()}</p>`).join('');
-      }
 
-      const panel = document.createElement('div');
-      panel.className = 'doc-panel' + (i === 0 ? ' active' : '');
-      panel.innerHTML = `<div class="doc-panel-content">${panelContent}</div>`;
-      docPanels.appendChild(panel);
-    });
+        const panel = document.createElement('div');
+        panel.className = 'doc-panel' + (i === 0 ? ' active' : '');
+        panel.innerHTML = `<div class="doc-panel-content">${panelContent}</div>`;
+        docPanels.appendChild(panel);
+      });
+    } // end non-patent branch
 
     // ── INJECT NEXT PROJECT ──────────────────────────────────
     document.getElementById('next-proj-title').textContent = nextProj.title;
