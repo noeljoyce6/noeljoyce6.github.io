@@ -8,8 +8,11 @@
   <meta name="description" content="Engineering case study — Noel Joyce Varghese, Embedded Hardware Design Engineer" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+    rel="stylesheet" />
+  <script
+    type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"}}</script>
   <style>
     *,
     *::before,
@@ -39,7 +42,9 @@
       --font-body: 'DM Sans', sans-serif;
     }
 
-    html { scroll-behavior: smooth }
+    html {
+      scroll-behavior: smooth
+    }
 
     body {
       background: var(--bg);
@@ -64,18 +69,40 @@
       border: 1px solid rgba(180, 120, 255, 0.25);
       border-radius: 12px;
       background: rgba(180, 120, 255, 0.05);
-      display: flex; align-items: flex-start; gap: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
     }
-    .patent-notice-icon { font-size: 2.5rem; flex-shrink: 0; opacity: 0.8 }
+
+    .patent-notice-icon {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+      opacity: 0.8
+    }
+
     .patent-notice-body h3 {
-      font-family: var(--font-head); font-size: 1.1rem; font-weight: 700;
-      color: #b478ff; margin-bottom: 0.5rem; letter-spacing: -0.02em
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #b478ff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em
     }
+
     .patent-notice-body p {
-      font-size: 0.88rem; color: var(--muted); line-height: 1.8
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.8
     }
-    .patent-notice-body a { color: #b478ff; text-decoration: none }
-    .patent-notice-body a:hover { text-decoration: underline }
+
+    .patent-notice-body a {
+      color: #b478ff;
+      text-decoration: none
+    }
+
+    .patent-notice-body a:hover {
+      text-decoration: underline
+    }
 
     /* Documentation inquiry notice (shown when docs are protected) */
     .doc-inquiry-notice {
@@ -84,26 +111,49 @@
       border: 1px solid rgba(0, 232, 137, 0.15);
       border-radius: 12px;
       background: rgba(0, 232, 137, 0.04);
-      display: flex; align-items: flex-start; gap: 1.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
     }
-    .doc-inquiry-icon { font-size: 2rem; flex-shrink: 0; opacity: 0.7; margin-top: 2px }
+
+    .doc-inquiry-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      opacity: 0.7;
+      margin-top: 2px
+    }
+
     .doc-inquiry-body h4 {
-      font-family: var(--font-head); font-size: 1rem; font-weight: 700;
-      color: var(--text); margin-bottom: 0.6rem; letter-spacing: -0.02em
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em
     }
+
     .doc-inquiry-body p {
-      font-size: 0.85rem; color: var(--muted); line-height: 1.75; margin-bottom: 0.4rem
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 0.4rem
     }
+
     .doc-inquiry-link {
-      display: inline-block; margin-top: 0.8rem;
+      display: inline-block;
+      margin-top: 0.8rem;
       padding: 0.5rem 1.2rem;
       background: rgba(0, 232, 137, 0.08);
       border: 1px solid rgba(0, 232, 137, 0.25);
       border-radius: 6px;
-      color: var(--green); font-family: var(--font-mono);
-      font-size: 0.8rem; text-decoration: none;
-      letter-spacing: 0.05em; transition: all 0.2s
+      color: var(--green);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: all 0.2s
     }
+
     .doc-inquiry-link:hover {
       background: rgba(0, 232, 137, 0.14);
       border-color: rgba(0, 232, 137, 0.5)
@@ -129,6 +179,7 @@
       text-transform: uppercase;
       transition: all 0.25s;
     }
+
     .yt-demo-btn:hover {
       background: rgba(255, 0, 0, 0.2);
       border-color: rgba(255, 60, 60, 0.65);
@@ -136,11 +187,15 @@
       transform: translateY(-1px);
       box-shadow: 0 4px 20px rgba(255, 0, 0, 0.15);
     }
+
     .yt-demo-btn .yt-icon {
-      width: 18px; height: 18px;
+      width: 18px;
+      height: 18px;
       background: #ff3c3c;
       border-radius: 4px;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 0.7rem;
       flex-shrink: 0;
     }
@@ -152,16 +207,28 @@
       gap: 0.55rem;
       margin-bottom: 1.1rem;
       padding: 0.45rem 1rem 0.45rem 0.75rem;
-      background: linear-gradient(135deg, rgba(255,185,0,0.14) 0%, rgba(255,140,0,0.08) 100%);
-      border: 1px solid rgba(255,185,0,0.35);
+      background: linear-gradient(135deg, rgba(255, 185, 0, 0.14) 0%, rgba(255, 140, 0, 0.08) 100%);
+      border: 1px solid rgba(255, 185, 0, 0.35);
       border-radius: 30px;
       animation: awardPulse 2.8s ease-in-out infinite;
     }
+
     @keyframes awardPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(255,185,0,0.18); }
-      50% { box-shadow: 0 0 0 8px rgba(255,185,0,0); }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 185, 0, 0.18);
+      }
+
+      50% {
+        box-shadow: 0 0 0 8px rgba(255, 185, 0, 0);
+      }
     }
-    .award-trophy { font-size: 1rem; }
+
+    .award-trophy {
+      font-size: 1rem;
+    }
+
     .award-text {
       font-family: var(--font-mono);
       font-size: 0.72rem;
@@ -170,66 +237,116 @@
       letter-spacing: 0.07em;
       text-transform: uppercase;
     }
+
     .award-id {
       font-family: var(--font-mono);
       font-size: 0.65rem;
-      color: rgba(255,185,0,0.55);
+      color: rgba(255, 185, 0, 0.55);
       letter-spacing: 0.05em;
       padding-left: 0.4rem;
-      border-left: 1px solid rgba(255,185,0,0.25);
+      border-left: 1px solid rgba(255, 185, 0, 0.25);
       margin-left: 0.1rem;
     }
 
     /* ─── NAV ────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      display: flex; align-items: center; justify-content: space-between;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       padding: 1.3rem 5rem;
       background: rgba(7, 10, 15, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
+
     .nav-logo {
-      font-family: var(--font-head); font-size: 1.05rem; font-weight: 800;
-      color: var(--text); text-decoration: none; letter-spacing: -0.02em
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em
     }
-    .nav-logo span { color: var(--green) }
+
+    .nav-logo span {
+      color: var(--green)
+    }
+
     .nav-back {
-      font-family: var(--font-mono); font-size: 0.75rem;
-      color: var(--muted); text-decoration: none; letter-spacing: 0.1em;
-      padding: 0.5rem 1rem; border: 1px solid var(--border);
-      border-radius: 4px; transition: all 0.2s
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s
     }
-    .nav-back:hover { color: var(--green); border-color: var(--green2) }
+
+    .nav-back:hover {
+      color: var(--green);
+      border-color: var(--green2)
+    }
+
     .nav-breadcrumb {
-      font-family: var(--font-mono); font-size: 0.72rem;
-      color: var(--muted2); letter-spacing: 0.08em
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--muted2);
+      letter-spacing: 0.08em
     }
-    .nav-breadcrumb span { color: var(--muted) }
-    .nav-center { display: flex; flex-direction: column; align-items: center; gap: 2px }
+
+    .nav-breadcrumb span {
+      color: var(--muted)
+    }
+
+    .nav-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px
+    }
 
     /* ─── HERO ───────────────────────────────────────────── */
     #proj-hero {
       min-height: 100vh;
-      display: flex; flex-direction: column;
-      justify-content: center; padding: 8rem 5rem 5rem;
-      position: relative; overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 5rem 5rem;
+      position: relative;
+      overflow: hidden;
       border-bottom: 1px solid var(--border)
     }
+
     .hero-grid-bg {
-      position: absolute; inset: 0; pointer-events: none;
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
       background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0,232,137,0.03) 59px, rgba(0,232,137,0.03) 60px),
-        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0,232,137,0.03) 59px, rgba(0,232,137,0.03) 60px)
+        repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(0, 232, 137, 0.03) 59px, rgba(0, 232, 137, 0.03) 60px),
+        repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(0, 232, 137, 0.03) 59px, rgba(0, 232, 137, 0.03) 60px)
     }
+
     .hero-glow {
-      position: absolute; top: 0; right: 0; width: 60%; height: 100%;
-      background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(0,60,30,0.18) 0%, transparent 70%);
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60%;
+      height: 100%;
+      background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(0, 60, 30, 0.18) 0%, transparent 70%);
       pointer-events: none
     }
+
     /* Board photo shown as subtle darkened hero background */
     .hero-photo-bg {
-      position: absolute; inset: 0;
+      position: absolute;
+      inset: 0;
       background-size: cover;
       background-position: center;
       opacity: 0.07;
@@ -237,289 +354,662 @@
       pointer-events: none;
       transition: opacity 1s ease
     }
+
     .hero-eyebrow {
-      font-family: var(--font-mono); font-size: 10px; color: var(--green);
-      letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 2rem;
-      display: flex; align-items: center; gap: 10px;
-      opacity: 0; transform: translateY(16px); transition: all 0.7s ease
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.7s ease
     }
-    .hero-eyebrow.visible { opacity: 1; transform: none }
-    .hero-eyebrow-line { height: 1px; width: 40px; background: var(--green); opacity: 0.5 }
+
+    .hero-eyebrow.visible {
+      opacity: 1;
+      transform: none
+    }
+
+    .hero-eyebrow-line {
+      height: 1px;
+      width: 40px;
+      background: var(--green);
+      opacity: 0.5
+    }
+
     .hero-title {
       font-family: var(--font-head);
       font-size: clamp(3rem, 7vw, 7.5rem);
-      font-weight: 800; line-height: 0.95; letter-spacing: -0.04em;
-      color: var(--text); margin-bottom: 1.5rem; max-width: 16ch;
-      opacity: 0; transform: translateY(24px); transition: all 0.8s 0.1s ease
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      max-width: 16ch;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: all 0.8s 0.1s ease
     }
-    .hero-title.visible { opacity: 1; transform: none }
+
+    .hero-title.visible {
+      opacity: 1;
+      transform: none
+    }
+
     .hero-subtitle {
-      font-family: var(--font-mono); font-size: 0.95rem; color: var(--muted);
-      letter-spacing: 0.08em; margin-bottom: 3rem;
-      opacity: 0; transform: translateY(16px); transition: all 0.7s 0.2s ease
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 3rem;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.7s 0.2s ease
     }
-    .hero-subtitle.visible { opacity: 1; transform: none }
+
+    .hero-subtitle.visible {
+      opacity: 1;
+      transform: none
+    }
 
     .hero-spec-strip {
-      display: flex; flex-wrap: wrap; gap: 0;
-      border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-      width: fit-content; max-width: 100%;
-      opacity: 0; transform: translateY(16px); transition: all 0.7s 0.3s ease
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      width: fit-content;
+      max-width: 100%;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.7s 0.3s ease
     }
-    .hero-spec-strip.visible { opacity: 1; transform: none }
+
+    .hero-spec-strip.visible {
+      opacity: 1;
+      transform: none
+    }
+
     .hero-spec {
-      padding: 0.9rem 1.6rem; border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 3px
+      padding: 0.9rem 1.6rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 3px
     }
-    .hero-spec:last-child { border-right: none }
+
+    .hero-spec:last-child {
+      border-right: none
+    }
+
     .hero-spec-k {
-      font-family: var(--font-mono); font-size: 8px; color: var(--muted);
-      letter-spacing: 0.18em; text-transform: uppercase
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase
     }
+
     .hero-spec-v {
-      font-family: var(--font-head); font-size: 1rem; font-weight: 700; color: var(--green)
+      font-family: var(--font-head);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green)
     }
 
     .hero-scroll-hint {
-      position: absolute; bottom: 2.5rem; left: 50%;
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
       transform: translateX(-50%);
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      opacity: 0.4; animation: bounce 2s ease-in-out infinite
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.4;
+      animation: bounce 2s ease-in-out infinite
     }
+
     .hero-scroll-hint span {
-      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
-      letter-spacing: 0.2em; text-transform: uppercase
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase
     }
-    .hero-scroll-arrow { color: var(--green); font-size: 1rem }
+
+    .hero-scroll-arrow {
+      color: var(--green);
+      font-size: 1rem
+    }
+
     @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0) }
-      50% { transform: translateX(-50%) translateY(6px) }
+
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0)
+      }
+
+      50% {
+        transform: translateX(-50%) translateY(6px)
+      }
     }
 
     /* ─── SECTION BASE ───────────────────────────────────── */
     .cs-section {
       padding: 7rem 5rem;
-      opacity: 0; transform: translateY(30px);
+      opacity: 0;
+      transform: translateY(30px);
       transition: opacity 0.8s ease, transform 0.8s ease
     }
-    .cs-section.visible { opacity: 1; transform: none }
-    .cs-section.alt-bg { background: var(--surface) }
-    .cs-section-label {
-      font-family: var(--font-mono); font-size: 9px; color: var(--green);
-      letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 1.2rem
+
+    .cs-section.visible {
+      opacity: 1;
+      transform: none
     }
+
+    .cs-section.alt-bg {
+      background: var(--surface)
+    }
+
+    .cs-section-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--green);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem
+    }
+
     .cs-section-heading {
       font-family: var(--font-head);
       font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 800; letter-spacing: -0.03em; line-height: 1.1;
-      margin-bottom: 1.6rem; max-width: 20ch
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1.6rem;
+      max-width: 20ch
     }
-    .cs-section-heading em { color: var(--green); font-style: italic }
+
+    .cs-section-heading em {
+      color: var(--green);
+      font-style: italic
+    }
 
     /* ─── OVERVIEW SPLIT ─────────────────────────────────── */
     .overview-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center
     }
+
     .overview-text p {
-      font-size: 0.95rem; color: var(--muted); line-height: 1.9;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.9;
       margin-bottom: 1rem
     }
-    .overview-text p strong { color: var(--text); font-weight: 500 }
+
+    .overview-text p strong {
+      color: var(--text);
+      font-weight: 500
+    }
+
     .overview-viewer {
-      height: 520px; border-radius: 16px; overflow: hidden;
-      border: 1px solid var(--border); position: relative;
+      height: 520px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
       background: var(--bg2)
     }
-    .overview-viewer canvas { display: block; width: 100%; height: 100% }
-    .viewer-no-stl {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 12px
+
+    .overview-viewer canvas {
+      display: block;
+      width: 100%;
+      height: 100%
     }
-    .viewer-no-stl-icon { font-size: 3rem; opacity: 0.2 }
+
+    .viewer-no-stl {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px
+    }
+
+    .viewer-no-stl-icon {
+      font-size: 3rem;
+      opacity: 0.2
+    }
+
     .viewer-no-stl-text {
-      font-family: var(--font-mono); font-size: 11px; color: var(--muted2);
-      letter-spacing: 0.15em; text-align: center; line-height: 1.8
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted2);
+      letter-spacing: 0.15em;
+      text-align: center;
+      line-height: 1.8
     }
 
     /* ─── IMAGE FALLBACK IN VIEWER (no STL) ─────────────────── */
     .viewer-img-fallback {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 12px;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
       padding: 1.5rem;
     }
+
     .viewer-fallback-img {
-      width: 100%; height: calc(100% - 40px);
-      object-fit: contain; object-position: center;
+      width: 100%;
+      height: calc(100% - 40px);
+      object-fit: contain;
+      object-position: center;
       border-radius: 8px;
-      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.6)) drop-shadow(0 2px 8px rgba(0,232,137,0.08));
+      filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 8px rgba(0, 232, 137, 0.08));
       transition: transform 0.4s ease;
     }
+
     .viewer-img-fallback:hover .viewer-fallback-img {
       transform: scale(1.03);
     }
+
     .viewer-fallback-caption {
-      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
-      letter-spacing: 0.18em; text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
 
     /* ─── VIEWER CONTROLS ────────────────────────────────── */
     .viewer-tabs {
-      display: flex; gap: 6px; padding: 12px; border-bottom: 1px solid var(--border);
-      background: rgba(7, 10, 15, 0.8); flex-shrink: 0
+      display: flex;
+      gap: 6px;
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7, 10, 15, 0.8);
+      flex-shrink: 0
     }
+
     .viewer-tab {
-      font-family: var(--font-mono); font-size: 9px; padding: 5px 12px;
-      border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
-      background: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.1em;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 5px 12px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.1em;
     }
-    .viewer-tab.active, .viewer-tab:hover {
-      border-color: var(--green); color: var(--green); background: rgba(0,232,137,0.08)
+
+    .viewer-tab.active,
+    .viewer-tab:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 232, 137, 0.08)
     }
+
     .viewer-hint {
-      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-      font-family: var(--font-mono); font-size: 8px; color: var(--muted2);
-      letter-spacing: 0.12em; pointer-events: none; white-space: nowrap
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--muted2);
+      letter-spacing: 0.12em;
+      pointer-events: none;
+      white-space: nowrap
     }
+
     .vm-load-overlay {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 14px; background: var(--bg2); z-index: 5
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--bg2);
+      z-index: 5
     }
-    .vm-load-overlay.hidden { display: none }
+
+    .vm-load-overlay.hidden {
+      display: none
+    }
+
     .vm-load-txt {
-      font-family: var(--font-mono); font-size: 10px; color: var(--green);
-      letter-spacing: 0.2em; text-transform: uppercase
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.2em;
+      text-transform: uppercase
     }
-    .vm-load-bar-wrap { width: 160px; height: 2px; background: var(--border2); border-radius: 2px; overflow: hidden }
-    .vm-load-bar-fill { height: 100%; background: var(--green); width: 0; transition: width 0.2s }
-    .vm-load-pct-txt { font-family: var(--font-mono); font-size: 10px; color: var(--muted) }
+
+    .vm-load-bar-wrap {
+      width: 160px;
+      height: 2px;
+      background: var(--border2);
+      border-radius: 2px;
+      overflow: hidden
+    }
+
+    .vm-load-bar-fill {
+      height: 100%;
+      background: var(--green);
+      width: 0;
+      transition: width 0.2s
+    }
+
+    .vm-load-pct-txt {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted)
+    }
 
     /* ─── SPECS SECTION ──────────────────────────────────── */
     .specs-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1px;
-      border: 1px solid var(--border); border-radius: 12px; overflow: hidden
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden
     }
+
     .spec-cell {
-      padding: 1.4rem 1.6rem; background: var(--surface2);
-      border-right: 1px solid var(--border); border-bottom: 1px solid var(--border)
+      padding: 1.4rem 1.6rem;
+      background: var(--surface2);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border)
     }
-    .spec-cell:nth-child(n) { border-bottom: none } /* removes bottom from last row — handled by outer border */
+
+    .spec-cell:nth-child(n) {
+      border-bottom: none
+    }
+
+    /* removes bottom from last row — handled by outer border */
     .spec-cell-k {
-      font-family: var(--font-mono); font-size: 8px; color: var(--muted);
-      letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 6px
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 6px
     }
-    .spec-cell-v { font-size: 1rem; font-weight: 600; color: var(--text) }
+
+    .spec-cell-v {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text)
+    }
 
     /* ─── HIGHLIGHTS ─────────────────────────────────────── */
-    .highlights-list { display: flex; flex-direction: column; gap: 0 }
+    .highlights-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0
+    }
+
     .highlight-item {
-      display: grid; grid-template-columns: 80px 1fr;
-      padding: 2rem 0; border-bottom: 1px solid var(--border);
-      opacity: 0; transform: translateY(20px);
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(20px);
       transition: opacity 0.6s ease, transform 0.6s ease
     }
-    .highlight-item.visible { opacity: 1; transform: none }
-    .highlight-item:first-child { border-top: 1px solid var(--border) }
-    .highlight-num {
-      font-family: var(--font-mono); font-size: clamp(2rem, 3vw, 3rem);
-      font-weight: 800; color: var(--border2); line-height: 1; align-self: center
+
+    .highlight-item.visible {
+      opacity: 1;
+      transform: none
     }
-    .highlight-text { font-size: 1rem; color: var(--muted); line-height: 1.7; align-self: center }
-    .highlight-text strong { color: var(--text); font-weight: 500 }
+
+    .highlight-item:first-child {
+      border-top: 1px solid var(--border)
+    }
+
+    .highlight-num {
+      font-family: var(--font-mono);
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 800;
+      color: var(--border2);
+      line-height: 1;
+      align-self: center
+    }
+
+    .highlight-text {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.7;
+      align-self: center
+    }
+
+    .highlight-text strong {
+      color: var(--text);
+      font-weight: 500
+    }
 
     /* ─── DOCUMENTATION ACCORDION ────────────────────────── */
     .doc-tabs {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 2rem
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 2rem
     }
+
     .doc-tab {
-      font-family: var(--font-mono); font-size: 9px; padding: 6px 14px;
-      border-radius: 3px; border: 1px solid var(--border); color: var(--muted);
-      background: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.1em
+      font-family: var(--font-mono);
+      font-size: 9px;
+      padding: 6px 14px;
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.1em
     }
-    .doc-tab.active { border-color: var(--green); color: var(--green); background: rgba(0,232,137,0.08) }
-    .doc-panels { }
+
+    .doc-tab.active {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 232, 137, 0.08)
+    }
+
+    .doc-panels {}
+
     .doc-panel {
-      display: none; animation: fadeUp 0.4s ease forwards
+      display: none;
+      animation: fadeUp 0.4s ease forwards
     }
-    .doc-panel.active { display: block }
+
+    .doc-panel.active {
+      display: block
+    }
+
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px) }
-      to { opacity: 1; transform: none }
+      from {
+        opacity: 0;
+        transform: translateY(12px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
     }
+
     .doc-panel-content {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 2rem
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem
     }
+
     .doc-panel-content p {
-      font-size: 0.9rem; color: var(--muted); line-height: 1.9; margin-bottom: 0.8rem
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 0.8rem
     }
-    .doc-panel-content p:last-child { margin-bottom: 0 }
+
+    .doc-panel-content p:last-child {
+      margin-bottom: 0
+    }
+
     .doc-download {
-      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.2rem
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 1.2rem
     }
+
     .doc-dl-btn {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       padding: 0.7rem 1.4rem;
-      border: 1px solid var(--border2); border-radius: 6px;
-      color: var(--text); text-decoration: none;
-      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em;
-      background: var(--surface); transition: all 0.2s
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      color: var(--text);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      background: var(--surface);
+      transition: all 0.2s
     }
-    .doc-dl-btn:hover { border-color: var(--green2); color: var(--green); background: rgba(0,232,137,0.06) }
-    .doc-dl-icon { font-size: 0.85rem }
+
+    .doc-dl-btn:hover {
+      border-color: var(--green2);
+      color: var(--green);
+      background: rgba(0, 232, 137, 0.06)
+    }
+
+    .doc-dl-icon {
+      font-size: 0.85rem
+    }
 
     /* ─── FULL-BLEED VIEWER ──────────────────────────────── */
     #full-viewer-section {
       padding: 0;
       border-top: 1px solid var(--border)
     }
+
     .full-viewer-header {
       padding: 2rem 5rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between
+      display: flex;
+      align-items: center;
+      justify-content: space-between
     }
+
     .full-viewer-header h2 {
-      font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em
     }
-    .full-viewer-header-tabs { display: flex; gap: 6px }
+
+    .full-viewer-header-tabs {
+      display: flex;
+      gap: 6px
+    }
+
     #full-viewer-canvas-wrap {
-      height: 70vh; position: relative; overflow: hidden
+      height: 70vh;
+      position: relative;
+      overflow: hidden
     }
-    #full-viewer-canvas { display: block; width: 100%; height: 100% }
+
+    #full-viewer-canvas {
+      display: block;
+      width: 100%;
+      height: 100%
+    }
 
     /* ─── NEXT PROJECT ───────────────────────────────────── */
     #next-project {
       padding: 6rem 5rem;
       border-top: 1px solid var(--border);
       background: var(--surface);
-      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.5rem
     }
+
     .next-label {
-      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
-      letter-spacing: 0.25em; text-transform: uppercase
+      font-family: var(--font-mono);
+      font-size: 9px;
+      color: var(--muted);
+      letter-spacing: 0.25em;
+      text-transform: uppercase
     }
+
     .next-title {
       font-family: var(--font-head);
       font-size: clamp(2rem, 4vw, 3.5rem);
-      font-weight: 800; letter-spacing: -0.03em;
-      color: var(--text); line-height: 1.1
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.1
     }
+
     .next-cta {
-      display: inline-flex; align-items: center; gap: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       padding: 1rem 2.4rem;
-      background: var(--green); color: #000; border-radius: 6px;
-      font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
-      text-decoration: none; letter-spacing: 0.08em;
-      transition: all 0.25s; margin-top: 0.5rem
+      background: var(--green);
+      color: #000;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: all 0.25s;
+      margin-top: 0.5rem
     }
+
     .next-cta:hover {
-      background: #00ffaa; transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,232,137,0.3)
+      background: #00ffaa;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 232, 137, 0.3)
     }
+
     .back-to-portfolio {
-      font-family: var(--font-mono); font-size: 10px; color: var(--muted);
-      text-decoration: none; letter-spacing: 0.1em; transition: color 0.2s
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.2s
     }
-    .back-to-portfolio:hover { color: var(--text) }
+
+    .back-to-portfolio:hover {
+      color: var(--text)
+    }
 
     /* ─── FOOTER ─────────────────────────────────────────── */
     footer {
@@ -537,12 +1027,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 22px; height: 22px;
-      border: 1px solid rgba(255,255,255,0.15);
+      width: 22px;
+      height: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 50%;
       flex-shrink: 0;
     }
-    .footer-logo svg { width: 12px; height: 12px; fill: var(--muted) }
+
+    .footer-logo svg {
+      width: 12px;
+      height: 12px;
+      fill: var(--muted)
+    }
 
     .footer-copy {
       font-family: var(--font-mono);
@@ -552,7 +1048,8 @@
     }
 
     .footer-sep {
-      width: 1px; height: 12px;
+      width: 1px;
+      height: 12px;
       background: var(--border2);
       flex-shrink: 0;
     }
@@ -578,22 +1075,67 @@
 
     /* ─── RESPONSIVE ─────────────────────────────────────── */
     @media(max-width: 1100px) {
-      nav, #proj-hero, .cs-section, .full-viewer-header, #next-project { padding-left: 3rem; padding-right: 3rem }
-      .overview-grid { grid-template-columns: 1fr; gap: 3rem }
-      .overview-viewer { height: 400px }
+
+      nav,
+      #proj-hero,
+      .cs-section,
+      .full-viewer-header,
+      #next-project {
+        padding-left: 3rem;
+        padding-right: 3rem
+      }
+
+      .overview-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem
+      }
+
+      .overview-viewer {
+        height: 400px
+      }
     }
+
     @media(max-width: 768px) {
-      nav, #proj-hero, .cs-section, .full-viewer-header, #next-project { padding-left: 1.5rem; padding-right: 1.5rem }
-      #proj-hero { padding-top: 7rem }
-      .hero-spec-strip { flex-direction: column; width: 100% }
-      .hero-spec { border-right: none; border-bottom: 1px solid var(--border) }
-      .hero-spec:last-child { border-bottom: none }
-      .highlight-item { grid-template-columns: 50px 1fr }
+
+      nav,
+      #proj-hero,
+      .cs-section,
+      .full-viewer-header,
+      #next-project {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem
+      }
+
+      #proj-hero {
+        padding-top: 7rem
+      }
+
+      .hero-spec-strip {
+        flex-direction: column;
+        width: 100%
+      }
+
+      .hero-spec {
+        border-right: none;
+        border-bottom: 1px solid var(--border)
+      }
+
+      .hero-spec:last-child {
+        border-bottom: none
+      }
+
+      .highlight-item {
+        grid-template-columns: 50px 1fr
+      }
+
       footer {
         padding: 1.2rem 1rem;
         gap: 0.7rem;
       }
-      .footer-sep { display: none }
+
+      .footer-sep {
+        display: none
+      }
     }
 
     /* ─── CUSTOM RIPPLE CURSOR ───────────────────────────── */
@@ -606,7 +1148,7 @@
       pointer-events: none;
       z-index: 999999;
     }
-    
+
     /* cursor: none removed — standard Windows pointer is preserved alongside the fluid canvas */
   </style>
 </head>
@@ -704,7 +1246,9 @@
       <canvas id="full-viewer-canvas"></canvas>
       <div class="vm-load-overlay" id="full-load-overlay">
         <div class="vm-load-txt">Loading 3D Model</div>
-        <div class="vm-load-bar-wrap"><div class="vm-load-bar-fill" id="full-load-fill"></div></div>
+        <div class="vm-load-bar-wrap">
+          <div class="vm-load-bar-fill" id="full-load-fill"></div>
+        </div>
         <div class="vm-load-pct-txt" id="full-load-pct">0%</div>
       </div>
       <div class="viewer-hint">Drag to rotate · Scroll to zoom · Right-drag to pan</div>
@@ -724,7 +1268,8 @@
     <!-- Logo mark -->
     <div class="footer-logo">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.57 9.57 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/>
+        <path
+          d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844a9.57 9.57 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" />
       </svg>
     </div>
 
@@ -749,13 +1294,13 @@
   <script>
     // ── MOUSE PARALLAX on project hero ─────────────────────────────
     // Subtle depth shift on hero content layers when the mouse moves.
-    (function() {
+    (function () {
       let txM = 0, tyM = 0, txC = 0, tyC = 0;
       const LAYERS = [
-        { sel: '#hero-cat',      depth: 0.008 },
-        { sel: '#hero-title',    depth: 0.018 },
+        { sel: '#hero-cat', depth: 0.008 },
+        { sel: '#hero-title', depth: 0.018 },
         { sel: '#hero-subtitle', depth: 0.013 },
-        { sel: '#hero-specs',    depth: 0.007 }
+        { sel: '#hero-specs', depth: 0.007 }
       ];
       const els = LAYERS.map(l => ({ el: document.querySelector(l.sel), d: l.depth }));
 
@@ -1052,302 +1597,302 @@
 
     if (proj.stls && proj.stls.length > 0) {
       // ── OVERVIEW VIEWER (small) ───────────────────────────
-    let ovScene, ovCamera, ovRenderer, ovControls, ovMesh, ovAnimId;
-    const ovCanvas = document.getElementById('overview-canvas');
+      let ovScene, ovCamera, ovRenderer, ovControls, ovMesh, ovAnimId;
+      const ovCanvas = document.getElementById('overview-canvas');
 
-    function initOverviewScene() {
-      if (!ovCanvas) return;
-      const wrap = ovCanvas.parentElement;
-      const W = wrap.clientWidth, H = wrap.clientHeight;
+      function initOverviewScene() {
+        if (!ovCanvas) return;
+        const wrap = ovCanvas.parentElement;
+        const W = wrap.clientWidth, H = wrap.clientHeight;
 
-      ovScene = new THREE.Scene();
-      ovScene.background = new THREE.Color(0x0c1018);
-      ovScene.fog = new THREE.FogExp2(0x0c1018, 0.0018);
+        ovScene = new THREE.Scene();
+        ovScene.background = new THREE.Color(0x0c1018);
+        ovScene.fog = new THREE.FogExp2(0x0c1018, 0.0018);
 
-      ovCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 2000);
-      ovCamera.position.set(0, 120, 200);
+        ovCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 2000);
+        ovCamera.position.set(0, 120, 200);
 
-      ovRenderer = new THREE.WebGLRenderer({ canvas: ovCanvas, antialias: true });
-      ovRenderer.setSize(W, H);
-      ovRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      ovRenderer.shadowMap.enabled = true;
-      ovRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-      ovRenderer.toneMappingExposure = 1.2;
+        ovRenderer = new THREE.WebGLRenderer({ canvas: ovCanvas, antialias: true });
+        ovRenderer.setSize(W, H);
+        ovRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        ovRenderer.shadowMap.enabled = true;
+        ovRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        ovRenderer.toneMappingExposure = 1.2;
 
-      setupLights(ovScene, ovRenderer);
+        setupLights(ovScene, ovRenderer);
 
-      const grid = new THREE.GridHelper(400, 30, 0x0d1a10, 0x0d1a10);
-      grid.position.y = -50;
-      ovScene.add(grid);
+        const grid = new THREE.GridHelper(400, 30, 0x0d1a10, 0x0d1a10);
+        grid.position.y = -50;
+        ovScene.add(grid);
 
-      ovControls = new OrbitControls(ovCamera, ovRenderer.domElement);
-      ovControls.enableDamping = true;
-      ovControls.dampingFactor = 0.06;
-      ovControls.autoRotate = true;
-      ovControls.autoRotateSpeed = 1.5;
-      ovControls.addEventListener('start', () => { ovControls.autoRotate = false; });
-      ovControls.addEventListener('end', () => { setTimeout(() => ovControls.autoRotate = true, 3000); });
+        ovControls = new OrbitControls(ovCamera, ovRenderer.domElement);
+        ovControls.enableDamping = true;
+        ovControls.dampingFactor = 0.06;
+        ovControls.autoRotate = true;
+        ovControls.autoRotateSpeed = 1.5;
+        ovControls.addEventListener('start', () => { ovControls.autoRotate = false; });
+        ovControls.addEventListener('end', () => { setTimeout(() => ovControls.autoRotate = true, 3000); });
 
-      window.addEventListener('resize', () => {
-        if (!ovRenderer || !ovCanvas) return;
-        const W2 = ovCanvas.parentElement.clientWidth, H2 = ovCanvas.parentElement.clientHeight;
-        ovCamera.aspect = W2 / H2; ovCamera.updateProjectionMatrix();
-        ovRenderer.setSize(W2, H2);
-      });
+        window.addEventListener('resize', () => {
+          if (!ovRenderer || !ovCanvas) return;
+          const W2 = ovCanvas.parentElement.clientWidth, H2 = ovCanvas.parentElement.clientHeight;
+          ovCamera.aspect = W2 / H2; ovCamera.updateProjectionMatrix();
+          ovRenderer.setSize(W2, H2);
+        });
 
-      animateOv();
-    }
+        animateOv();
+      }
 
-    function animateOv() {
-      ovAnimId = requestAnimationFrame(animateOv);
-      ovControls.update();
-      ovRenderer.render(ovScene, ovCamera);
-    }
+      function animateOv() {
+        ovAnimId = requestAnimationFrame(animateOv);
+        ovControls.update();
+        ovRenderer.render(ovScene, ovCamera);
+      }
 
-    window._loadOverviewStl = function (filename) {
-      if (!ovScene) initOverviewScene();
-      if (ovMesh) { ovScene.remove(ovMesh); ovMesh.geometry.dispose(); }
+      window._loadOverviewStl = function (filename) {
+        if (!ovScene) initOverviewScene();
+        if (ovMesh) { ovScene.remove(ovMesh); ovMesh.geometry.dispose(); }
 
-      const loadEl = document.getElementById('ov-load');
-      const fillEl = document.getElementById('ov-fill');
-      const pctEl = document.getElementById('ov-pct');
-      if (loadEl) loadEl.classList.remove('hidden');
+        const loadEl = document.getElementById('ov-load');
+        const fillEl = document.getElementById('ov-fill');
+        const pctEl = document.getElementById('ov-pct');
+        if (loadEl) loadEl.classList.remove('hidden');
 
-      loadStl(filename, ovScene, (m) => {
-        ovMesh = m;
-        if (loadEl) loadEl.classList.add('hidden');
-        fitCamera(ovCamera, ovControls, ovMesh);
-      }, fillEl, pctEl);
-    };
+        loadStl(filename, ovScene, (m) => {
+          ovMesh = m;
+          if (loadEl) loadEl.classList.add('hidden');
+          fitCamera(ovCamera, ovControls, ovMesh);
+        }, fillEl, pctEl);
+      };
 
-    // ── FULL VIEWER (large) ───────────────────────────────
-    let fvScene, fvCamera, fvRenderer, fvControls, fvMesh, fvAnimId;
-    const fvCanvas = document.getElementById('full-viewer-canvas');
+      // ── FULL VIEWER (large) ───────────────────────────────
+      let fvScene, fvCamera, fvRenderer, fvControls, fvMesh, fvAnimId;
+      const fvCanvas = document.getElementById('full-viewer-canvas');
 
-    function initFullScene() {
-      if (!fvCanvas) return;
-      const wrap = fvCanvas.parentElement;
-      const W = wrap.clientWidth, H = wrap.clientHeight;
+      function initFullScene() {
+        if (!fvCanvas) return;
+        const wrap = fvCanvas.parentElement;
+        const W = wrap.clientWidth, H = wrap.clientHeight;
 
-      fvScene = new THREE.Scene();
-      fvScene.background = new THREE.Color(0x070a0f);
-      fvScene.fog = new THREE.FogExp2(0x070a0f, 0.0012);
+        fvScene = new THREE.Scene();
+        fvScene.background = new THREE.Color(0x070a0f);
+        fvScene.fog = new THREE.FogExp2(0x070a0f, 0.0012);
 
-      fvCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 2000);
-      fvCamera.position.set(0, 120, 200);
+        fvCamera = new THREE.PerspectiveCamera(45, W / H, 0.1, 2000);
+        fvCamera.position.set(0, 120, 200);
 
-      fvRenderer = new THREE.WebGLRenderer({ canvas: fvCanvas, antialias: true });
-      fvRenderer.setSize(W, H);
-      fvRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      fvRenderer.shadowMap.enabled = true;
-      fvRenderer.toneMapping = THREE.ACESFilmicToneMapping;
-      fvRenderer.toneMappingExposure = 1.2;
+        fvRenderer = new THREE.WebGLRenderer({ canvas: fvCanvas, antialias: true });
+        fvRenderer.setSize(W, H);
+        fvRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        fvRenderer.shadowMap.enabled = true;
+        fvRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+        fvRenderer.toneMappingExposure = 1.2;
 
-      setupLights(fvScene, fvRenderer);
+        setupLights(fvScene, fvRenderer);
 
-      const grid = new THREE.GridHelper(600, 40, 0x0d1a10, 0x0d1a10);
-      grid.position.y = -50;
-      fvScene.add(grid);
+        const grid = new THREE.GridHelper(600, 40, 0x0d1a10, 0x0d1a10);
+        grid.position.y = -50;
+        fvScene.add(grid);
 
-      fvControls = new OrbitControls(fvCamera, fvRenderer.domElement);
-      fvControls.enableDamping = true;
-      fvControls.dampingFactor = 0.06;
-      fvControls.autoRotate = true;
-      fvControls.autoRotateSpeed = 0.8;
-      fvControls.minDistance = 30;
-      fvControls.maxDistance = 800;
-      fvControls.addEventListener('start', () => { fvControls.autoRotate = false; });
-      fvControls.addEventListener('end', () => { setTimeout(() => fvControls.autoRotate = true, 4000); });
+        fvControls = new OrbitControls(fvCamera, fvRenderer.domElement);
+        fvControls.enableDamping = true;
+        fvControls.dampingFactor = 0.06;
+        fvControls.autoRotate = true;
+        fvControls.autoRotateSpeed = 0.8;
+        fvControls.minDistance = 30;
+        fvControls.maxDistance = 800;
+        fvControls.addEventListener('start', () => { fvControls.autoRotate = false; });
+        fvControls.addEventListener('end', () => { setTimeout(() => fvControls.autoRotate = true, 4000); });
 
-      window.addEventListener('resize', () => {
-        if (!fvRenderer || !fvCanvas) return;
-        const W2 = fvCanvas.parentElement.clientWidth, H2 = fvCanvas.parentElement.clientHeight;
-        fvCamera.aspect = W2 / H2; fvCamera.updateProjectionMatrix();
-        fvRenderer.setSize(W2, H2);
-      });
+        window.addEventListener('resize', () => {
+          if (!fvRenderer || !fvCanvas) return;
+          const W2 = fvCanvas.parentElement.clientWidth, H2 = fvCanvas.parentElement.clientHeight;
+          fvCamera.aspect = W2 / H2; fvCamera.updateProjectionMatrix();
+          fvRenderer.setSize(W2, H2);
+        });
 
-      animateFv();
-    }
+        animateFv();
+      }
 
-    function animateFv() {
-      fvAnimId = requestAnimationFrame(animateFv);
-      fvControls.update();
-      fvRenderer.render(fvScene, fvCamera);
-    }
+      function animateFv() {
+        fvAnimId = requestAnimationFrame(animateFv);
+        fvControls.update();
+        fvRenderer.render(fvScene, fvCamera);
+      }
 
-    window._loadFullStl = function (filename) {
-      if (!fvScene) initFullScene();
-      if (fvMesh) { fvScene.remove(fvMesh); fvMesh.geometry.dispose(); }
+      window._loadFullStl = function (filename) {
+        if (!fvScene) initFullScene();
+        if (fvMesh) { fvScene.remove(fvMesh); fvMesh.geometry.dispose(); }
 
-      const loadEl = document.getElementById('full-load-overlay');
-      const fillEl = document.getElementById('full-load-fill');
-      const pctEl = document.getElementById('full-load-pct');
-      if (loadEl) loadEl.classList.remove('hidden');
+        const loadEl = document.getElementById('full-load-overlay');
+        const fillEl = document.getElementById('full-load-fill');
+        const pctEl = document.getElementById('full-load-pct');
+        if (loadEl) loadEl.classList.remove('hidden');
 
-      loadStl(filename, fvScene, (m) => {
-        fvMesh = m;
-        if (loadEl) loadEl.classList.add('hidden');
-        fitCamera(fvCamera, fvControls, fvMesh);
-      }, fillEl, pctEl);
-    };
+        loadStl(filename, fvScene, (m) => {
+          fvMesh = m;
+          if (loadEl) loadEl.classList.add('hidden');
+          fitCamera(fvCamera, fvControls, fvMesh);
+        }, fillEl, pctEl);
+      };
 
-    // ── SHARED HELPERS ────────────────────────────────────
-    function setupLights(scene, renderer) {
-      const ambient = new THREE.AmbientLight(0xddf0ff, 1.2);
-      scene.add(ambient);
-      const key = new THREE.DirectionalLight(0xffffff, 3.5);
-      key.position.set(-100, 250, 150);
-      key.castShadow = true;
-      key.shadow.mapSize.set(2048, 2048);
-      scene.add(key);
-      const fill = new THREE.DirectionalLight(0xa0c0ff, 1.8);
-      fill.position.set(150, 150, -100);
-      scene.add(fill);
-      const rim = new THREE.DirectionalLight(0xffaa44, 3.0);
-      rim.position.set(0, -100, -200);
-      scene.add(rim);
-      const top = new THREE.DirectionalLight(0xffffff, 1.2);
-      top.position.set(0, 350, 0);
-      scene.add(top);
+      // ── SHARED HELPERS ────────────────────────────────────
+      function setupLights(scene, renderer) {
+        const ambient = new THREE.AmbientLight(0xddf0ff, 1.2);
+        scene.add(ambient);
+        const key = new THREE.DirectionalLight(0xffffff, 3.5);
+        key.position.set(-100, 250, 150);
+        key.castShadow = true;
+        key.shadow.mapSize.set(2048, 2048);
+        scene.add(key);
+        const fill = new THREE.DirectionalLight(0xa0c0ff, 1.8);
+        fill.position.set(150, 150, -100);
+        scene.add(fill);
+        const rim = new THREE.DirectionalLight(0xffaa44, 3.0);
+        rim.position.set(0, -100, -200);
+        scene.add(rim);
+        const top = new THREE.DirectionalLight(0xffffff, 1.2);
+        top.position.set(0, 350, 0);
+        scene.add(top);
 
-      try {
-        const pmrem = new THREE.PMREMGenerator(renderer);
-        pmrem.compileEquirectangularShader();
-        const envS = new THREE.Scene();
-        const p1 = new THREE.Mesh(new THREE.BoxGeometry(40,40,2), new THREE.MeshBasicMaterial({color:0xffffff}));
-        p1.position.set(-50,60,50); p1.lookAt(0,0,0); envS.add(p1);
-        const p2 = new THREE.Mesh(new THREE.BoxGeometry(30,60,2), new THREE.MeshBasicMaterial({color:0xa0c0ff}));
-        p2.position.set(60,40,-60); p2.lookAt(0,0,0); envS.add(p2);
-        const p3 = new THREE.Mesh(new THREE.BoxGeometry(20,20,2), new THREE.MeshBasicMaterial({color:0xffd0a0}));
-        p3.position.set(0,-50,-80); p3.lookAt(0,0,0); envS.add(p3);
-        const rt = pmrem.fromScene(envS);
-        scene.environment = rt.texture;
-        pmrem.dispose();
-      } catch(e) {}
-    }
+        try {
+          const pmrem = new THREE.PMREMGenerator(renderer);
+          pmrem.compileEquirectangularShader();
+          const envS = new THREE.Scene();
+          const p1 = new THREE.Mesh(new THREE.BoxGeometry(40, 40, 2), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+          p1.position.set(-50, 60, 50); p1.lookAt(0, 0, 0); envS.add(p1);
+          const p2 = new THREE.Mesh(new THREE.BoxGeometry(30, 60, 2), new THREE.MeshBasicMaterial({ color: 0xa0c0ff }));
+          p2.position.set(60, 40, -60); p2.lookAt(0, 0, 0); envS.add(p2);
+          const p3 = new THREE.Mesh(new THREE.BoxGeometry(20, 20, 2), new THREE.MeshBasicMaterial({ color: 0xffd0a0 }));
+          p3.position.set(0, -50, -80); p3.lookAt(0, 0, 0); envS.add(p3);
+          const rt = pmrem.fromScene(envS);
+          scene.environment = rt.texture;
+          pmrem.dispose();
+        } catch (e) { }
+      }
 
-    function fitCamera(camera, controls, meshObj) {
-      const box = new THREE.Box3().setFromObject(meshObj);
-      const size = box.getSize(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 120 / maxDim;
-      meshObj.scale.setScalar(scale);
-      meshObj.rotation.x = -Math.PI * 0.1;
-      const scaled = maxDim * scale;
-      camera.position.set(0, scaled * 0.6, scaled * 1.8);
-      controls.target.set(0, 0, 0);
-      controls.update();
-    }
+      function fitCamera(camera, controls, meshObj) {
+        const box = new THREE.Box3().setFromObject(meshObj);
+        const size = box.getSize(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 120 / maxDim;
+        meshObj.scale.setScalar(scale);
+        meshObj.rotation.x = -Math.PI * 0.1;
+        const scaled = maxDim * scale;
+        camera.position.set(0, scaled * 0.6, scaled * 1.8);
+        controls.target.set(0, 0, 0);
+        controls.update();
+      }
 
-    function loadStl(filename, scene, onDone, fillEl, pctEl) {
-      // Fetch as ArrayBuffer — never exposes URL in DOM, prevents easy downloading
-      const url = filename.split('').map(c => c === ' ' ? '%20' : c).join('');
-      if (fillEl) fillEl.style.width = '5%';
-      if (pctEl) pctEl.textContent = '5%';
+      function loadStl(filename, scene, onDone, fillEl, pctEl) {
+        // Fetch as ArrayBuffer — never exposes URL in DOM, prevents easy downloading
+        const url = filename.split('').map(c => c === ' ' ? '%20' : c).join('');
+        if (fillEl) fillEl.style.width = '5%';
+        if (pctEl) pctEl.textContent = '5%';
 
-      fetch(url)
-        .then(res => {
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          const total = parseInt(res.headers.get('content-length') || '0');
-          let loaded = 0;
-          const reader = res.body.getReader();
-          const chunks = [];
-          function pump() {
-            return reader.read().then(({ done, value }) => {
-              if (done) return;
-              chunks.push(value);
-              loaded += value.byteLength;
-              if (total > 0) {
-                const pct = Math.round((loaded / total) * 95) + 5;
-                if (fillEl) fillEl.style.width = pct + '%';
-                if (pctEl) pctEl.textContent = pct + '%';
-              }
-              return pump();
+        fetch(url)
+          .then(res => {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const total = parseInt(res.headers.get('content-length') || '0');
+            let loaded = 0;
+            const reader = res.body.getReader();
+            const chunks = [];
+            function pump() {
+              return reader.read().then(({ done, value }) => {
+                if (done) return;
+                chunks.push(value);
+                loaded += value.byteLength;
+                if (total > 0) {
+                  const pct = Math.round((loaded / total) * 95) + 5;
+                  if (fillEl) fillEl.style.width = pct + '%';
+                  if (pctEl) pctEl.textContent = pct + '%';
+                }
+                return pump();
+              });
+            }
+            return pump().then(() => {
+              const combined = new Uint8Array(loaded);
+              let offset = 0;
+              chunks.forEach(c => { combined.set(c, offset); offset += c.byteLength; });
+              return combined.buffer;
             });
-          }
-          return pump().then(() => {
-            const combined = new Uint8Array(loaded);
-            let offset = 0;
-            chunks.forEach(c => { combined.set(c, offset); offset += c.byteLength; });
-            return combined.buffer;
-          });
-        })
-        .then(arrayBuffer => {
-          if (fillEl) fillEl.style.width = '100%';
-          if (pctEl) pctEl.textContent = '100%';
+          })
+          .then(arrayBuffer => {
+            if (fillEl) fillEl.style.width = '100%';
+            if (pctEl) pctEl.textContent = '100%';
 
-          const loader = new STLLoader();
-          const geo = loader.parse(arrayBuffer); // parse from memory, no URL needed
+            const loader = new STLLoader();
+            const geo = loader.parse(arrayBuffer); // parse from memory, no URL needed
 
-          geo.computeVertexNormals();
-          geo.center();
+            geo.computeVertexNormals();
+            geo.center();
 
-          geo.computeBoundingBox();
-          const bbox = geo.boundingBox;
-          const localSize = new THREE.Vector3().subVectors(bbox.max, bbox.min);
+            geo.computeBoundingBox();
+            const bbox = geo.boundingBox;
+            const localSize = new THREE.Vector3().subVectors(bbox.max, bbox.min);
 
-          let heightAxis = 'z';
-          let minVal = bbox.min.z;
-          let getVal = (i) => geo.attributes.position.getZ(i);
-          let getNorm = (i) => Math.abs(geo.attributes.normal.getZ(i));
+            let heightAxis = 'z';
+            let minVal = bbox.min.z;
+            let getVal = (i) => geo.attributes.position.getZ(i);
+            let getNorm = (i) => Math.abs(geo.attributes.normal.getZ(i));
 
-          if (localSize.x < localSize.y && localSize.x < localSize.z) {
-            heightAxis = 'x'; minVal = bbox.min.x;
-            getVal = (i) => geo.attributes.position.getX(i);
-            getNorm = (i) => Math.abs(geo.attributes.normal.getX(i));
-          } else if (localSize.y < localSize.x && localSize.y < localSize.z) {
-            heightAxis = 'y'; minVal = bbox.min.y;
-            getVal = (i) => geo.attributes.position.getY(i);
-            getNorm = (i) => Math.abs(geo.attributes.normal.getY(i));
-          }
-
-          const heightCounts = {};
-          const posAttr = geo.attributes.position;
-          const step = Math.max(1, Math.floor(posAttr.count / 20000));
-          for (let i = 0; i < posAttr.count; i += step) {
-            if (getNorm(i) > 0.95) {
-              const val = getVal(i);
-              const rounded = Math.round(val * 10) / 10;
-              heightCounts[rounded] = (heightCounts[rounded] || 0) + 1;
+            if (localSize.x < localSize.y && localSize.x < localSize.z) {
+              heightAxis = 'x'; minVal = bbox.min.x;
+              getVal = (i) => geo.attributes.position.getX(i);
+              getNorm = (i) => Math.abs(geo.attributes.normal.getX(i));
+            } else if (localSize.y < localSize.x && localSize.y < localSize.z) {
+              heightAxis = 'y'; minVal = bbox.min.y;
+              getVal = (i) => geo.attributes.position.getY(i);
+              getNorm = (i) => Math.abs(geo.attributes.normal.getY(i));
             }
-          }
 
-          const peaks = Object.entries(heightCounts)
-            .map(([h, count]) => ({ h: parseFloat(h), count }))
-            .sort((a, b) => b.count - a.count);
-
-          let pcbTop = minVal + 1.6;
-          if (peaks.length > 0) {
-            const maxCount = peaks[0].count;
-            const significant = peaks.filter(p => p.count > maxCount * 0.05);
-            if (significant.length > 1) {
-              const top2 = significant.slice(0, 2);
-              pcbTop = Math.min(top2[0].h, top2[1].h);
-            } else {
-              pcbTop = significant[0].h;
+            const heightCounts = {};
+            const posAttr = geo.attributes.position;
+            const step = Math.max(1, Math.floor(posAttr.count / 20000));
+            for (let i = 0; i < posAttr.count; i += step) {
+              if (getNorm(i) > 0.95) {
+                const val = getVal(i);
+                const rounded = Math.round(val * 10) / 10;
+                heightCounts[rounded] = (heightCounts[rounded] || 0) + 1;
+              }
             }
-          }
 
-          const mat = new THREE.MeshPhysicalMaterial({
-            roughness: 0.5, metalness: 0.5,
-            clearcoat: 1.0, clearcoatRoughness: 0.12, side: THREE.DoubleSide
-          });
+            const peaks = Object.entries(heightCounts)
+              .map(([h, count]) => ({ h: parseFloat(h), count }))
+              .sort((a, b) => b.count - a.count);
 
-          const axisInt = heightAxis === 'x' ? 0 : (heightAxis === 'y' ? 1 : 2);
+            let pcbTop = minVal + 1.6;
+            if (peaks.length > 0) {
+              const maxCount = peaks[0].count;
+              const significant = peaks.filter(p => p.count > maxCount * 0.05);
+              if (significant.length > 1) {
+                const top2 = significant.slice(0, 2);
+                pcbTop = Math.min(top2[0].h, top2[1].h);
+              } else {
+                pcbTop = significant[0].h;
+              }
+            }
 
-          mat.onBeforeCompile = (shader) => {
-            shader.uniforms.uHeightAxis = { value: axisInt };
-            shader.uniforms.uPcbTop = { value: pcbTop };
-            shader.uniforms.uThickness = { value: 1.6 };
+            const mat = new THREE.MeshPhysicalMaterial({
+              roughness: 0.5, metalness: 0.5,
+              clearcoat: 1.0, clearcoatRoughness: 0.12, side: THREE.DoubleSide
+            });
 
-            shader.vertexShader = shader.vertexShader.replace('#include <common>',
-              `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;`);
-            shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>',
-              `#include <begin_vertex>\nvLocalPosition = position;\nvLocalNormal = normal;`);
-            shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
-              `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;\nuniform int uHeightAxis;\nuniform float uPcbTop;\nuniform float uThickness;`);
-            shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>',
-              `#include <color_fragment>
+            const axisInt = heightAxis === 'x' ? 0 : (heightAxis === 'y' ? 1 : 2);
+
+            mat.onBeforeCompile = (shader) => {
+              shader.uniforms.uHeightAxis = { value: axisInt };
+              shader.uniforms.uPcbTop = { value: pcbTop };
+              shader.uniforms.uThickness = { value: 1.6 };
+
+              shader.vertexShader = shader.vertexShader.replace('#include <common>',
+                `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;`);
+              shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>',
+                `#include <begin_vertex>\nvLocalPosition = position;\nvLocalNormal = normal;`);
+              shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
+                `#include <common>\nvarying vec3 vLocalPosition;\nvarying vec3 vLocalNormal;\nuniform int uHeightAxis;\nuniform float uPcbTop;\nuniform float uThickness;`);
+              shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>',
+                `#include <color_fragment>
               float h = vLocalPosition.z; float n = abs(vLocalNormal.z);
               if (uHeightAxis == 0) { h = vLocalPosition.x; n = abs(vLocalNormal.x); }
               else if (uHeightAxis == 1) { h = vLocalPosition.y; n = abs(vLocalNormal.y); }
@@ -1377,36 +1922,36 @@
                 } else { finalColor = baseGreen; finalRoughness = 0.15; finalMetalness = 0.05; }
               }
               diffuseColor.rgb = finalColor;`
-            );
-          };
+              );
+            };
 
-          const m = new THREE.Mesh(geo, mat);
-          m.castShadow = true; m.receiveShadow = true;
-          scene.add(m);
-          onDone(m);
-        })
-        .catch(err => {
-      });
-    }
-
-    // ── INIT ON DOM ───────────────────────────────────────
-    if (proj.stls && proj.stls.length > 0) {
-      // Init overview viewer
-      initOverviewScene();
-      window._loadOverviewStl(proj.stls[0].file);
-
-      // Init full viewer with IntersectionObserver
-      const fvSection = document.getElementById('full-viewer-section');
-      if (fvSection) {
-        const fvObs = new IntersectionObserver(([entry]) => {
-          if (entry.isIntersecting) {
-            initFullScene();
-            window._loadFullStl(proj.stls[0].file);
-            fvObs.disconnect();
-          }
-        }, { threshold: 0.1 });
-        fvObs.observe(fvSection);
+            const m = new THREE.Mesh(geo, mat);
+            m.castShadow = true; m.receiveShadow = true;
+            scene.add(m);
+            onDone(m);
+          })
+          .catch(err => {
+          });
       }
+
+      // ── INIT ON DOM ───────────────────────────────────────
+      if (proj.stls && proj.stls.length > 0) {
+        // Init overview viewer
+        initOverviewScene();
+        window._loadOverviewStl(proj.stls[0].file);
+
+        // Init full viewer with IntersectionObserver
+        const fvSection = document.getElementById('full-viewer-section');
+        if (fvSection) {
+          const fvObs = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) {
+              initFullScene();
+              window._loadFullStl(proj.stls[0].file);
+              fvObs.disconnect();
+            }
+          }, { threshold: 0.1 });
+          fvObs.observe(fvSection);
+        }
       }
     }
 
@@ -2335,7 +2880,7 @@
         let pointer = pointers[0];
         let posX = scaleByPixelRatio(e.clientX);
         let posY = scaleByPixelRatio(e.clientY);
-        
+
         if (!isHovered) {
           config.SPLAT_RADIUS = 0.10;
         }
