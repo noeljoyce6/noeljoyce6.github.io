@@ -119,37 +119,76 @@ const PROJECTS = [
     id: 'fc',
     img: 'img/fc.png',
     title: 'Minima – CM5 UAV Companion Computer Board',
-    subtitle: 'High-Compute UAV Companion Computer (Ongoing)',
+    subtitle: 'Compact 6-Layer Companion Computer for UAVs (Ongoing)',
     cat: 'Companion Board', catClass: 'cat-aero', icon: '🧠',
     status: 'Ongoing — Design Phase', statusClass: 'status-wip',
-    stls: [{ label: 'Flight Controller Interface', file: 'FC.stl' }, { label: 'CM5 Pi Adapter', file: 'CM5 PI ADAPTER.stl' }],
-    docs: [],
+    stls: [{ label: 'Companion Board Enclosure', file: 'FC.stl' }, { label: 'CM5 Pi Adapter Module', file: 'CM5 PI ADAPTER.stl' }],
+    docs: [{ label: 'CM5 Pi Adapter Documentation', file: 'CM5 PI_ADAPTER_documentt.pdf' }],
     layers: 6, dims: 'Compact 6-Layer Board',
     chips: ['CM5', 'NVMe', 'PCIe / M.2', 'MAVLink'],
-    tags: ['CM5', 'Raspberry Pi', 'Companion Computer', '6-Layer', 'MAVLink', 'NVMe', 'PCIe / M.2', 'Hailo-8 AI', 'KiCad'],
-    desc: 'Architecting compact 6-layer UAV companion computer PCB around CM5 -- interfaces Pixhawk over MAVLink via dedicated FC/Telemetry/CRSF UARTs; designed for onboard autonomy, SLAM, precision landing, NVMe high-bandwidth logging, and PCIe AI accelerator integration (Hailo-8 class).',
+    tags: ['CM5', 'Raspberry Pi CM5', 'Companion Computer', '6-Layer', 'MAVLink', 'NVMe', 'PCIe / M.2', 'Hailo-8 AI', 'KiCad', 'SLAM', 'Precision Landing'],
+    desc: 'Minima is a compact 6-layer UAV companion computer PCB built around the Raspberry Pi Compute Module 5 (CM5). It is NOT a flight controller — it is a high-compute companion board that interfaces Pixhawk over MAVLink via dedicated FC/Telemetry/CRSF UARTs, enabling onboard autonomy, SLAM, precision landing, NVMe high-bandwidth logging, and PCIe AI accelerator integration (Hailo-8 class).',
     highlights: [
-      'Purpose-built UAV companion computer board designed around Raspberry Pi Compute Module 5 (CM5)',
-      'Dedicated FC/Telemetry/CRSF UART interfaces for seamless MAVLink integration with Pixhawk & Cube Orange',
-      'PCIe / M.2 slot supporting onboard Hailo-8 class AI accelerators for real-time edge vision & SLAM',
-      'High-bandwidth NVMe storage interface for high-density sensor payload and flight telemetry logging',
+      'Purpose-built UAV companion computer — NOT a flight controller; works alongside Pixhawk/Cube Orange',
+      'Architecting compact 6-layer PCB around Raspberry Pi CM5 for onboard compute and autonomy',
+      'Dedicated FC, Telemetry, and CRSF UART ports for seamless MAVLink integration with Pixhawk',
+      'PCIe / M.2 slot for Hailo-8 class AI accelerators enabling real-time edge vision, SLAM & precision landing',
+      'High-bandwidth NVMe storage for high-density sensor payload and flight telemetry logging',
       '6-layer stackup optimized for high-speed differential signals, power integrity, and EMI shielding'
     ],
     specs: [
       { k: 'Compute Module', v: 'Raspberry Pi CM5' },
-      { k: 'Board Type', v: 'UAV Companion Computer Board' },
-      { k: 'Layers', v: '6-Layer Stackup' },
-      { k: 'Telemetry', v: 'FC / Telemetry / CRSF UARTs' },
-      { k: 'AI Acceleration', v: 'PCIe M.2 (Hailo-8 class)' },
+      { k: 'Board Type', v: 'UAV Companion Computer (not FC)' },
+      { k: 'Layers', v: '6-Layer KiCad PCB' },
+      { k: 'Telemetry', v: 'FC / Telemetry / CRSF UARTs (MAVLink)' },
+      { k: 'AI Acceleration', v: 'PCIe / M.2 (Hailo-8 class)' },
       { k: 'Storage', v: 'High-bandwidth NVMe' }
     ],
     documentation: {
-      overview: `Minima is a high-performance 6-layer UAV companion computer board centered on the Raspberry Pi Compute Module 5 (CM5). Unlike primary flight controllers (which run real-time flight stabilization loops), Minima functions as an onboard high-compute companion board — providing computer vision, SLAM, precision landing, edge AI inference, and autonomous mission routing while interfacing to Pixhawk/Cube Orange flight controllers over MAVLink.`,
-      architecture: `The architecture pairs the CM5 compute module with dedicated hardware peripherals: dedicated FC, Telemetry, and CRSF UART ports for MAVLink telemetry; high-speed PCIe / M.2 lines for Hailo-8 AI acceleration modules; an NVMe slot for logging multi-gigabyte video and point-cloud datasets; and regulated DC-DC power delivery for UAV flight battery rails.`,
-      pcb: `6-layer stackup: Signal / GND / Signal / Power / GND / Signal. The high-density CM5 SO-DIMM interface requires 0.4mm pin-pitch routing, controlled impedance differential pairs for PCIe/USB3, and dedicated internal ground planes (layers 2 & 5) for EMI mitigation near high-power drone ESCs.`,
-      testing: `Schematic and footprint verification complete in KiCad. Power rail sequencing for CM5 power-up requirements validated. SO-DIMM pin mapping verified against CM5 datasheet and MAVLink UART breakout requirements. Board bring-up scheduled following fabrication release.`,
-      firmware: `Runs Raspberry Pi OS Lite (Linux) with custom ROS2 / MAVROS nodes for Pixhawk integration. Custom daemon handles MAVLink telemetry parsing and Hailo-8 AI vision pipeline orchestration.`,
-      future: `Fabrication release, high-speed signal integrity validation on oscilloscope, and flight testing onboard autonomous delivery UAVs.`
+      overview: `Minima is a high-performance 6-layer UAV companion computer board centered on the Raspberry Pi Compute Module 5 (CM5). It is important to note that Minima is NOT a primary flight controller — it does not run real-time flight stabilization loops (ArduPilot/PX4). Instead, Minima acts as an onboard high-compute companion board, providing computer vision, SLAM, precision landing guidance, edge AI inference, and autonomous mission routing. It interfaces to Pixhawk/Cube Orange flight controllers exclusively over MAVLink for telemetry and command exchange.`,
+      architecture: `The architecture pairs the CM5 compute module with dedicated hardware peripherals: dedicated FC, Telemetry, and CRSF UART ports for MAVLink bidirectional communication with Pixhawk; high-speed PCIe / M.2 lines for Hailo-8 class AI accelerator modules (onboard autonomy and SLAM); an NVMe slot for logging multi-gigabyte video and point-cloud datasets; and regulated DC-DC power delivery for UAV flight battery rails. A CM5 Pi Adapter module (documented in CM5 PI_ADAPTER_documentt.pdf) interfaces the CM5 SO-DIMM form factor to the main companion board header.`,
+      pcb: `6-layer stackup: Signal / GND / Signal / Power / GND / Signal. The high-density CM5 SO-DIMM interface requires 0.4mm pin-pitch routing, controlled impedance differential pairs for PCIe/USB3 lanes, and dedicated internal ground planes (layers 2 & 5) for EMI mitigation near high-power drone ESCs.`,
+      testing: `Schematic and footprint verification complete in KiCad. Power rail sequencing for CM5 power-up requirements validated. SO-DIMM pin mapping verified against CM5 datasheet. MAVLink UART breakout routing to FC/Telemetry/CRSF ports verified. Board bring-up and flight testing scheduled after fabrication release.`,
+      firmware: `Runs Raspberry Pi OS Lite (Linux) with custom ROS2 / MAVROS nodes for Pixhawk MAVLink integration. Custom daemon handles MAVLink telemetry parsing, mission overrides, and Hailo-8 AI vision pipeline orchestration for onboard SLAM, object avoidance, and precision landing.`,
+      future: `Fabrication release, high-speed signal integrity validation on oscilloscope, Hailo-8 AI accelerator integration test, and flight testing onboard autonomous delivery UAVs.`
+    }
+  },
+  {
+    id: 'eeg',
+    img: 'img/EEG.jpeg',
+    title: 'Wireless EEG Acquisition',
+    subtitle: '4-Channel Neural Signal Platform',
+    cat: 'BioSignal', catClass: 'cat-bio', icon: '🧠',
+    status: 'Completed', statusClass: 'status-done',
+    stls: [{ label: 'EEG Board', file: 'EEG.stl' }],
+    docs: [],
+    layers: 2, dims: 'Mixed-signal 2-layer',
+    chips: ['AD623', 'BLE 5.0', 'RLD'],
+    tags: ['AD623', 'BLE 5.0', '4-Channel', 'Mixed-Signal', 'Low-Noise', 'EEG', 'Differential Input'],
+    desc: 'A low-noise mixed-signal EEG acquisition PCB with 4 differential input channels via AD623 instrumentation amplifiers. Features BLE 5.0 wireless streaming for untethered operation. Designed with careful analog layout, ground plane separation, and right-leg drive for microvolt-level noise performance.',
+    highlights: [
+      'AD623 instrumentation amp: CMRR >90dB at 60Hz',
+      '4 fully differential EEG input channels',
+      'BLE 5.0 wireless data streaming',
+      'Analog/digital ground plane separation on 2-layer board',
+      'Right-leg drive (RLD) circuit for common-mode rejection',
+      'Patient-safe isolated power design'
+    ],
+    specs: [
+      { k: 'AFE', v: 'AD623 (×4 ch)' },
+      { k: 'Wireless', v: 'BLE 5.0' },
+      { k: 'Channels', v: '4 differential' },
+      { k: 'Layers', v: '2 (analog/digital split)' },
+      { k: 'Bandwidth', v: '0.5–100 Hz (EEG)' },
+      { k: 'Noise', v: '<1μV input referred' }
+    ],
+    documentation: {
+      overview: `The Wireless EEG Acquisition Board is a 4-channel neural signal acquisition platform designed for research-grade brainwave measurement. It captures sub-microvolt EEG signals from scalp electrodes, amplifies them via precision instrumentation amplifiers, digitizes the signals at 250Hz, and streams data wirelessly over BLE 5.0. The design prioritizes analog signal integrity above all other concerns.`,
+      architecture: `Each of the 4 channels uses an AD623 instrumentation amplifier (CMRR >90dB) for differential signal acquisition. A right-leg drive (RLD) circuit actively reduces common-mode interference from power line noise. The analog front-end outputs feed into a 24-bit ADC, with the digital section isolated from the analog domain via optocouplers. A Nordic nRF52840 SoC handles BLE communication.`,
+      pcb: `2-layer stackup optimized for mixed-signal performance. The analog ground plane is split from the digital ground plane with a single star connection point at the ADC. All electrode input traces are guarded by driven shields. No digital switching traces cross the analog signal domain.`,
+      testing: `Noise floor measured at 0.8μV RMS input-referred (0.5–100Hz bandwidth) — meeting research-grade EEG specifications. CMRR verified >90dB at 50/60Hz. Alpha wave detection (8–12Hz) tested with 10 electrode placements. BLE streaming verified at 4×250Hz = 1kSPS aggregate rate with <1 packet loss per 10,000 samples.\n\n<img src="img/EEG SIMULATION RESULT.jpeg" style="width:100%; max-width:800px; border-radius:12px; margin-top:2rem; border:1px solid rgba(255,255,255,0.1);" alt="EEG Simulation Result">`,
+      firmware: `Nordic SDK (nRF5 SDK 17.1). Custom BLE GATT service for EEG data streaming. Notch filter (50/60Hz selectable) implemented in firmware. Configurable gain and bandwidth per channel.`,
+      future: `Scale to 8-channel system with ADS1299 dedicated EEG AFE chip. Add electrode impedance measurement for proper electrode-skin contact verification. Investigate SSVEP-based BCI (brain-computer interface) application.`
     }
   },
   {
@@ -298,44 +337,6 @@ const PROJECTS = [
       testing: ``,
       firmware: ``,
       future: ``
-    }
-  },
-  {
-    id: 'eeg',
-    img: 'img/EEG.jpeg',
-    title: 'Wireless EEG Acquisition',
-    subtitle: '4-Channel Neural Signal Platform',
-    cat: 'BioSignal', catClass: 'cat-bio', icon: '🧠',
-    status: 'Completed', statusClass: 'status-done',
-    stls: [{ label: 'EEG Board', file: 'EEG.stl' }],
-    docs: [],
-    layers: 2, dims: 'Mixed-signal 2-layer',
-    chips: ['AD623', 'BLE 5.0', 'RLD'],
-    tags: ['AD623', 'BLE 5.0', '4-Channel', 'Mixed-Signal', 'Low-Noise', 'EEG', 'Differential Input'],
-    desc: 'A low-noise mixed-signal EEG acquisition PCB with 4 differential input channels via AD623 instrumentation amplifiers. Features BLE 5.0 wireless streaming for untethered operation. Designed with careful analog layout, ground plane separation, and right-leg drive for microvolt-level noise performance.',
-    highlights: [
-      'AD623 instrumentation amp: CMRR >90dB at 60Hz',
-      '4 fully differential EEG input channels',
-      'BLE 5.0 wireless data streaming',
-      'Analog/digital ground plane separation on 2-layer board',
-      'Right-leg drive (RLD) circuit for common-mode rejection',
-      'Patient-safe isolated power design'
-    ],
-    specs: [
-      { k: 'AFE', v: 'AD623 (×4 ch)' },
-      { k: 'Wireless', v: 'BLE 5.0' },
-      { k: 'Channels', v: '4 differential' },
-      { k: 'Layers', v: '2 (analog/digital split)' },
-      { k: 'Bandwidth', v: '0.5–100 Hz (EEG)' },
-      { k: 'Noise', v: '<1μV input referred' }
-    ],
-    documentation: {
-      overview: `The Wireless EEG Acquisition Board is a 4-channel neural signal acquisition platform designed for research-grade brainwave measurement. It captures sub-microvolt EEG signals from scalp electrodes, amplifies them via precision instrumentation amplifiers, digitizes the signals at 250Hz, and streams data wirelessly over BLE 5.0. The design prioritizes analog signal integrity above all other concerns.`,
-      architecture: `Each of the 4 channels uses an AD623 instrumentation amplifier (CMRR >90dB) for differential signal acquisition. A right-leg drive (RLD) circuit actively reduces common-mode interference from power line noise. The analog front-end outputs feed into a 24-bit ADC, with the digital section isolated from the analog domain via optocouplers. A Nordic nRF52840 SoC handles BLE communication.`,
-      pcb: `2-layer stackup optimized for mixed-signal performance. The analog ground plane is split from the digital ground plane with a single star connection point at the ADC. All electrode input traces are guarded by driven shields. No digital switching traces cross the analog signal domain.`,
-      testing: `Noise floor measured at 0.8μV RMS input-referred (0.5–100Hz bandwidth) — meeting research-grade EEG specifications. CMRR verified >90dB at 50/60Hz. Alpha wave detection (8–12Hz) tested with 10 electrode placements. BLE streaming verified at 4×250Hz = 1kSPS aggregate rate with <1 packet loss per 10,000 samples.\n\n<img src="img/EEG SIMULATION RESULT.jpeg" style="width:100%; max-width:800px; border-radius:12px; margin-top:2rem; border:1px solid rgba(255,255,255,0.1);" alt="EEG Simulation Result">`,
-      firmware: `Nordic SDK (nRF5 SDK 17.1). Custom BLE GATT service for EEG data streaming. Notch filter (50/60Hz selectable) implemented in firmware. Configurable gain and bandwidth per channel.`,
-      future: `Scale to 8-channel system with ADS1299 dedicated EEG AFE chip. Add electrode impedance measurement for proper electrode-skin contact verification. Investigate SSVEP-based BCI (brain-computer interface) application.`
     }
   },
   {
