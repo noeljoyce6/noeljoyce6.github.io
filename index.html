@@ -932,7 +932,10 @@
       align-items: center;
       gap: 10px;
       font-family: var(--font-body);
-      transition: color 0.2s
+      transition: color 0.22s, transform 0.22s;
+      cursor: default;
+      padding: 2px 0;
+      border-radius: 4px;
     }
 
     .skill-card-list li::before {
@@ -944,11 +947,31 @@
       background: var(--bg);
       border: 2px solid var(--copper);
       box-shadow: 0 0 3px rgba(212, 130, 28, 0.4);
-      flex-shrink: 0
+      flex-shrink: 0;
+      transition: border-color 0.22s, box-shadow 0.22s, background 0.22s;
     }
 
     .skill-card-list li:hover {
-      color: var(--text)
+      color: var(--green);
+      transform: translateX(4px);
+    }
+
+    .skill-card-list li:hover::before {
+      border-color: var(--green);
+      background: rgba(0, 232, 137, 0.15);
+      box-shadow: 0 0 8px rgba(0, 232, 137, 0.6);
+    }
+
+    .skill-card:hover .skill-card-title {
+      color: var(--green);
+      transition: color 0.22s;
+    }
+
+    .skill-card:hover .skill-card-icon {
+      border-color: rgba(0, 232, 137, 0.4);
+      background: rgba(0, 232, 137, 0.06);
+      box-shadow: 0 0 12px rgba(0, 232, 137, 0.15);
+      transition: all 0.22s;
     }
 
     /* ─── EXPERIENCE ─────────────────────────────────────── */
@@ -2604,17 +2627,51 @@
       <div class="hero-watermark">HARDWARE</div>
 
       <div class="hero-left">
-        <div class="hero-tag" id="htag"><span class="hero-tag-dot"></span>Embedded Hardware Engineer</div>
+        <div class="hero-tag" id="htag"><span class="hero-tag-dot"></span>Avionics &amp; Embedded Hardware Engineer</div>
         <h1 class="hero-name" id="hname">Noel Joyce<span class="accent-line">Varghese.</span></h1>
         <p class="hero-role" id="hrole"><span id="typed"></span><span class="typed-cursor">|</span></p>
-        <p class="hero-desc" id="hdesc">Designing custom PCBs for aerospace, robotics &amp; defence. From schematic
-          capture to validated board — building hardware that actually flies, spins, and senses.</p>
+        <p class="hero-desc" id="hdesc">Avionics Design Engineer at PSYC Aerospace &amp; Defence. Designing custom multilayer PCBs for UAV, aerospace, robotics &amp; defence — from schematic capture to flight-tested boards.</p>
         <div class="hero-btns" id="hbtns">
           <a href="#projects" class="btn btn-primary">View Projects →</a>
           <a href="#contact" class="btn btn-secondary">Get in Touch</a>
         </div>
+
+        <!-- YouTube Demo Video Clickbait Banners -->
+        <div id="hero-demo-banners" style="display:flex; flex-direction:column; gap:0.65rem; margin-top:1.8rem;">
+          <a href="https://www.youtube.com/playlist?list=PLKt2ic15ID9o" target="_blank"
+            style="display:flex; align-items:center; gap:12px; padding:10px 16px;
+                   background:linear-gradient(90deg,rgba(220,20,20,0.18),rgba(220,20,20,0.06));
+                   border:1px solid rgba(220,20,20,0.45); border-radius:10px;
+                   text-decoration:none; transition:all 0.22s; backdrop-filter:blur(6px);"
+            onmouseover="this.style.borderColor='rgba(255,60,60,0.85)'; this.style.background='linear-gradient(90deg,rgba(220,20,20,0.32),rgba(220,20,20,0.12))';"
+            onmouseout="this.style.borderColor='rgba(220,20,20,0.45)'; this.style.background='linear-gradient(90deg,rgba(220,20,20,0.18),rgba(220,20,20,0.06))';"
+          >
+            <span style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;
+                         background:rgba(220,20,20,0.85); border-radius:50%; flex-shrink:0; font-size:0.9rem;">▶</span>
+            <div>
+              <div style="font-family:var(--font-mono); font-size:0.68rem; color:rgba(255,120,120,0.85); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:2px;">WATCH DEMO · APEX</div>
+              <div style="font-size:0.82rem; color:#f0d0d0; font-weight:500;">Intelligent UAV Payload Interface <span style="color:rgba(255,100,100,0.7); font-size:0.72rem;">4-Channel Servo Driver →</span></div>
+            </div>
+          </a>
+          <a href="https://www.youtube.com/playlist?list=PLexVyNUshtQk" target="_blank"
+            style="display:flex; align-items:center; gap:12px; padding:10px 16px;
+                   background:linear-gradient(90deg,rgba(220,20,20,0.18),rgba(220,20,20,0.06));
+                   border:1px solid rgba(220,20,20,0.45); border-radius:10px;
+                   text-decoration:none; transition:all 0.22s; backdrop-filter:blur(6px);"
+            onmouseover="this.style.borderColor='rgba(255,60,60,0.85)'; this.style.background='linear-gradient(90deg,rgba(220,20,20,0.32),rgba(220,20,20,0.12))';"
+            onmouseout="this.style.borderColor='rgba(220,20,20,0.45)'; this.style.background='linear-gradient(90deg,rgba(220,20,20,0.18),rgba(220,20,20,0.06))';"
+          >
+            <span style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;
+                         background:rgba(220,20,20,0.85); border-radius:50%; flex-shrink:0; font-size:0.9rem;">▶</span>
+            <div>
+              <div style="font-family:var(--font-mono); font-size:0.68rem; color:rgba(255,120,120,0.85); letter-spacing:0.14em; text-transform:uppercase; margin-bottom:2px;">WATCH DEMO · SKYHOOK</div>
+              <div style="font-size:0.82rem; color:#f0d0d0; font-weight:500;">Precision UAV Payload Winch Controller <span style="color:rgba(255,100,100,0.7); font-size:0.72rem;">Geared DC Winch →</span></div>
+            </div>
+          </a>
+        </div>
+
         <div class="hero-stats" id="hstats">
-          <div class="stat-pill"><span class="stat-pill-num">10+</span><span class="stat-pill-label">PCB Boards</span>
+          <div class="stat-pill"><span class="stat-pill-num">8+</span><span class="stat-pill-label">PCB Platforms</span>
           </div>
           <div class="stat-pill"><span class="stat-pill-num">6L</span><span class="stat-pill-label">Max Layers</span>
           </div>
@@ -2690,13 +2747,9 @@
         </div>
         <div class="about-right">
           <h3 class="about-heading">Building hardware that<br /><em>leaves the screen.</em></h3>
-          <p class="about-para">I'm an Embedded Hardware Design Engineer interning at <strong>PSYC Aerospace and Defence
-              Industries</strong> in Bengaluru — designing custom PCBs for aerospace, robotics, and defence platforms.
-            My work spans schematic capture, multilayer layout, component selection, bring-up, soldering, and
-            validation.</p>
-          <p class="about-para">Earlier I worked on analog IC design at <strong>IIIT Kottayam</strong>, simulating CMOS
-            VCOs in Cadence Virtuoso. My projects range from 4-layer BLDC motor controllers to 6-layer UAV flight
-            computers, compact winch controllers, EEG acquisition hardware, and security/deterrent systems.</p>
+          <p class="about-para">I'm an <strong>Avionics Design Engineer</strong> at <strong>PSYC Aerospace and Defence
+              Industries</strong> in Bengaluru — owning end-to-end development of 8+ embedded avionics platforms for UAV, aerospace, and defence. My work spans schematic capture, multilayer PCB layout (up to 6 layers), DFM/DFA review, board bring-up, and MAVLink-based flight-system integration.</p>
+          <p class="about-para">Earlier I interned at <strong>IIIT Kottayam</strong> simulating a 5 GHz CMOS VCO in Cadence Virtuoso. My projects include 4-layer BLDC motor controllers (VECTOR), 6-layer CM5 UAV companion computer boards (Minima — not a flight controller), precision payload winch controllers (SKYHOOK), 4-channel servo interface avionics (APEX), mixed-signal EEG acquisition hardware, and security/deterrent systems.</p>
           <p class="about-para">I thrive where precision electronics meets real-world systems — where a routed trace
             becomes a motor spinning, a sensor reading, or a drone flying. Every board I ship is designed to IPC
             standards with production release in mind.</p>
