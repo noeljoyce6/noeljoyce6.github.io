@@ -11,32 +11,32 @@ const PROJECTS = [
     cat: 'Avionics', catClass: 'cat-aero', icon: '🛩',
     status: 'Completed', statusClass: 'status-done',
     stls: [],
-    docs: [],
-    layers: 2, dims: 'Avionics 2-Layer',
+    docs: [{ label: 'Technical Documentation & Schematic Review', file: 'Servo_driver_document.pdf' }],
+    layers: 2, dims: 'Avionics 2-Layer PCB',
     chips: ['ESP32-C3', 'TPS54302', 'TXS0102', 'PCA9685'],
     tags: ['ESP32-C3', 'TPS54302', 'TXS0102', 'PCA9685', 'MAVLink', 'KiCad', 'WiFi OTA', 'Web GUI', 'Servo BEC', 'RadioMaster RC'],
-    desc: 'Designed a 2-layer avionics PCB with selectable on-board/external BEC servo power rail, I2C level-shifted PCA9685 expansion, and Pixhawk Serial5 telemetry interface. Developed full firmware and web GUI: MAVLink MAV_CMD_DO_SET_SERVO control, RadioMaster RC-preset payload release, WiFi AP, and browser OTA.',
+    desc: 'APEX (updated 4-channel servo driver platform) is a smart avionics interface board featuring selectable on-board/external BEC power rails, TXS0102 level-shifted I2C PCA9685 expansion, and Pixhawk Serial5 MAVLink telemetry. PlatformIO firmware provides WiFi provisioning, self-hosted web GUI dashboard, browser OTA updates, and RadioMaster CH10 preset release logic.',
     highlights: [
-      '2-layer smart avionics PCB with selectable on-board or external BEC servo power rail',
-      'I2C level-shifted PCA9685 expansion via TXS0102 for 4-channel servo actuation',
-      'Pixhawk Serial5 telemetry interface decoding MAVLink MAV_CMD_DO_SET_SERVO commands',
-      'RadioMaster / FlySky RC-preset payload release logic for mission ground testing',
-      'ESP32-C3 PlatformIO firmware with onboard WiFi provisioning, web GUI dashboard, and browser OTA'
+      '2-layer smart avionics PCB with selectable on-board (TPS54302 5V) or external BEC servo power rail',
+      'I2C level-shifted PCA9685 expansion via TXS0102 (3.3V to 5V) for up to 16 additional servo channels',
+      'Pixhawk Serial5 UART telemetry interface decoding MAVLink MAV_CMD_DO_SET_SERVO commands',
+      'RadioMaster CH10 / FlySky RC-preset payload release logic (Single Package, Paired Release, All At Once)',
+      'PlatformIO ESP32-C3 firmware with onboard WiFi AP (VALVE-ServoDriver), web GUI dashboard, and browser OTA'
     ],
     specs: [
-      { k: 'MCU', v: 'ESP32-C3' },
-      { k: 'Power Rail', v: 'TPS54302 Selectable BEC' },
-      { k: 'Expander', v: 'PCA9685 via TXS0102 I2C' },
-      { k: 'Telemetry', v: 'Pixhawk Serial5 MAVLink' },
-      { k: 'Layers', v: '2-Layer PCB' },
+      { k: 'MCU', v: 'Seeed XIAO ESP32-C3' },
+      { k: 'Power Rail', v: 'TPS54302 Buck / Ext BEC Jumper' },
+      { k: 'Expander', v: 'PCA9685 via TXS0102 I2C (0x40)' },
+      { k: 'Telemetry', v: 'Pixhawk Serial5 MAVLink2' },
+      { k: 'Layers', v: '2-Layer KiCad PCB' },
       { k: 'Firmware', v: 'PlatformIO · WiFi OTA · Web GUI' }
     ],
     documentation: {
-      overview: `APEX is a production-grade 4-channel intelligent UAV payload interface board engineered for Pixhawk and Cube Orange flight-controller platforms. It bridges MAVLink telemetry commands from the flight controller to high-current servo actuators via a dedicated I2C level-shifted PCA9685 driver, featuring selectable power routing for onboard or external BEC rails.`,
-      architecture: `The architecture uses an ESP32-C3 microcontroller running bare-metal C++ firmware built with PlatformIO. Telemetry is decoded from Pixhawk Serial5 UART over MAVLink 2.0 (MAV_CMD_DO_SET_SERVO). Output channels drive 4 independent servo channels via a PCA9685 PWM expander level-shifted with TXS0102 voltage translators. Onboard power regulation is handled by a TPS54302 high-efficiency buck converter.`,
+      overview: `APEX (formerly servo_driver) is a production-grade 4-channel intelligent UAV payload interface board engineered for Pixhawk and Cube Orange flight-controller platforms. It bridges MAVLink telemetry commands from the flight controller to high-current servo actuators via direct PWM pins (D0-D3) and an optional I2C level-shifted PCA9685 expansion driver, featuring selectable power routing for onboard 5V buck or external BEC rails.`,
+      architecture: `The system runs on a Seeed Studio XIAO ESP32-C3 module with C++ PlatformIO firmware. Telemetry is received over Pixhawk Serial5 UART (115200 baud, MAVLink2). Output signals drive 4 direct 3-pin servo headers (J9, J6, J4, J10) through 220Ω series damping resistors. PCA9685 expansion is driven through a TXS0102 bidirectional level translator (3.3V VCCA / 5V VCCB). Onboard power is supplied by a TPS54302 5V/3A buck converter from XT60 input (8-28V).`,
       pcb: `2-layer PCB designed in KiCad. Power rail routing features dedicated 2oz copper pours with via stitching for thermal distribution up to 3A servo current. Signal lines for UART telemetry are shielded by solid ground pours on both top and bottom layers.`,
-      testing: `Hardware bring-up verified TPS54302 output stability under 2.5A continuous servo load. MAVLink command decoding tested with Mission Planner over Pixhawk Serial5 at 57600 baud. RadioMaster Pocket RC preset release logic validated during ground actuation trials. WiFi web GUI and browser OTA updates verified cleanly.`,
-      firmware: `PlatformIO C++ firmware implementing asynchronous WiFi AP, embedded HTML/JS web dashboard, browser OTA update page, and MAVLink payload state machine.`,
+      testing: `Hardware bring-up verified TPS54302 buck output stability under continuous servo load. MAVLink command decoding tested with Mission Planner over Pixhawk Serial5. RadioMaster Pocket CH10 preset release logic validated during ground actuation trials. WiFi web GUI and browser OTA updates verified cleanly.`,
+      firmware: `PlatformIO C++ firmware implementing asynchronous WiFi AP (SSID: VALVE-ServoDriver), embedded HTML/JS web dashboard, browser OTA update page, and MAVLink payload state machine.`,
       future: `Integration of CAN bus telemetry interface and multi-payload current monitoring shunt per channel.`
     }
   },
@@ -45,37 +45,37 @@ const PROJECTS = [
     img: null,
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLexVyNUshtQk',
     title: 'SKYHOOK – Precision UAV Payload Winch',
-    subtitle: 'Drone Payload Winch Controller',
+    subtitle: 'Geared DC Drone Payload Winch Controller',
     cat: 'UAV Systems', catClass: 'cat-uav', icon: '🔩',
     status: 'Completed', statusClass: 'status-done',
-    stls: [{ label: 'Servo Winch', file: 'SERVO_WINCH.stl' }],
-    docs: [],
+    stls: [{ label: 'Geared DC Winch', file: 'GEARED DC WINCH.stl' }, { label: 'Servo Winch', file: 'SERVO_WINCH.stl' }],
+    docs: [{ label: 'Geared DC Winch Technical Manual', file: 'winch_Geared_dc ver2.pdf' }],
     layers: 2, dims: 'Winch Control PCB',
     chips: ['ESP32-C3', 'BTS7960', 'AS5600', '74AHCT125'],
     tags: ['ESP32-C3', 'BTS7960', 'AS5600', 'PCF8574T', '74AHCT125', 'MAVLink', 'KiCad', 'Encoder Feedback', 'Closed-Loop Winch'],
-    desc: 'Designed winch control PCB interfacing external BTS7960 motor driver, AS5600 magnetic encoder (I2C), PCF8574T I/O expander, and 74AHCT125 3.3V-to-5V logic buffer. Developed complete ESP32 firmware: MAVLink command decoding, direction/PWM safety interlocks, encoder-based cable-length tracking, and UART telemetry reporting.',
+    desc: 'SKYHOOK (updated Geared DC winch platform) is a precision UAV payload winch controller interfacing external BTS7960 motor driver, AS5600 magnetic encoder (I2C 0x36), PCF8574T I/O expander (0x38), and 74AHCT125 logic buffer. ESP32 firmware features self-hosted LittleFS web dashboard, SoftAP setup, MAVLink v2 telemetry, physical manual switch override, and latched emergency pushbutton lockout.',
     highlights: [
-      'Winch control PCB interfacing high-current BTS7960 H-bridge motor driver',
-      'AS5600 magnetic encoder over I2C for millimeter-precision cable altitude tracking',
-      '74AHCT125 3.3V-to-5V logic buffer ensuring robust drive to external motor modules',
-      'PCF8574T I/O expander for hardware status signals and manual override switches',
-      'ESP32 firmware featuring MAVLink command decoding, direction/PWM interlocks, and telemetry'
+      'Geared DC payload winch controller interfacing external BTS7960 / IBT-2 motor driver (4kHz PWM)',
+      'AS5600 magnetic rotary encoder over I2C (0x36) for 12-bit cumulative angle & millimeter cable-length tracking',
+      '74AHCT125S14 quad logic buffer translating 3.3V MCU signals to clean 5V logic for BTS7960 driver',
+      'PCF8574T I2C I/O expander (0x38) for BTS enable, buffer OE, emergency pushbutton, and status LED',
+      'Self-hosted onboard HTTP WebPortal dashboard (LittleFS + WebServer) with SoftAP setup (NEMO-WINCH-SETUP)'
     ],
     specs: [
-      { k: 'MCU', v: 'ESP32-C3' },
-      { k: 'Driver', v: 'External BTS7960 H-Bridge' },
-      { k: 'Feedback', v: 'AS5600 Magnetic Encoder' },
-      { k: 'Buffer', v: '74AHCT125 (3.3V to 5V)' },
-      { k: 'Comms', v: 'MAVLink UART Telemetry' },
-      { k: 'Expander', v: 'PCF8574T I/O Expander' }
+      { k: 'MCU', v: 'Seeed XIAO ESP32-C3' },
+      { k: 'Motor Driver', v: 'External BTS7960 / IBT-2' },
+      { k: 'Encoder', v: 'AS5600 Magnetic I2C (0x36)' },
+      { k: 'Buffer', v: '74AHCT125 Quad (3.3V to 5V)' },
+      { k: 'GPIO Expander', v: 'PCF8574T I2C (0x38)' },
+      { k: 'Comms', v: 'MAVLink v2 UART · WebPortal' }
     ],
     documentation: {
-      overview: `SKYHOOK is a high-precision UAV payload winch controller built for autonomous delivery drones. It interfaces an external BTS7960 high-power H-bridge motor driver with an AS5600 magnetic rotary encoder to provide closed-loop spool height tracking, direction interlocks, and UART telemetry feedback to Pixhawk and Cube Orange flight controllers.`,
-      architecture: `The ESP32-C3 MCU parses MAVLink winch commands over UART. Direction and PWM signals are buffered through a 74AHCT125 line driver to boost 3.3V GPIOs to clean 5V logic required by external H-bridges. Cable deployment distance is continuously calculated via I2C absolute angle data from an AS5600 encoder attached to the winch spool axle.`,
-      pcb: `2-layer KiCad PCB with dedicated power plane and wide copper traces for motor control signals. Noise isolation is maintained between digital MCU circuits and high-current motor supply connections.`,
-      testing: `Bench-tested with 1.5kg payload under continuous spooling cycles. Cable length tracking verified within ±1mm accuracy over a 5-meter tether drop. Direction interlock safety circuit prevented rapid H-bridge short-circuit shoot-through during emergency direction changes.`,
-      firmware: `Written in C++ using PlatformIO. Closed-loop PID positioning loop computes motor PWM duty cycle based on encoder target depth. MAVLink telemetry reports cable tension status and spool length.`,
-      future: `Adding auto-docking proximity sensor integration and tension strain-gauge load cell sensing.`
+      overview: `SKYHOOK (Nemo Winch V3.0 Geared DC Motor Iteration) is a purpose-built UAV payload winch controller. It interfaces a Seeed Studio XIAO ESP32-C3 with an external BTS7960 high-power H-bridge motor driver, an AS5600 magnetic rotary encoder, a PCF8574T I/O expander, and a clutch servo mechanism to deliver closed-loop spool height tracking, direction interlocks, and MAVLink telemetry feedback to Pixhawk flight controllers.`,
+      architecture: `The XIAO ESP32-C3 MCU arbitrates control commands from Pixhawk AUX PWM inputs or browser GUI (WebSocket port 81). Motor direction (R_PWMA/L_PWMA) and enable signals are level-shifted to 5V through a 74AHCT125 buffer. PCF8574T handles BTS_EN, BUF_OE, manual 3-way toggle switch (Retract/Rewind/Hold), and physical emergency pushbutton (` + '`eStopLatched`' + `). Spool rotation is continuously measured via I2C angle data from the AS5600 encoder.`,
+      pcb: `2-layer KiCad PCB with dedicated power domains (VBAT_IN 6S LiPo, +5V logic buck, +3V3 MCU/encoder, +VCC clutch servo). Separate motor driver power terminals (J2) and logic header (J3) keep high-current motor noise away from digital logic.`,
+      testing: `Bench-tested with 1.5kg payload under continuous spooling cycles. Cable length tracking verified within ±1mm accuracy over tether drop. Asymmetric motor ramp (2%/50ms acceleration, 10%/20ms fast stop) and 150ms direction-change dead-time verified to prevent shoot-through. Self-hosted dashboard tested on standalone WiFi SoftAP without laptop backend.`,
+      firmware: `Written in C++ using PlatformIO. Features self-hosted WebPortal (LittleFS), WebSocket CommandServer, outbound MAVLink v2 telemetry (HEARTBEAT, NAMED_VALUE_FLOAT for CABLE_MM/SPOOL_DEG/MOTOR_PCT), and priority safety arbitration.`,
+      future: `Strain-gauge load cell integration for payload touchdown detection and automatic slack-cable detection.`
     }
   },
   {
