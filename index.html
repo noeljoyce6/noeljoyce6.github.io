@@ -1090,61 +1090,90 @@
       #projects #proj-title { padding: 0 1.5rem; }
     }
 
-    /* ─── MARQUEE ────────────────────────────────────────── */
+    /* ─── INTERACTIVE PROJECTS CAROUSEL SLIDER ───────────── */
     .marquee-container {
-      display: flex; flex-direction: column; gap: 1.4rem;
+      display: flex; flex-direction: column; gap: 1.6rem;
     }
-    .marquee-row-wrap { position: relative; display: flex; align-items: center; gap: 0; }
+    .marquee-row-wrap { position: relative; display: flex; align-items: center; gap: 0; padding: 0 1rem; }
     .marquee-row {
-      overflow: hidden; flex: 1; min-width: 0;
-      -webkit-mask-image: linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);
-      mask-image: linear-gradient(90deg,transparent 0%,#000 8%,#000 92%,transparent 100%);
+      overflow-x: auto; flex: 1; min-width: 0;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 0.8rem 0.2rem;
     }
-    .marquee-row:hover .marquee-track,
-    .marquee-row:hover .marquee-track-r { animation-play-state: paused; }
-    .marquee-track {
-      display: flex; gap: 1.2rem; width: max-content;
-      animation: mLeft 38s linear infinite;
-      will-change: transform;
+    .marquee-row::-webkit-scrollbar { display: none; }
+    .marquee-row:active { cursor: grabbing; }
+    .marquee-track, .marquee-track-r {
+      display: flex; gap: 1.25rem; width: max-content;
     }
-    .marquee-track-r {
-      display: flex; gap: 1.2rem; width: max-content;
-      animation: mRight 44s linear infinite;
-      will-change: transform;
-    }
-    @keyframes mLeft { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
-    @keyframes mRight { 0% { transform: translateX(-50%) } 100% { transform: translateX(0) } }
 
-    /* Arrow nav buttons for marquee rows */
+    /* Arrow nav buttons for interactive slider */
     .mrow-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      z-index: 20;
-      width: 40px; height: 40px;
+      z-index: 25;
+      width: 44px; height: 44px;
       border-radius: 50%;
-      background: rgba(7,10,15,0.82);
-      border: 1px solid rgba(0,232,137,0.25);
+      background: rgba(7,10,15,0.88);
+      border: 1px solid rgba(0,232,137,0.35);
       color: var(--green);
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s, transform 0.2s;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       user-select: none;
       line-height: 1;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
     }
     .mrow-arrow:hover {
-      background: rgba(0,232,137,0.12);
-      border-color: rgba(0,232,137,0.55);
-      transform: translateY(-50%) scale(1.1);
+      background: rgba(0,232,137,0.18);
+      border-color: rgba(0,232,137,0.75);
+      transform: translateY(-50%) scale(1.12);
+      box-shadow: 0 0 20px rgba(0,232,137,0.3);
     }
     .mrow-arrow:active {
-      transform: translateY(-50%) scale(0.96);
+      transform: translateY(-50%) scale(0.95);
     }
-    .mrow-arrow.left { left: 10px; }
-    .mrow-arrow.right { right: 10px; }
+    .mrow-arrow.left { left: 14px; }
+    .mrow-arrow.right { right: 14px; }
+
+    /* YouTube Demo Badge on Project Cards */
+    .proj-yt-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      background: rgba(220, 20, 20, 0.88);
+      border: 1px solid rgba(255, 100, 100, 0.6);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: #ffffff;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-decoration: none;
+      z-index: 10;
+      transition: all 0.22s ease;
+      backdrop-filter: blur(4px);
+    }
+    .proj-yt-badge:hover {
+      background: #ff0000;
+      border-color: #ffffff;
+      transform: scale(1.08);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    }
 
     .proj-card {
       background: var(--surface);
@@ -1154,7 +1183,8 @@
       cursor: pointer;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
       display: flex; flex-direction: column;
-      width: 298px; flex-shrink: 0;
+      width: 310px; flex-shrink: 0;
+      scroll-snap-align: start;
     }
 
     .proj-card:hover {
@@ -2710,14 +2740,32 @@
       <div class="section-header"><span class="section-num">02</span>
         <div class="section-line"></div>
       </div>
-      <h2 class="section-title" id="skills-title">Skills &amp; Tools</h2>
+      <h2 class="section-title" id="skills-title">Skills &amp; Architecture</h2>
       <div class="skills-grid">
-        <!-- 1. HARDWARE DESIGN -->
+        <!-- 1. AVIONICS & UAV SYSTEMS -->
         <div class="skill-card">
           <div class="skill-card-header">
             <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="#00e889"/>
+              </svg>
+            </div>
+            <span class="skill-card-title">Avionics &amp; UAV</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>Pixhawk 2.4.8 &amp; Cube Orange</li>
+            <li>ArduPilot &amp; Mission Planner</li>
+            <li>MAVLink Protocol</li>
+            <li>RadioMaster &amp; FlySky RC</li>
+            <li>AUX / RC Payload Integration</li>
+          </ul>
+        </div>
+
+        <!-- 2. PCB DESIGN & STACKUP -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 7h6l4 4h4l3-3h3" stroke="#d4821c" />
                 <path d="M2 11h5.5L11 14.5h4.5l3-3h3" stroke="#e5a93b" />
                 <circle cx="2" cy="7" r="1.5" fill="#070a0f" stroke="#d4821c" stroke-width="1.5" />
@@ -2726,54 +2774,46 @@
                 <circle cx="22" cy="11.5" r="1.5" fill="#070a0f" stroke="#e5a93b" stroke-width="1.5" />
               </svg>
             </div>
-            <span class="skill-card-title">Hardware Design</span>
+            <span class="skill-card-title">PCB Design &amp; Layout</span>
           </div>
           <ul class="skill-card-list">
-            <li>PCB Layout</li>
-            <li>Multilayer PCB</li>
-            <li>Mixed-Signal Design</li>
-            <li>High-Current Routing</li>
-            <li>DFM/DFA</li>
+            <li>Multilayer (up to 6-Layer)</li>
+            <li>Controlled Impedance</li>
+            <li>Differential Pair &amp; High-Speed</li>
+            <li>High-Current &amp; Ground Plane</li>
+            <li>Signal &amp; Power Integrity (DFM/DFA)</li>
           </ul>
         </div>
 
-        <!-- 2. PCB DEVELOPMENT -->
+        <!-- 3. FIRMWARE & ARCHITECTURE -->
         <div class="skill-card">
           <div class="skill-card-header">
             <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M2 12h8" stroke="#00e889" />
-                <path d="M14 12h8" stroke="#00e889" />
-                <circle cx="12" cy="12" r="2.5" fill="#070a0f" stroke="#00e889" stroke-width="2" />
-                <circle cx="12" cy="12" r="0.8" fill="#00e889" />
-                <path d="M4 4l6 6" stroke="#00a860" />
-                <circle cx="4" cy="4" r="1.5" fill="#070a0f" stroke="#00a860" />
-                <rect x="18" y="3" width="4" height="4" rx="0.5" fill="none" stroke="#d4821c" />
-                <path d="M14 5h4" stroke="#d4821c" />
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="5" y="5" width="14" height="14" rx="1.5" fill="#141d2a" stroke="#00e889" stroke-width="1.5" />
+                <path d="M8 2v3M12 2v3M16 2v3M8 19v3M12 19v3M16 19v3" stroke="#566880" stroke-width="1" />
+                <path d="M2 8h3M2 12h3M2 16h3M19 8h3M19 12h3M19 16h3" stroke="#566880" stroke-width="1" />
               </svg>
             </div>
-            <span class="skill-card-title">PCB Development</span>
+            <span class="skill-card-title">Firmware &amp; Stack</span>
           </div>
           <ul class="skill-card-list">
-            <li>Controlled Impedance</li>
-            <li>BOM Generation</li>
-            <li>Gerber Release</li>
+            <li>ESP32 &amp; STM32 (PlatformIO)</li>
+            <li>WiFi Provisioning &amp; Browser OTA</li>
+            <li>Custom Web GUI Dashboards</li>
+            <li>I2C Expansion (PCA9685, PCF8574T)</li>
+            <li>FreeRTOS Multi-Tasking</li>
           </ul>
         </div>
 
-        <!-- 3. EDA TOOLS -->
+        <!-- 4. EDA TOOLS -->
         <div class="skill-card">
           <div class="skill-card-header">
             <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M6 4v16l12-8Z" stroke="#00e889" />
                 <path d="M2 8h4" stroke="#566880" />
                 <path d="M2 16h4" stroke="#566880" />
-                <path d="M7 8h2" stroke="#566880" stroke-width="1" />
-                <path d="M7 16h2" stroke="#566880" stroke-width="1" />
-                <path d="M8 15v2" stroke="#566880" stroke-width="1" />
                 <path d="M18 12h4" stroke="#00e889" />
               </svg>
             </div>
@@ -2788,28 +2828,6 @@
           </ul>
         </div>
 
-        <!-- 4. EMBEDDED PLATFORMS -->
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="5" y="5" width="14" height="14" rx="1.5" fill="#141d2a" stroke="#00e889" stroke-width="1.5" />
-                <path d="M8 2v3M12 2v3M16 2v3M8 19v3M12 19v3M16 19v3" stroke="#566880" stroke-width="1" />
-                <path d="M2 8h3M2 12h3M2 16h3M19 8h3M19 12h3M19 16h3" stroke="#566880" stroke-width="1" />
-                <circle cx="8" cy="8" r="1" fill="#d4821c" />
-                <text x="7" y="13" font-size="3" fill="#566880" font-family="monospace">STM32</text>
-              </svg>
-            </div>
-            <span class="skill-card-title">Embedded Platforms</span>
-          </div>
-          <ul class="skill-card-list">
-            <li>STM32</li>
-            <li>ESP32</li>
-            <li>Raspberry Pi</li>
-            <li>Arduino</li>
-          </ul>
-        </div>
-
         <!-- 5. COMMUNICATION INTERFACES -->
         <div class="skill-card">
           <div class="skill-card-header">
@@ -2820,15 +2838,14 @@
                 <path d="M8 10v4M16 10v4" stroke="#566880" stroke-dasharray="2 2" />
               </svg>
             </div>
-            <span class="skill-card-title">Comms Interfaces</span>
+            <span class="skill-card-title">Interfaces &amp; Comms</span>
           </div>
           <ul class="skill-card-list">
-            <li>SPI</li>
-            <li>I2C</li>
-            <li>UART</li>
-            <li>CAN</li>
-            <li>USB</li>
-            <li>ADC/DAC</li>
+            <li>SPI &amp; I2C</li>
+            <li>UART / MAVLink</li>
+            <li>CAN Bus 2.0B</li>
+            <li>USB / PCIe</li>
+            <li>ADC / DAC &amp; BLE 5.0</li>
           </ul>
         </div>
 
@@ -2836,109 +2853,74 @@
         <div class="skill-card">
           <div class="skill-card-header">
             <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 12h2c.5-1.5 1.5-1.5 2 0s1.5 1.5 2 0 1.5-1.5 2 0 1.5 1.5 2 0h2" stroke="#d4821c" />
                 <path d="M10 17v-6" stroke="#566880" />
-                <path d="M8 14h4M10 14l-2 3h4Z" fill="#141d2a" stroke="#566880" />
                 <path d="M18 10v4M20 10v4" stroke="#00e889" stroke-width="2" />
-                <path d="M16 12h2M20 12h2" stroke="#00e889" />
               </svg>
             </div>
             <span class="skill-card-title">Power Electronics</span>
           </div>
           <ul class="skill-card-list">
-            <li>DC-DC Converters</li>
-            <li>LDO Regulators</li>
-            <li>Motor Drivers</li>
-            <li>Protection Circuits</li>
+            <li>DC-DC Buck / Boost</li>
+            <li>LDO Regulators &amp; BEC</li>
+            <li>Gate Drivers &amp; Motor Drives</li>
+            <li>Protection Circuits &amp; Interlocks</li>
           </ul>
         </div>
 
-        <!-- 7. PROGRAMMING -->
+        <!-- 7. VALIDATION & DEBUG -->
         <div class="skill-card">
           <div class="skill-card-header">
             <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M8 4H6a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2" stroke="#00e889" />
-                <path d="M16 4h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2" stroke="#00e889" />
-                <path d="M9 12h6" stroke="#566880" />
-              </svg>
-            </div>
-            <span class="skill-card-title">Programming</span>
-          </div>
-          <ul class="skill-card-list">
-            <li>C</li>
-            <li>C++</li>
-            <li>Python</li>
-          </ul>
-        </div>
-
-        <!-- 8. DEVELOPMENT TOOLS -->
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M6 3v18" stroke="#566880" />
-                <path d="M6 15a6 6 0 0 0 6-6V5" stroke="#00e889" />
-                <path d="M6 18a9 9 0 0 0 9-9V7" stroke="#d4821c" />
-                <circle cx="6" cy="5" r="2" fill="#141d2a" stroke="#566880" stroke-width="1.5" />
-                <circle cx="6" cy="12" r="2" fill="#141d2a" stroke="#566880" stroke-width="1.5" />
-                <circle cx="12" cy="5" r="2" fill="#141d2a" stroke="#00e889" stroke-width="1.5" />
-                <circle cx="15" cy="7" r="2" fill="#141d2a" stroke="#d4821c" stroke-width="1.5" />
-              </svg>
-            </div>
-            <span class="skill-card-title">Dev Tools</span>
-          </div>
-          <ul class="skill-card-list">
-            <li>Git</li>
-            <li>VS Code</li>
-            <li>Arduino IDE</li>
-          </ul>
-        </div>
-
-        <!-- 9. VALIDATION & DEBUGGING -->
-        <div class="skill-card">
-          <div class="skill-card-header">
-            <div class="skill-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M2 12h20M12 2v20" stroke="rgba(0, 232, 137, 0.1)" stroke-dasharray="1 2" />
-                <path d="M2 16h4V6.5c.5-.8.9-.8 1.2.2.3 1.2.6 1.8 1 0 .4-1.8.8-1.8 1.1-.2.3.8.6 1.5 1 .3V16h4V6.5"
-                  stroke="#00e889" stroke-width="1.8" />
-                <path d="M21 12l-2-2v4Z" fill="#d4821c" />
+                <path d="M2 16h4V6.5c.5-.8.9-.8 1.2.2.3 1.2.6 1.8 1 0 .4-1.8.8-1.8 1.1-.2.3.8.6 1.5 1 .3V16h4V6.5" stroke="#00e889" stroke-width="1.8" />
               </svg>
             </div>
             <span class="skill-card-title">Validation &amp; Debug</span>
           </div>
           <ul class="skill-card-list">
-            <li>Board Bring-up</li>
-            <li>Oscilloscope</li>
-            <li>Logic Analyzer</li>
-            <li>Hardware Debugging</li>
+            <li>Board Bring-Up &amp; Rework</li>
+            <li>Oscilloscope Signal Analysis</li>
+            <li>Logic Analyser Protocol Trace</li>
+            <li>Hardware Debugging &amp; Validation</li>
           </ul>
         </div>
 
-        <!-- 10. STANDARDS -->
+        <!-- 8. STANDARDS & COMPLIANCE -->
         <div class="skill-card">
           <div class="skill-card-header">
             <div class="skill-card-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <rect x="3" y="10" width="18" height="11" rx="1" stroke="#566880" stroke-dasharray="3 2" fill="none" />
                 <path d="M4 3c1.5 1 2.5 3 2.5 5" stroke="#d4821c" />
-                <path d="M8 2c2 1.5 3.5 4 3.5 6" stroke="#d4821c" />
-                <path d="M12 1c2.5 2 4 5 4 7" stroke="#d4821c" />
-                <path d="M12 21v2M9 23h6M10 25h4" stroke="#566880" />
               </svg>
             </div>
-            <span class="skill-card-title">Standards</span>
+            <span class="skill-card-title">Standards &amp; Rules</span>
           </div>
           <ul class="skill-card-list">
-            <li>IPC-2221</li>
-            <li>IPC-7351</li>
-            <li>EMC/EMI Awareness</li>
+            <li>IPC-2221 &amp; IPC-7351</li>
+            <li>EMC / EMI Mitigation</li>
+            <li>MIL-STD-810 &amp; MIL-STD-461</li>
+          </ul>
+        </div>
+
+        <!-- 9. PROGRAMMING -->
+        <div class="skill-card">
+          <div class="skill-card-header">
+            <div class="skill-card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 4H6a2 2 0 0 0-2 2v4a2 2 0 0 1-2 2 2 2 0 0 1 2 2v4a2 2 0 0 0 2 2h2" stroke="#00e889" />
+                <path d="M16 4h2a2 2 0 0 1 2 2v4a2 2 0 0 0 2 2 2 2 0 0 0-2 2v4a2 2 0 0 1-2 2h-2" stroke="#00e889" />
+              </svg>
+            </div>
+            <span class="skill-card-title">Programming</span>
+          </div>
+          <ul class="skill-card-list">
+            <li>C &amp; Embedded C++</li>
+            <li>Python</li>
+            <li>Git &amp; Version Control</li>
           </ul>
         </div>
       </div>
@@ -2953,22 +2935,20 @@
       <div class="exp-timeline">
         <div class="exp-item" id="exp0">
           <div class="exp-time">
-            <div class="exp-date">Nov 2025<br />— Present</div>
+            <div class="exp-date">Nov 2025<br />— Aug 2026</div>
             <div class="exp-loc">Bengaluru, India</div>
           </div>
           <div class="exp-body">
             <div class="exp-dot"></div>
             <div class="exp-company">PSYC Aerospace &amp; Defence Industries Pvt. Ltd.</div>
-            <div class="exp-role">PCB Design Intern</div>
+            <div class="exp-role">Avionics Design Engineer</div>
             <ul class="exp-bullets">
-              <li>Engineered production-grade hardware for aerospace and robotics across 8+ embedded projects including
-                schematic capture, PCB layout, and BOM generation.</li>
-              <li>Integrated sensors and communication interfaces (SPI / I2C / UART / CAN) into multiple hardware
-                platforms for embedded control and telemetry.</li>
-              <li>Executed board bring-up, debugging, validation, soldering / rework, and full fabrication release
-                support.</li>
-              <li>Delivered multilayer designs (up to 6L) with controlled impedance, power integrity considerations, and
-                IPC-compliant design rules.</li>
+              <li>Owned end-to-end development of 8+ embedded avionics platforms: schematic capture, multilayer PCB layout, BOM generation, DFM/DFA review, board bring-up, and fabrication release.</li>
+              <li>Designed ESP32 avionics controllers for Pixhawk 2.4.8 and Cube Orange flight controllers.</li>
+              <li>Implemented MAVLink UART telemetry, AUX-triggered payload actuation, and RC-preset release logic.</li>
+              <li>Configured full RC control chains using Mission Planner, RadioMaster Pocket, and FlySky for mission-mode ground testing.</li>
+              <li>Developed PlatformIO firmware with WiFi provisioning, browser OTA updates, and custom web GUI — independent of Mission Planner.</li>
+              <li>Integrated 8+ SPI/I2C/UART/CAN peripherals across multiple platforms; executed hardware debugging and prototype validation.</li>
             </ul>
           </div>
         </div>
@@ -2982,10 +2962,8 @@
             <div class="exp-company">IIIT Kottayam</div>
             <div class="exp-role">Analog Design Intern</div>
             <ul class="exp-bullets">
-              <li>Simulated a 5 GHz current-starved CMOS Voltage-Controlled Oscillator (VCO) using LTspice and Cadence
-                Virtuoso.</li>
-              <li>Analysed analog circuits and transistor-level RF design fundamentals for oscillator and high-frequency
-                applications.</li>
+              <li>Simulated a 5 GHz current-starved CMOS Voltage-Controlled Oscillator (VCO) using LTspice and Cadence Virtuoso.</li>
+              <li>Analysed transistor-level RF and oscillator design fundamentals for high-frequency analog applications.</li>
             </ul>
           </div>
         </div>
@@ -3322,7 +3300,7 @@
       gsap.to('#avail-card-wrap', { scrollTrigger: { trigger: '#avail-card-wrap', start: 'top 80%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
     }
 
-    // ── BUILD MARQUEE ROWS ──────────────────────────────────────────
+    // ── BUILD INTERACTIVE PROJECT SLIDER CARDS ───────────────────────
     function buildCard(p) {
       const card = document.createElement('div');
       card.className = 'proj-card';
@@ -3333,59 +3311,86 @@
             : `<div class="proj-visual-fallback"><div class="proj-icon">${p.icon}</div></div>`}
           <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
           <span class="proj-status ${p.statusClass}">${p.status}</span>
-          ${p.award ? `<span class="proj-award-badge">🏆 ${p.award.label.replace('🏆 ','')}</span>` : ''}
+          ${p.youtubeUrl ? `<a class="proj-yt-badge" href="${p.youtubeUrl}" target="_blank" onclick="event.stopPropagation()" title="Watch YouTube Demo">▶ Demo Video</a>` : ''}
+          ${p.award ? `<span class="proj-award-badge" style="bottom:${p.youtubeUrl?'34px':'10px'}">🏆 ${p.award.label.replace('🏆 ','')}</span>` : ''}
         </div>
         <div class="proj-body">
           <div class="proj-title">${p.title}</div>
           <div class="proj-subtitle">${p.subtitle}</div>
-          <div class="proj-desc">${p.desc.substring(0,120)}${p.desc.length>120?'…':''}</div>
+          <div class="proj-desc">${p.desc.substring(0,115)}${p.desc.length>115?'…':''}</div>
           <div class="proj-chips">${p.chips.map(c=>`<span class="proj-chip">${c}</span>`).join('')}</div>
           <div class="proj-footer">
             <div class="proj-meta">${p.layers?`<span>${p.layers}L</span> · `:''}${p.dims}</div>
             <div class="proj-cta">View Case Study →</div>
           </div>
         </div>`;
-      card.addEventListener('click', () => { window.location.href = 'project.html?id=' + p.id; });
+      card.addEventListener('click', (e) => {
+        // Only navigate if click was not a drag release
+        if (!card.dataset.dragged) {
+          window.location.href = 'project.html?id=' + p.id;
+        }
+      });
       return card;
     }
 
+    const mrow1 = document.getElementById('mrow-1');
+    const mrow2 = document.getElementById('mrow-2');
     const track1 = document.getElementById('mtrack-1');
     const track2 = document.getElementById('mtrack-2');
-    const rev = [...PROJECTS].reverse();
-    // Duplicate each row for seamless infinite loop
-    [...PROJECTS, ...PROJECTS].forEach(p => track1.appendChild(buildCard(p)));
-    [...rev, ...rev].forEach(p => track2.appendChild(buildCard(p)));
 
-    // ── ARROW NAVIGATION FOR MARQUEE ROWS ────────────────────────────
+    // Split projects across Row 1 (Avionics, UAV & Motor Control) and Row 2 (Robotics, Sensing & Bio)
+    const row1Projects = PROJECTS.slice(0, 5);
+    const row2Projects = PROJECTS.slice(5);
+
+    row1Projects.forEach(p => track1.appendChild(buildCard(p)));
+    row2Projects.forEach(p => track2.appendChild(buildCard(p)));
+
+    // ── INTERACTIVE DRAG & ARROW SLIDER NAVIGATION ──────────────────
     (function() {
-      const STEP = 320; // px per arrow click
-      const DURATION = 380; // ms
+      const CARD_STEP = 330; // pixels to scroll per arrow press
 
-      function nudgeTrack(trackEl, isTrackR, direction) {
-        // Pause the CSS animation and apply manual offset via translate
-        trackEl.style.animationPlayState = 'paused';
-        const curMatrix = window.getComputedStyle(trackEl).transform;
-        let curX = 0;
-        if (curMatrix && curMatrix !== 'none') {
-          const m = new DOMMatrix(curMatrix);
-          curX = m.m41;
-        }
-        const targetX = curX + (direction * STEP);
-        trackEl.style.transition = `transform ${DURATION}ms cubic-bezier(0.25,0.46,0.45,0.94)`;
-        trackEl.style.transform = `translateX(${targetX}px)`;
-        // Resume auto-scroll after a brief pause
-        setTimeout(() => {
-          trackEl.style.transition = '';
-          // Restart CSS animation from current shifted position using a JS-driven offset
-          // We keep animationPlayState running but update the base offset
-          trackEl.style.animationPlayState = 'running';
-        }, DURATION + 200);
-      }
+      // Arrow navigation buttons
+      document.getElementById('arrow-1-l').addEventListener('click', () => mrow1.scrollBy({ left: -CARD_STEP, behavior: 'smooth' }));
+      document.getElementById('arrow-1-r').addEventListener('click', () => mrow1.scrollBy({ left: CARD_STEP, behavior: 'smooth' }));
+      document.getElementById('arrow-2-l').addEventListener('click', () => mrow2.scrollBy({ left: -CARD_STEP, behavior: 'smooth' }));
+      document.getElementById('arrow-2-r').addEventListener('click', () => mrow2.scrollBy({ left: CARD_STEP, behavior: 'smooth' }));
 
-      document.getElementById('arrow-1-l').addEventListener('click', () => nudgeTrack(track1, false, +1));
-      document.getElementById('arrow-1-r').addEventListener('click', () => nudgeTrack(track1, false, -1));
-      document.getElementById('arrow-2-l').addEventListener('click', () => nudgeTrack(track2, true, +1));
-      document.getElementById('arrow-2-r').addEventListener('click', () => nudgeTrack(track2, true, -1));
+      // Mouse Drag-to-Scroll Interactivity for both rows
+      [mrow1, mrow2].forEach(rowEl => {
+        let isDown = false;
+        let startX, scrollLeft;
+        let draggedDist = 0;
+
+        rowEl.addEventListener('mousedown', (e) => {
+          isDown = true;
+          draggedDist = 0;
+          startX = e.pageX - rowEl.offsetLeft;
+          scrollLeft = rowEl.scrollLeft;
+        });
+
+        rowEl.addEventListener('mouseleave', () => { isDown = false; });
+        rowEl.addEventListener('mouseup', () => {
+          isDown = false;
+          const cards = rowEl.querySelectorAll('.proj-card');
+          cards.forEach(c => {
+            if (draggedDist > 6) {
+              c.dataset.dragged = 'true';
+              setTimeout(() => { delete c.dataset.dragged; }, 100);
+            } else {
+              delete c.dataset.dragged;
+            }
+          });
+        });
+
+        rowEl.addEventListener('mousemove', (e) => {
+          if (!isDown) return;
+          e.preventDefault();
+          const x = e.pageX - rowEl.offsetLeft;
+          const walk = (x - startX) * 1.5;
+          draggedDist = Math.abs(walk);
+          rowEl.scrollLeft = scrollLeft - walk;
+        });
+      });
     })();
 
     // ── FLYING BIRD ANIMATION ───────────────────────────────────────
@@ -4712,47 +4717,47 @@
       const localDatabase = [
         {
           keys: [/hello/i, /hi/i, /hey/i, /greetings/i, /help/i, /who are you/i],
-          reply: "Hello! I am the digital twin of **Noel Joyce Varghese**. 🛠️ I'm an Embedded Hardware Design Engineer specializing in custom PCBs for aerospace, robotics, and defence platforms.\\n\\nAsk me about my projects like **HIVE-X**, **Minima Flight Controller**, or my **technical skills**!"
+          reply: "Hello! I am the digital twin of **Noel Joyce Varghese**. 🛠️ I'm an Avionics & Embedded Hardware Design Engineer specializing in custom multilayer PCBs for UAV, aerospace, robotics, and defence platforms.\\n\\nAsk me about my projects like **APEX**, **SKYHOOK**, **VECTOR FOC**, **Minima CM5 Companion Board**, **HIVE-X**, or my **technical skills**!"
         },
         {
-          keys: [/hive-x/i, /hivex/i, /honey/i, /extractor/i, /vanthen/i, /amal jyothi/i],
-          reply: "**HIVE-X (Honey Extractor)** is an ongoing project under Amal Jyothi College of Engineering. 🐝 It is a fully automated honey extraction system aimed at small-scale farmers.\\n\\n**Key Features:**\\n- Automated honeycomb rotation using ESP32 & stepper motors\\n- Adjustable RPM (50–350 RPM)\\n- Heating mechanism (30–35°C) to maintain honey quality\\n- Real-time telemetry via 2.8\" SPI TFT screen\\n- Powered by a 4200mAh LiPo battery with IMAX B6 charger support\\n- Published Design Patent!"
+          keys: [/apex/i, /payload interface/i, /bec/i, /tps54302/i, /txs0102/i, /pca9685/i],
+          reply: "**APEX – Intelligent UAV Payload Interface** 🛩️\\n- 2-Layer smart avionics PCB with selectable on-board/external BEC servo power rails\\n- I2C level-shifted PCA9685 expansion (TXS0102) for 4-channel servo actuation\\n- Pixhawk Serial5 telemetry interface running MAVLink protocol\\n- PlatformIO C++ firmware with WiFi provisioning, web GUI, and browser OTA updates\\n- **YouTube Demo:** [Watch Video Demo](https://www.youtube.com/playlist?list=PLKt2ic15ID9o)"
         },
         {
-          keys: [/minima/i, /flight controller/i, /flight computer/i, /uav/i, /drone/i, /cm5/i, /raspberry pi/i],
-          reply: "The **Minima Flight Controller** is an ongoing aerospace project. 🛩️ It is a high-compute flight controller designed to support onboard AI and vision processing directly via a **Raspberry Pi Compute Module 5 (CM5)**.\\n\\n**Technical Details:**\\n- 6-Layer stackup for optimized signal/power integrity and EMI shielding\\n- Custom schematic/layout for SO-DIMM high-density connector interface\\n- Integrated sensor suite: IMU, barometer, GPS\\n- 8+ PWM output channels for ESC/servo actuation\\n- Multilayer high-density BGA/QFN component layout"
+          keys: [/skyhook/i, /winch controller/i, /bts7960/i, /as5600/i, /74ahct125/i, /pcf8574t/i],
+          reply: "**SKYHOOK – Precision UAV Payload Winch Controller** 🔩\\n- Interfaces external BTS7960 motor driver & AS5600 magnetic encoder over I2C\\n- 74AHCT125 logic buffer (3.3V to 5V) and PCF8574T I/O expander\\n- ESP32 firmware handles MAVLink command decoding, direction/PWM safety interlocks, and millimeter cable-length tracking\\n- **YouTube Demo:** [Watch Video Demo](https://www.youtube.com/playlist?list=PLexVyNUshtQk)"
         },
         {
-          keys: [/winch/i, /nemo/i, /payload/i],
-          reply: "**Nemo Winch V3.0** is a payload delivery winch system for UAVs. 🔩 It consists of three custom control PCBs designed for different payload classes.\\n\\n**Features:**\\n- Three motor variants: servo, geared DC, and N20 motor drives\\n- High-resolution encoder feedback for precise payload altitude control\\n- Pixhawk MAVLink integration over UART for autonomous mission release\\n- All board designs are verified; frame integration and release testing is ongoing!"
+          keys: [/minima/i, /companion board/i, /companion computer/i, /cm5/i, /raspberry pi/i, /nvme/i, /pcie/i, /hailo/i],
+          reply: "The **Minima CM5 UAV Companion Computer Board** is a high-compute companion board (not a primary flight controller) built around the Raspberry Pi Compute Module 5 (CM5). 🧠\\n\\n**Key Specs:**\\n- 6-Layer stackup for signal/power integrity and EMI shielding\\n- Dedicated FC, Telemetry, and CRSF UART ports for MAVLink Pixhawk integration\\n- PCIe / M.2 slot for Hailo-8 class AI accelerators (onboard autonomy, SLAM, precision landing)\\n- High-bandwidth NVMe interface for flight logging"
         },
         {
-          keys: [/csro/i, /pll/i, /vco/i, /kottayam/i, /cadence/i, /virtuoso/i, /analog/i, /ic design/i],
-          reply: "During my internship at **IIIT Kottayam**, I worked on analog IC design simulating a **CSRO PLL VCO Block**. 🔬\\n\\n**Key Details:**\\n- Process node: gpdk90nm Cadence Virtuoso\\n- Custom sizing targeting a 5GHz frequency (achieved 7GHz post-layout frequency)\\n- Designed multi-finger, DRC/LVS-compliant layouts\\n- Extracted parasitic resistors/capacitors (PEX)\\n- Validated performance via Transient, PSS, and PNOISE simulations"
+          keys: [/vector/i, /foc/i, /bldc/i, /drv8353r/i, /stm32g431/i, /can bus/i],
+          reply: "**VECTOR – High-Performance FOC Motor Controller** ⚡\\n- 4-layer 50×50mm BLDC motor controller board\\n- STM32G431 MCU running FOC at 170MHz + TI DRV8353R 3-phase gate driver\\n- Inline shunt current sensing on all 3 phases & active regenerative braking\\n- Closed-loop CAN 2.0B interface (Revision 2 currently under development)"
         },
         {
-          keys: [/energy meter/i, /low power/i, /ina219/i, /micro sd/i, /sd card/i, /adc/i],
-          reply: "The **Low Power DC Energy Meter** is a course project designed at Amal Jyothi College of Engineering (Dec 2023). ⚡\\n\\n**Highlights:**\\n- Integrates an Arduino Nano, INA219 current/voltage sensor, Micro SD card logger, and SSD1306 OLED display\\n- Uses Timer1 interrupts (10Hz) for precise sampling\\n- Optimized power consumption down to micro-amps via sleep modes and turning off internal ADC/unused peripherals\\n- **Project Document:** You can find the staged PDF report directly in the projects downloads section!"
+          keys: [/hive-x/i, /hivex/i, /honey/i, /extractor/i, /vanthen/i],
+          reply: "**HIVE-X (Vanthen Honey Extractor)** is an automated honey extraction system. 🐝\\n- Automated honeycomb rotation (50–350 RPM) via ESP32 & stepper motor\\n- Regulated heating (30–35°C) to maintain honey quality\\n- 2.8\" SPI TFT display & 4200mAh LiPo powered\\n- Published Design Patent (Patent No: 202441074582)!"
         },
         {
-          keys: [/pcb/i, /skills/i, /tools/i, /altium/i, /kicad/i, /orcad/i, /ltspice/i, /routing/i],
-          reply: "I specialize in premium PCB development and precision electronics: 🛠️\\n\\n**Hardware Design:**\\n- Multilayer layouts (up to 6 layers), controlled impedance routing, mixed-signal designs, high-current routing, DFM/DFA compliance\\n\\n**EDA Tools:**\\n- Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice\\n\\n**Embedded Tech:**\\n- STM32, ESP32, Arduino, CAN Bus 2.0B, MAVLink/Pixhawk, I2C/SPI/UART"
+          keys: [/csro/i, /pll/i, /vco/i, /kottayam/i, /cadence/i, /virtuoso/i],
+          reply: "During my analog design internship at **IIIT Kottayam**, I designed a **3-Stage Current Starved Ring Oscillator (CSRO)** in gpdk90nm Cadence Virtuoso. 🔬 Target: 5GHz / Achieved: 7GHz post-layout frequency with ~23ps stage delay."
+        },
+        {
+          keys: [/pcb/i, /skills/i, /tools/i, /altium/i, /kicad/i, /orcad/i, /virtuoso/i],
+          reply: "I specialize in premium PCB development & firmware: 🛠️\\n- **Avionics & UAV:** Pixhawk, Cube Orange, ArduPilot, MAVLink, RadioMaster\\n- **PCB Layout:** Multilayer (up to 6L), Controlled Impedance, High-Current, DFM/DFA, EMI Mitigation\\n- **EDA Tools:** Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice\\n- **Firmware:** ESP32, STM32, PlatformIO, WiFi OTA, Web GUI, FreeRTOS, C/C++"
         },
         {
           keys: [/experience/i, /internship/i, /job/i, /psyc/i, /aerospace/i, /bengaluru/i],
-          reply: "I am an Embedded Hardware Design Engineer Intern at **PSYC Aerospace and Defence Industries** in Bengaluru. 🚀\\n\\nIn this role, I design custom multilayer PCBs (up to 6 layers) for aerospace flight computers, flight controllers, and robotic platforms. I handle everything from schematic capture and component selection to board bring-up, hand-soldering, and oscilloscope validation."
+          reply: "I am an **Avionics Design Engineer** at **PSYC Aerospace and Defence Industries** in Bengaluru. 🚀\\nI owned end-to-end development of 8+ embedded avionics platforms: schematic capture, multilayer PCB layout, BOM generation, DFM/DFA review, board bring-up, and MAVLink UAV integration."
         },
         {
           keys: [/contact/i, /email/i, /phone/i, /reach/i, /hire/i],
-          reply: "Let's connect! You can reach Noel Joyce Varghese via: 🤝\\n\\n📧 **noeljoyce6@gmail.com**\\n📞 **+91 8590607872**\\n🔗 [LinkedIn](https://linkedin.com/in/noel-joyce-varghese)\\n🐙 [GitHub](https://github.com/noeljoyce6)"
+          reply: "Let's connect! 🤝\\n📧 **noeljoyce6@gmail.com**\\n📞 **+91 8590607872**\\n🔗 [LinkedIn](https://linkedin.com/in/noel-joyce-varghese)\\n🐙 [GitHub](https://github.com/noeljoyce6)"
         },
         {
           keys: [/resume/i, /cv/i],
-          reply: "You can download Noel's resume PDF from the top navigation bar, or click [here](Noel_Joyce_Varghese_Resume .pdf) to download it directly. 📄"
-        },
-        {
-          keys: [/education/i, /degree/i, /college/i, /university/i, /btech/i, /b.tech/i],
-          reply: "I am graduating with a **B.Tech in Electronics & Communication Engineering (ECE)** from **Amal Jyothi College of Engineering (Autonomous)** in Kerala, India (Class of 2026). 🎓"
+          reply: "You can download Noel's resume PDF directly from the navigation bar or click [here](Noel_Joyce_Varghese_Resume .pdf). 📄"
         }
       ];
 

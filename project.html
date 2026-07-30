@@ -3451,47 +3451,47 @@
       const localDatabase = [
         {
           keys: [/hello/i, /hi/i, /hey/i, /greetings/i, /help/i, /who are you/i],
-          reply: "Hello! I am the digital twin of **Noel Joyce Varghese**. 🛠️ I'm an Embedded Hardware Design Engineer specializing in custom PCBs for aerospace, robotics, and defence platforms.\n\nAsk me about my projects like **HIVE-X**, **Minima Flight Controller**, or my **technical skills**!"
+          reply: "Hello! I am the digital twin of **Noel Joyce Varghese**. 🛠️ I'm an Avionics & Embedded Hardware Design Engineer specializing in custom multilayer PCBs for UAV, aerospace, robotics, and defence platforms.\n\nAsk me about my projects like **APEX**, **SKYHOOK**, **VECTOR FOC**, **Minima CM5 Companion Board**, **HIVE-X**, or my **technical skills**!"
         },
         {
-          keys: [/hive-x/i, /hivex/i, /honey/i, /extractor/i, /vanthen/i, /amal jyothi/i],
-          reply: "**HIVE-X (Honey Extractor)** is an ongoing project under Amal Jyothi College of Engineering. 🐝 It is a fully automated honey extraction system aimed at small-scale farmers.\n\n**Key Features:**\n- Automated honeycomb rotation using ESP32 & stepper motors\n- Adjustable RPM (50–350 RPM)\n- Heating mechanism (30–35°C) to maintain honey quality\n- Real-time telemetry via 2.8\" SPI TFT screen\n- Powered by a 4200mAh LiPo battery with IMAX B6 charger support\n- Published Design Patent!"
+          keys: [/apex/i, /payload interface/i, /bec/i, /tps54302/i, /txs0102/i, /pca9685/i],
+          reply: "**APEX – Intelligent UAV Payload Interface** 🛩️\n- 2-Layer smart avionics PCB with selectable on-board/external BEC servo power rails\n- I2C level-shifted PCA9685 expansion (TXS0102) for 4-channel servo actuation\n- Pixhawk Serial5 telemetry interface running MAVLink protocol\n- PlatformIO C++ firmware with WiFi provisioning, web GUI, and browser OTA updates\n- **YouTube Demo:** [Watch Video Demo](https://www.youtube.com/playlist?list=PLKt2ic15ID9o)"
         },
         {
-          keys: [/minima/i, /flight controller/i, /flight computer/i, /uav/i, /drone/i, /cm5/i, /raspberry pi/i],
-          reply: "The **Minima Flight Controller** is an ongoing aerospace project. 🛩️ It is a high-compute flight controller designed to support onboard AI and vision processing directly via a **Raspberry Pi Compute Module 5 (CM5)**.\n\n**Technical Details:**\n- 6-Layer stackup for optimized signal/power integrity and EMI shielding\n- Custom schematic/layout for SO-DIMM high-density connector interface\n- Integrated sensor suite: IMU, barometer, GPS\n- 8+ PWM output channels for ESC/servo actuation\n- Multilayer high-density BGA/QFN component layout"
+          keys: [/skyhook/i, /winch controller/i, /bts7960/i, /as5600/i, /74ahct125/i, /pcf8574t/i],
+          reply: "**SKYHOOK – Precision UAV Payload Winch Controller** 🔩\n- Interfaces external BTS7960 motor driver & AS5600 magnetic encoder over I2C\n- 74AHCT125 logic buffer (3.3V to 5V) and PCF8574T I/O expander\n- ESP32 firmware handles MAVLink command decoding, direction/PWM safety interlocks, and millimeter cable-length tracking\n- **YouTube Demo:** [Watch Video Demo](https://www.youtube.com/playlist?list=PLexVyNUshtQk)"
         },
         {
-          keys: [/winch/i, /nemo/i, /payload/i],
-          reply: "**Nemo Winch V3.0** is a payload delivery winch system for UAVs. 🔩 It consists of three custom control PCBs designed for different payload classes.\n\n**Features:**\n- Three motor variants: servo, geared DC, and N20 motor drives\n- High-resolution encoder feedback for precise payload altitude control\n- Pixhawk MAVLink integration over UART for autonomous mission release\n- All board designs are verified; frame integration and release testing is ongoing!"
+          keys: [/minima/i, /companion board/i, /companion computer/i, /cm5/i, /raspberry pi/i, /nvme/i, /pcie/i, /hailo/i],
+          reply: "The **Minima CM5 UAV Companion Computer Board** is a high-compute companion board (not a primary flight controller) built around the Raspberry Pi Compute Module 5 (CM5). 🧠\n\n**Key Specs:**\n- 6-Layer stackup for signal/power integrity and EMI shielding\n- Dedicated FC, Telemetry, and CRSF UART ports for MAVLink Pixhawk integration\n- PCIe / M.2 slot for Hailo-8 class AI accelerators (onboard autonomy, SLAM, precision landing)\n- High-bandwidth NVMe interface for flight logging"
         },
         {
-          keys: [/csro/i, /pll/i, /vco/i, /kottayam/i, /cadence/i, /virtuoso/i, /analog/i, /ic design/i],
-          reply: "During my internship at **IIIT Kottayam**, I worked on analog IC design simulating a **CSRO PLL VCO Block**. 🔬\n\n**Key Details:**\n- Process node: gpdk90nm Cadence Virtuoso\n- Custom sizing targeting a 5GHz frequency (achieved 7GHz post-layout frequency)\n- Designed multi-finger, DRC/LVS-compliant layouts\n- Extracted parasitic resistors/capacitors (PEX)\n- Validated performance via Transient, PSS, and PNOISE simulations"
+          keys: [/vector/i, /foc/i, /bldc/i, /drv8353r/i, /stm32g431/i, /can bus/i],
+          reply: "**VECTOR – High-Performance FOC Motor Controller** ⚡\n- 4-layer 50×50mm BLDC motor controller board\n- STM32G431 MCU running FOC at 170MHz + TI DRV8353R 3-phase gate driver\n- Inline shunt current sensing on all 3 phases & active regenerative braking\n- Closed-loop CAN 2.0B interface (Revision 2 currently under development)"
         },
         {
-          keys: [/energy meter/i, /low power/i, /ina219/i, /micro sd/i, /sd card/i, /adc/i],
-          reply: "The **Low Power DC Energy Meter** is a course project designed at Amal Jyothi College of Engineering (Dec 2023). ⚡\n\n**Highlights:**\n- Integrates an Arduino Nano, INA219 current/voltage sensor, Micro SD card logger, and SSD1306 OLED display\n- Uses Timer1 interrupts (10Hz) for precise sampling\n- Optimized power consumption down to micro-amps via sleep modes and turning off internal ADC/unused peripherals\n- **Project Document:** You can find the staged PDF report directly in the projects downloads section!"
+          keys: [/hive-x/i, /hivex/i, /honey/i, /extractor/i, /vanthen/i],
+          reply: "**HIVE-X (Vanthen Honey Extractor)** is an automated honey extraction system. 🐝\n- Automated honeycomb rotation (50–350 RPM) via ESP32 & stepper motor\n- Regulated heating (30–35°C) to maintain honey quality\n- 2.8\" SPI TFT display & 4200mAh LiPo powered\n- Published Design Patent (Patent No: 202441074582)!"
         },
         {
-          keys: [/pcb/i, /skills/i, /tools/i, /altium/i, /kicad/i, /orcad/i, /ltspice/i, /routing/i],
-          reply: "I specialize in premium PCB development and precision electronics: 🛠️\n\n**Hardware Design:**\n- Multilayer layouts (up to 6 layers), controlled impedance routing, mixed-signal designs, high-current routing, DFM/DFA compliance\n\n**EDA Tools:**\n- Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice\n\n**Embedded Tech:**\n- STM32, ESP32, Arduino, CAN Bus 2.0B, MAVLink/Pixhawk, I2C/SPI/UART"
+          keys: [/csro/i, /pll/i, /vco/i, /kottayam/i, /cadence/i, /virtuoso/i],
+          reply: "During my analog design internship at **IIIT Kottayam**, I designed a **3-Stage Current Starved Ring Oscillator (CSRO)** in gpdk90nm Cadence Virtuoso. 🔬 Target: 5GHz / Achieved: 7GHz post-layout frequency with ~23ps stage delay."
+        },
+        {
+          keys: [/pcb/i, /skills/i, /tools/i, /altium/i, /kicad/i, /orcad/i, /virtuoso/i],
+          reply: "I specialize in premium PCB development & firmware: 🛠️\n- **Avionics & UAV:** Pixhawk, Cube Orange, ArduPilot, MAVLink, RadioMaster\n- **PCB Layout:** Multilayer (up to 6L), Controlled Impedance, High-Current, DFM/DFA, EMI Mitigation\n- **EDA Tools:** Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice\n- **Firmware:** ESP32, STM32, PlatformIO, WiFi OTA, Web GUI, FreeRTOS, C/C++"
         },
         {
           keys: [/experience/i, /internship/i, /job/i, /psyc/i, /aerospace/i, /bengaluru/i],
-          reply: "I am an Embedded Hardware Design Engineer Intern at **PSYC Aerospace and Defence Industries** in Bengaluru. 🚀\n\nIn this role, I design custom multilayer PCBs (up to 6 layers) for aerospace flight computers, flight controllers, and robotic platforms. I handle everything from schematic capture and component selection to board bring-up, hand-soldering, and oscilloscope validation."
+          reply: "I am an **Avionics Design Engineer** at **PSYC Aerospace and Defence Industries** in Bengaluru. 🚀\nI owned end-to-end development of 8+ embedded avionics platforms: schematic capture, multilayer PCB layout, BOM generation, DFM/DFA review, board bring-up, and MAVLink UAV integration."
         },
         {
           keys: [/contact/i, /email/i, /phone/i, /reach/i, /hire/i],
-          reply: "Let's connect! You can reach Noel Joyce Varghese via: 🤝\n\n📧 **noeljoyce6@gmail.com**\n📞 **+91 8590607872**\n🔗 [LinkedIn](https://linkedin.com/in/noel-joyce-varghese)\n🐙 [GitHub](https://github.com/noeljoyce6)"
+          reply: "Let's connect! 🤝\n📧 **noeljoyce6@gmail.com**\n📞 **+91 8590607872**\n🔗 [LinkedIn](https://linkedin.com/in/noel-joyce-varghese)\n🐙 [GitHub](https://github.com/noeljoyce6)"
         },
         {
           keys: [/resume/i, /cv/i],
-          reply: "You can download Noel's resume PDF from the top navigation bar, or click [here](Noel_Joyce_Varghese_Resume .pdf) to download it directly. 📄"
-        },
-        {
-          keys: [/education/i, /degree/i, /college/i, /university/i, /btech/i, /b.tech/i],
-          reply: "I am graduating with a **B.Tech in Electronics & Communication Engineering (ECE)** from **Amal Jyothi College of Engineering (Autonomous)** in Kerala, India (Class of 2026). 🎓"
+          reply: "You can download Noel's resume PDF directly from the navigation bar or click [here](Noel_Joyce_Varghese_Resume .pdf). 📄"
         }
       ];
 

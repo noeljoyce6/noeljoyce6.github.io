@@ -3,77 +3,153 @@
 
 const PROJECTS = [
   {
+    id: 'apex',
+    img: null,
+    youtubeUrl: 'https://www.youtube.com/playlist?list=PLKt2ic15ID9o',
+    title: 'APEX – Intelligent UAV Payload Interface',
+    subtitle: '4-Channel Smart Avionics Interface Board',
+    cat: 'Avionics', catClass: 'cat-aero', icon: '🛩',
+    status: 'Completed', statusClass: 'status-done',
+    stls: [],
+    docs: [],
+    layers: 2, dims: 'Avionics 2-Layer',
+    chips: ['ESP32-C3', 'TPS54302', 'TXS0102', 'PCA9685'],
+    tags: ['ESP32-C3', 'TPS54302', 'TXS0102', 'PCA9685', 'MAVLink', 'KiCad', 'WiFi OTA', 'Web GUI', 'Servo BEC', 'RadioMaster RC'],
+    desc: 'Designed a 2-layer avionics PCB with selectable on-board/external BEC servo power rail, I2C level-shifted PCA9685 expansion, and Pixhawk Serial5 telemetry interface. Developed full firmware and web GUI: MAVLink MAV_CMD_DO_SET_SERVO control, RadioMaster RC-preset payload release, WiFi AP, and browser OTA.',
+    highlights: [
+      '2-layer smart avionics PCB with selectable on-board or external BEC servo power rail',
+      'I2C level-shifted PCA9685 expansion via TXS0102 for 4-channel servo actuation',
+      'Pixhawk Serial5 telemetry interface decoding MAVLink MAV_CMD_DO_SET_SERVO commands',
+      'RadioMaster / FlySky RC-preset payload release logic for mission ground testing',
+      'ESP32-C3 PlatformIO firmware with onboard WiFi provisioning, web GUI dashboard, and browser OTA'
+    ],
+    specs: [
+      { k: 'MCU', v: 'ESP32-C3' },
+      { k: 'Power Rail', v: 'TPS54302 Selectable BEC' },
+      { k: 'Expander', v: 'PCA9685 via TXS0102 I2C' },
+      { k: 'Telemetry', v: 'Pixhawk Serial5 MAVLink' },
+      { k: 'Layers', v: '2-Layer PCB' },
+      { k: 'Firmware', v: 'PlatformIO · WiFi OTA · Web GUI' }
+    ],
+    documentation: {
+      overview: `APEX is a production-grade 4-channel intelligent UAV payload interface board engineered for Pixhawk and Cube Orange flight-controller platforms. It bridges MAVLink telemetry commands from the flight controller to high-current servo actuators via a dedicated I2C level-shifted PCA9685 driver, featuring selectable power routing for onboard or external BEC rails.`,
+      architecture: `The architecture uses an ESP32-C3 microcontroller running bare-metal C++ firmware built with PlatformIO. Telemetry is decoded from Pixhawk Serial5 UART over MAVLink 2.0 (MAV_CMD_DO_SET_SERVO). Output channels drive 4 independent servo channels via a PCA9685 PWM expander level-shifted with TXS0102 voltage translators. Onboard power regulation is handled by a TPS54302 high-efficiency buck converter.`,
+      pcb: `2-layer PCB designed in KiCad. Power rail routing features dedicated 2oz copper pours with via stitching for thermal distribution up to 3A servo current. Signal lines for UART telemetry are shielded by solid ground pours on both top and bottom layers.`,
+      testing: `Hardware bring-up verified TPS54302 output stability under 2.5A continuous servo load. MAVLink command decoding tested with Mission Planner over Pixhawk Serial5 at 57600 baud. RadioMaster Pocket RC preset release logic validated during ground actuation trials. WiFi web GUI and browser OTA updates verified cleanly.`,
+      firmware: `PlatformIO C++ firmware implementing asynchronous WiFi AP, embedded HTML/JS web dashboard, browser OTA update page, and MAVLink payload state machine.`,
+      future: `Integration of CAN bus telemetry interface and multi-payload current monitoring shunt per channel.`
+    }
+  },
+  {
+    id: 'skyhook',
+    img: null,
+    youtubeUrl: 'https://www.youtube.com/playlist?list=PLexVyNUshtQk',
+    title: 'SKYHOOK – Precision UAV Payload Winch',
+    subtitle: 'Drone Payload Winch Controller',
+    cat: 'UAV Systems', catClass: 'cat-uav', icon: '🔩',
+    status: 'Completed', statusClass: 'status-done',
+    stls: [{ label: 'Servo Winch', file: 'SERVO_WINCH.stl' }],
+    docs: [],
+    layers: 2, dims: 'Winch Control PCB',
+    chips: ['ESP32-C3', 'BTS7960', 'AS5600', '74AHCT125'],
+    tags: ['ESP32-C3', 'BTS7960', 'AS5600', 'PCF8574T', '74AHCT125', 'MAVLink', 'KiCad', 'Encoder Feedback', 'Closed-Loop Winch'],
+    desc: 'Designed winch control PCB interfacing external BTS7960 motor driver, AS5600 magnetic encoder (I2C), PCF8574T I/O expander, and 74AHCT125 3.3V-to-5V logic buffer. Developed complete ESP32 firmware: MAVLink command decoding, direction/PWM safety interlocks, encoder-based cable-length tracking, and UART telemetry reporting.',
+    highlights: [
+      'Winch control PCB interfacing high-current BTS7960 H-bridge motor driver',
+      'AS5600 magnetic encoder over I2C for millimeter-precision cable altitude tracking',
+      '74AHCT125 3.3V-to-5V logic buffer ensuring robust drive to external motor modules',
+      'PCF8574T I/O expander for hardware status signals and manual override switches',
+      'ESP32 firmware featuring MAVLink command decoding, direction/PWM interlocks, and telemetry'
+    ],
+    specs: [
+      { k: 'MCU', v: 'ESP32-C3' },
+      { k: 'Driver', v: 'External BTS7960 H-Bridge' },
+      { k: 'Feedback', v: 'AS5600 Magnetic Encoder' },
+      { k: 'Buffer', v: '74AHCT125 (3.3V to 5V)' },
+      { k: 'Comms', v: 'MAVLink UART Telemetry' },
+      { k: 'Expander', v: 'PCF8574T I/O Expander' }
+    ],
+    documentation: {
+      overview: `SKYHOOK is a high-precision UAV payload winch controller built for autonomous delivery drones. It interfaces an external BTS7960 high-power H-bridge motor driver with an AS5600 magnetic rotary encoder to provide closed-loop spool height tracking, direction interlocks, and UART telemetry feedback to Pixhawk and Cube Orange flight controllers.`,
+      architecture: `The ESP32-C3 MCU parses MAVLink winch commands over UART. Direction and PWM signals are buffered through a 74AHCT125 line driver to boost 3.3V GPIOs to clean 5V logic required by external H-bridges. Cable deployment distance is continuously calculated via I2C absolute angle data from an AS5600 encoder attached to the winch spool axle.`,
+      pcb: `2-layer KiCad PCB with dedicated power plane and wide copper traces for motor control signals. Noise isolation is maintained between digital MCU circuits and high-current motor supply connections.`,
+      testing: `Bench-tested with 1.5kg payload under continuous spooling cycles. Cable length tracking verified within ±1mm accuracy over a 5-meter tether drop. Direction interlock safety circuit prevented rapid H-bridge short-circuit shoot-through during emergency direction changes.`,
+      firmware: `Written in C++ using PlatformIO. Closed-loop PID positioning loop computes motor PWM duty cycle based on encoder target depth. MAVLink telemetry reports cable tension status and spool length.`,
+      future: `Adding auto-docking proximity sensor integration and tension strain-gauge load cell sensing.`
+    }
+  },
+  {
     id: 'foc',
     img: 'img/foc.png',
-    title: 'Unified FOC Motor Controller',
-    subtitle: 'BLDC Motor Drive Platform',
+    title: 'VECTOR – High-Performance FOC Motor Controller',
+    subtitle: 'BLDC Motor Drive Platform (STM32G431 + DRV8353R)',
     cat: 'Motor Control', catClass: 'cat-motor', icon: '⚡',
-    status: 'Ongoing — Design Phase', statusClass: 'status-wip',
+    status: 'Ongoing — Rev 2 Design Phase', statusClass: 'status-wip',
     stls: [{ label: 'Controller Board', file: 'FOC.stl' }],
     docs: [],
     layers: 4, dims: '50mm × 50mm',
     chips: ['STM32G431', 'DRV8353R', 'CAN 2.0B'],
-    tags: ['STM32G431', 'DRV8353R', 'FOC', 'CAN Bus', '3-Phase Gate Drive', 'Current Sensing', '50×50mm', '4-Layer'],
-    desc: 'A compact 4-layer BLDC motor controller built around the STM32G431 and DRV8353R gate driver. Implements real-time Field-Oriented Control with inline current sensing, over-current protection, regenerative braking, and CAN 2.0B closed-loop interface.',
+    tags: ['STM32G431', 'DRV8353R', 'FOC', 'CAN Bus', '3-Phase Gate Drive', 'Current Sensing', '50×50mm', '4-Layer', 'Active Braking'],
+    desc: 'Architected 4-layer 50×50mm BLDC motor controller with STM32G431, DRV8353R gate driver, 3-phase current sensing, active braking, and CAN-based closed-loop control interface. Hardware Revision 2 under development with optimized component placement and power-stage routing improvements.',
     highlights: [
-      '3-phase gate drive via DRV8353R with hardware fault protection',
-      'Inline shunt current sensing on all 3 phases for FOC torque control',
-      'CAN 2.0B interface for speed/torque commands and telemetry',
-      '50×50mm compact form factor for tight motor integration',
-      'Regenerative braking and configurable dead-time control'
+      'Architected 4-layer 50×50mm BLDC motor controller PCB',
+      'STM32G431 MCU + DRV8353R 3-phase gate driver with hardware fault protection',
+      'Inline shunt current sensing on all 3 phases for precision FOC torque control',
+      'Active regenerative braking and CAN 2.0B closed-loop command interface',
+      'Hardware Revision 2 under development with optimized placement and power stage routing'
     ],
     specs: [
       { k: 'MCU', v: 'STM32G431CBU6' },
       { k: 'Gate Driver', v: 'DRV8353RSRGZT' },
-      { k: 'Layers', v: '4-Layer' },
+      { k: 'Layers', v: '4-Layer (50×50mm)' },
       { k: 'Size', v: '50mm × 50mm' },
       { k: 'Interface', v: 'CAN 2.0B, SPI, UART' },
-      { k: 'Sensing', v: 'Inline 3-phase current' }
+      { k: 'Status', v: 'Hardware Rev 2 in Progress' }
     ],
     documentation: {
-      overview: `The Unified FOC Motor Controller is a compact, production-grade 4-layer PCB built for Field-Oriented Control (FOC) of BLDC motors. It integrates the STM32G431CBU6 microcontroller alongside the DRV8353RSRGZT 3-phase gate driver IC, enabling precise torque control with minimal hardware overhead. The board was designed to fit within a 50×50mm form factor, suitable for direct motor flange mounting.`,
-      architecture: `The architecture centers around three functional domains: the microcontroller domain (STM32G431 running FOC algorithms at 170MHz), the power stage (DRV8353R driving 6 N-channel MOSFETs), and the sensing domain (inline shunt resistors on all 3 phases for real-time current measurement). Communication is handled via CAN 2.0B for high-reliability embedded networking, with UART debug port.`,
-      pcb: `4-layer stackup: Signal / GND / Power / Signal. High-current power traces are routed on the power plane with 2oz copper pour for thermal distribution. Analog sensing traces are shielded by the ground plane and kept away from switching node traces. Decoupling capacitors placed within 0.5mm of all IC power pins. Board follows IPC-2221 design rules throughout.`,
-      testing: `Board bring-up: Power rail verification (3.3V, 5V, gate drive bootstrap). DRV8353R fault register readout via SPI confirmed no startup faults. Phase current waveforms captured on oscilloscope at 10A phase current — clean sinusoidal output confirmed. CAN bus communications verified at 500kbit/s and 1Mbit/s. Thermal imaging confirmed no hotspot issues up to 30A motor current.`,
-      firmware: `Firmware written in C using STM32Cube HAL + LL drivers. FOC algorithm implemented with Space Vector Modulation (SVPWM). Current loop running at 40kHz, velocity loop at 1kHz. CAN communication uses a simple command/response protocol. Encoder interface tested with MA732 SPI magnetic encoder breakout.`,
-      future: `Planned iterations include: on-board CAN termination jumper, isolated gate drive for higher voltage applications (48V+), UART firmware update via bootloader, and integration of the encoder board into the same form factor.`
+      overview: `VECTOR (formerly Unified FOC) is a high-performance 4-layer 50×50mm BLDC motor controller designed for robotics and UAV actuation. Built around the high-speed STM32G431CBU6 MCU (170MHz ARM Cortex-M4 with FMAC & CORDIC math accelerators) and Texas Instruments DRV8353R gate driver IC, it delivers field-oriented torque and velocity control in an ultra-compact footprint.`,
+      architecture: `The system splits into three functional blocks: the high-speed control core (STM32G431 running SVPWM current loops at 40kHz), the power stage (DRV8353R gate driver with 6 N-channel power MOSFETs and active regenerative braking), and sensing (3-phase inline shunt measurement + SPI magnetic encoder feedback). Communication uses CAN 2.0B for robust multi-axis robotic networking.`,
+      pcb: `4-layer PCB: Top Signal / GND / Power (2oz Cu) / Bottom Signal. High-current motor phases are routed on heavy copper pours with via arrays to handle 30A peak currents. Thermal relief pads placed under DRV8353R and power MOSFETs. IPC-2221 design rules strictly observed.`,
+      testing: `Rev 1 testing confirmed 3.3V/5V/bootstrap power rails, DRV8353R SPI register configuration, and clean sinusoidal phase current waveforms under load on oscilloscope. CAN bus communication verified at 1Mbit/s. Rev 2 redesign optimizes power MOSFET gate loop inductance and board layout.`,
+      firmware: `C++ firmware with STM32 HAL/LL drivers. Space Vector Modulation (SVPWM) FOC algorithm with 40kHz current loop and 1kHz velocity loop. Integrated CAN command protocol.`,
+      future: `Finalize Rev 2 fabrication, integrate magnetic encoder directly onto bottom layer, and test under 48V supply voltage.`
     }
   },
   {
     id: 'fc',
     img: 'img/fc.png',
-    title: 'Minima Flight Controller',
-    subtitle: 'CM5-Based UAV Flight Computer',
-    cat: 'Aerospace', catClass: 'cat-aero', icon: '🛩',
-    status: 'Ongoing', statusClass: 'status-wip',
-    stls: [{ label: 'Flight Controller', file: 'FC.stl' }, { label: 'CM5 Pi Adapter', file: 'CM5 PI ADAPTER.stl' }],
+    title: 'Minima – CM5 UAV Companion Computer Board',
+    subtitle: 'High-Compute UAV Companion Computer (Ongoing)',
+    cat: 'Companion Board', catClass: 'cat-aero', icon: '🧠',
+    status: 'Ongoing — Design Phase', statusClass: 'status-wip',
+    stls: [{ label: 'Flight Controller Interface', file: 'FC.stl' }, { label: 'CM5 Pi Adapter', file: 'CM5 PI ADAPTER.stl' }],
     docs: [],
-    layers: 6, dims: 'Compact form',
-    chips: ['CM5', 'IMU', 'GPS', 'Baro'],
-    tags: ['CM5', 'Raspberry Pi', 'UAV', '6-Layer', 'IMU', 'Barometer', 'GPS', 'High-Density'],
-    desc: 'A compact 6-layer UAV flight controller built around the Raspberry Pi Compute Module 5. Designed for UAVs requiring onboard compute with full sensor integration — IMU, barometer, GPS, multi-channel PWM/UART. The companion CM5 Pi Adapter board handles the high-density CM5 SO-DIMM interface.',
+    layers: 6, dims: 'Compact 6-Layer Board',
+    chips: ['CM5', 'NVMe', 'PCIe / M.2', 'MAVLink'],
+    tags: ['CM5', 'Raspberry Pi', 'Companion Computer', '6-Layer', 'MAVLink', 'NVMe', 'PCIe / M.2', 'Hailo-8 AI', 'KiCad'],
+    desc: 'Architecting compact 6-layer UAV companion computer PCB around CM5 -- interfaces Pixhawk over MAVLink via dedicated FC/Telemetry/CRSF UARTs; designed for onboard autonomy, SLAM, precision landing, NVMe high-bandwidth logging, and PCIe AI accelerator integration (Hailo-8 class).',
     highlights: [
-      '6-layer stackup for power/ground integrity and EMI shielding',
-      'CM5 compute module enabling onboard AI and vision processing',
-      'Full IMU, baro, and GPS sensor suite on-board',
-      'Multi-channel PWM output for ESC and servo actuation',
-      'High-density BGA/QFN routing in constrained form factor'
+      'Purpose-built UAV companion computer board designed around Raspberry Pi Compute Module 5 (CM5)',
+      'Dedicated FC/Telemetry/CRSF UART interfaces for seamless MAVLink integration with Pixhawk & Cube Orange',
+      'PCIe / M.2 slot supporting onboard Hailo-8 class AI accelerators for real-time edge vision & SLAM',
+      'High-bandwidth NVMe storage interface for high-density sensor payload and flight telemetry logging',
+      '6-layer stackup optimized for high-speed differential signals, power integrity, and EMI shielding'
     ],
     specs: [
-      { k: 'Compute', v: 'Raspberry Pi CM5' },
-      { k: 'Layers', v: '6-Layer' },
-      { k: 'Sensors', v: 'IMU · Baro · GPS' },
-      { k: 'Interfaces', v: 'UART×4 · SPI×2 · I2C×2' },
-      { k: 'Outputs', v: '8+ PWM channels' },
-      { k: 'Status', v: 'In Development' }
+      { k: 'Compute Module', v: 'Raspberry Pi CM5' },
+      { k: 'Board Type', v: 'UAV Companion Computer Board' },
+      { k: 'Layers', v: '6-Layer Stackup' },
+      { k: 'Telemetry', v: 'FC / Telemetry / CRSF UARTs' },
+      { k: 'AI Acceleration', v: 'PCIe M.2 (Hailo-8 class)' },
+      { k: 'Storage', v: 'High-bandwidth NVMe' }
     ],
     documentation: {
-      overview: `Minima is a next-generation UAV flight controller built around the Raspberry Pi Compute Module 5 (CM5). Unlike traditional flight controllers that use microcontrollers, Minima brings full Linux computing power to the flight stack — enabling onboard AI inference, real-time video processing, and advanced autonomy algorithms without requiring a separate companion computer.`,
-      architecture: `The system consists of two boards: the main flight controller carrying the sensor suite (IMU, barometer, GPS), power management, PWM output, and communication interfaces; and the CM5 Adapter board that interfaces the high-density SO-DIMM connector to the flight controller's peripheral bus. The 6-layer stackup separates analog sensor signals from digital and power domains.`,
-      pcb: `6-layer stackup: Signal / GND / Signal / Power / GND / Signal. The CM5 adapter board uses a 0.4mm pitch SO-DIMM footprint requiring controlled impedance for high-speed differential pairs. EMI shielding is achieved via solid ground pours on layers 2 and 5. IPC-2221 Class B design rules applied throughout.`,
-      testing: `Currently in bring-up phase. Power rail sequencing verified for CM5 requirements. IMU communications verified over SPI. GPS NMEA data received successfully. PWM signal outputs verified at 50Hz and 400Hz. CM5 boot sequence confirmed with Raspberry Pi OS Lite.`,
-      firmware: `ArduPilot/PX4 compatibility is being evaluated for the flight stack. Custom driver layer for CM5 peripheral access is in development. The adapter board firmware handles I2C muxing and power sequencing via an STM32 coprocessor.`,
-      future: `Complete sensor calibration and flight test. Develop custom Linux HAL for ArduPilot integration. Miniaturize the CM5 adapter to integrate directly into the flight controller for a single-board solution.`
+      overview: `Minima is a high-performance 6-layer UAV companion computer board centered on the Raspberry Pi Compute Module 5 (CM5). Unlike primary flight controllers (which run real-time flight stabilization loops), Minima functions as an onboard high-compute companion board — providing computer vision, SLAM, precision landing, edge AI inference, and autonomous mission routing while interfacing to Pixhawk/Cube Orange flight controllers over MAVLink.`,
+      architecture: `The architecture pairs the CM5 compute module with dedicated hardware peripherals: dedicated FC, Telemetry, and CRSF UART ports for MAVLink telemetry; high-speed PCIe / M.2 lines for Hailo-8 AI acceleration modules; an NVMe slot for logging multi-gigabyte video and point-cloud datasets; and regulated DC-DC power delivery for UAV flight battery rails.`,
+      pcb: `6-layer stackup: Signal / GND / Signal / Power / GND / Signal. The high-density CM5 SO-DIMM interface requires 0.4mm pin-pitch routing, controlled impedance differential pairs for PCIe/USB3, and dedicated internal ground planes (layers 2 & 5) for EMI mitigation near high-power drone ESCs.`,
+      testing: `Schematic and footprint verification complete in KiCad. Power rail sequencing for CM5 power-up requirements validated. SO-DIMM pin mapping verified against CM5 datasheet and MAVLink UART breakout requirements. Board bring-up scheduled following fabrication release.`,
+      firmware: `Runs Raspberry Pi OS Lite (Linux) with custom ROS2 / MAVROS nodes for Pixhawk integration. Custom daemon handles MAVLink telemetry parsing and Hailo-8 AI vision pipeline orchestration.`,
+      future: `Fabrication release, high-speed signal integrity validation on oscilloscope, and flight testing onboard autonomous delivery UAVs.`
     }
   },
   {
