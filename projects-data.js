@@ -11,7 +11,7 @@ const PROJECTS = [
     subtitle: '4-Channel Smart Avionics Interface Board',
     cat: 'Avionics', catClass: 'cat-aero', icon: '🛩',
     status: 'Completed', statusClass: 'status-done',
-    stls: [],
+    stls: [{ label: 'APEX Interface Board', file: 'SERVO_WINCH.stl' }],
     docs: [{ label: 'Technical Documentation & Schematic Review', file: 'Servo_driver_document.pdf' }],
     layers: 2, dims: 'Avionics 2-Layer PCB',
     chips: ['ESP32-C3', 'TPS54302', 'TXS0102', 'PCA9685'],
@@ -50,7 +50,7 @@ const PROJECTS = [
     subtitle: 'Geared DC Drone Payload Winch Controller',
     cat: 'UAV Systems', catClass: 'cat-uav', icon: '🔩',
     status: 'Completed', statusClass: 'status-done',
-    stls: [{ label: 'Geared DC Winch', file: 'GEARED DC WINCH.stl' }, { label: 'Servo Winch', file: 'SERVO_WINCH.stl' }],
+    stls: [{ label: 'Geared DC Winch', file: 'GEARED DC WINCH.stl' }],
     docs: [{ label: 'Geared DC Winch Technical Manual', file: 'winch_Geared_dc ver2.pdf' }],
     layers: 2, dims: 'Winch Control PCB',
     chips: ['ESP32-C3', 'BTS7960', 'AS5600', '74AHCT125'],
@@ -201,8 +201,6 @@ const PROJECTS = [
     cat: 'UAV Systems', catClass: 'cat-uav', icon: '🔩',
     status: 'Ongoing — Integration Phase', statusClass: 'status-wip',
     stls: [
-      { label: 'Servo Winch', file: 'SERVO_WINCH.stl' },
-      { label: 'Geared DC Winch', file: 'GEARED DC WINCH.stl' },
       { label: 'N20 Winch', file: 'N20 WINCH.stl' }
     ],
     docs: [],
@@ -423,7 +421,8 @@ const PROJECTS = [
   },
   {
     id: 'hivex',
-    img: null,
+    img: 'img/VAN_THEN EXTRACTOR.png',
+    youtubeUrl: 'https://youtube.com/shorts/Z6SX10CcYsQ?feature=share',
     title: 'HIVE-X Honey Extractor',
     subtitle: 'Automated Honey Extractor Platform',
     cat: 'Automation', catClass: 'cat-motor', icon: '🍯',
