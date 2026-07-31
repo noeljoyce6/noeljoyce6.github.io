@@ -635,6 +635,42 @@
       text-transform: uppercase;
     }
 
+    /* ─── SECONDARY PRODUCT PHOTO STRIP (for STL projects that also have photos) ─── */
+    .overview-photo-strip {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.75rem;
+    }
+    .ops-item {
+      flex: 1;
+      min-width: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .ops-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5));
+    }
+    .ops-item:hover .ops-img {
+      transform: scale(1.06);
+    }
+    .ops-caption {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-top: 1px solid var(--border);
+    }
+
     /* ─── VIEWER CONTROLS ────────────────────────────────── */
     .viewer-tabs {
       display: flex;
@@ -1966,21 +2002,56 @@
         });
         overviewViewer.insertBefore(tabsDiv, overviewViewer.firstChild);
       }
-    } else {
-      // No STL — show project image if available, otherwise icon fallback
-      if (proj.img) {
-        overviewViewer.style.background = 'none';
-        overviewViewer.innerHTML = `
-          <div class="viewer-img-fallback">
-            <img src="${proj.img}" alt="${proj.title}" class="viewer-fallback-img" loading="lazy" />
-            <div class="viewer-fallback-caption">${proj.title}</div>
-          </div>`;
-      } else {
-        overviewViewer.innerHTML = `<div class="viewer-no-stl">
-          <div class="viewer-no-stl-icon">${proj.icon}</div>
-          <div class="viewer-no-stl-text">3D model not available<br>for this project</div>
+    } else if (proj.photos && proj.photos.length > 1) {
+      // No STL, multiple product photos — switchable photo tabs
+      overviewViewer.style.background = 'none';
+      const photoLabels = ['Studio Shot', 'In the Field'];
+      overviewViewer.innerHTML = `
+        <div class="viewer-tabs" id="photo-tabs"></div>
+        <div class="viewer-img-fallback" style="top:45px;">
+          <img src="${proj.photos[0]}" alt="${proj.title}" class="viewer-fallback-img" id="photo-fallback-img" loading="lazy" />
+          <div class="viewer-fallback-caption" id="photo-fallback-caption">${proj.title} — ${photoLabels[0]}</div>
         </div>`;
-      }
+      const photoTabs = document.getElementById('photo-tabs');
+      const photoImgEl = document.getElementById('photo-fallback-img');
+      const photoCapEl = document.getElementById('photo-fallback-caption');
+      proj.photos.forEach((src, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'viewer-tab' + (i === 0 ? ' active' : '');
+        btn.textContent = photoLabels[i] || `View ${i + 1}`;
+        btn.addEventListener('click', () => {
+          photoTabs.querySelectorAll('.viewer-tab').forEach((t, ti) => t.classList.toggle('active', ti === i));
+          photoImgEl.src = src;
+          photoCapEl.textContent = `${proj.title} — ${photoLabels[i] || 'View ' + (i + 1)}`;
+        });
+        photoTabs.appendChild(btn);
+      });
+    } else if (proj.img) {
+      // No STL — single project image fallback
+      overviewViewer.style.background = 'none';
+      overviewViewer.innerHTML = `
+        <div class="viewer-img-fallback">
+          <img src="${proj.img}" alt="${proj.title}" class="viewer-fallback-img" loading="lazy" />
+          <div class="viewer-fallback-caption">${proj.title}</div>
+        </div>`;
+    } else {
+      overviewViewer.innerHTML = `<div class="viewer-no-stl">
+        <div class="viewer-no-stl-icon">${proj.icon}</div>
+        <div class="viewer-no-stl-text">3D model not available<br>for this project</div>
+      </div>`;
+    }
+
+    // ── SECONDARY PRODUCT PHOTOS (when STL viewer already occupies the tab slot) ──
+    if (proj.stls && proj.stls.length > 0 && proj.photos && proj.photos.length > 0) {
+      const stripLabels = ['Studio Shot', 'In the Field'];
+      const strip = document.createElement('div');
+      strip.className = 'overview-photo-strip';
+      strip.innerHTML = proj.photos.map((src, i) => `
+        <div class="ops-item">
+          <img src="${src}" class="ops-img" alt="${proj.title} — ${stripLabels[i] || 'view ' + (i + 1)}" loading="lazy" />
+          <div class="ops-caption">${stripLabels[i] || 'View ' + (i + 1)}</div>
+        </div>`).join('');
+      overviewBody.parentNode.appendChild(strip);
     }
 
     // ── FULL VIEWER SECTION ──────────────────────────────────

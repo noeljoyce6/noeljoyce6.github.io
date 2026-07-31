@@ -1113,60 +1113,19 @@
       #projects #proj-title { padding: 0 1.5rem; }
     }
 
-    /* ─── INTERACTIVE PROJECTS CAROUSEL SLIDER ───────────── */
-    .marquee-container {
-      display: flex; flex-direction: column; gap: 1.6rem;
+    /* ─── PROJECTS GRID (vertical scroll — click a card to open it) ─── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.75rem;
+      padding: 0.5rem 5rem 0;
     }
-    .marquee-row-wrap { position: relative; display: flex; align-items: center; gap: 0; padding: 0 1rem; }
-    .marquee-row {
-      overflow-x: auto; flex: 1; min-width: 0;
-      scroll-behavior: smooth;
-      scroll-snap-type: x mandatory;
-      cursor: grab;
-      user-select: none;
-      -webkit-user-select: none;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding: 0.8rem 0.2rem;
+    @media(max-width:1024px) {
+      .projects-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); padding: 0.5rem 2.5rem 0; }
     }
-    .marquee-row::-webkit-scrollbar { display: none; }
-    .marquee-row:active { cursor: grabbing; }
-    .marquee-track, .marquee-track-r {
-      display: flex; gap: 1.25rem; width: max-content;
+    @media(max-width:768px) {
+      .projects-grid { grid-template-columns: 1fr; padding: 0.5rem 1.5rem 0; gap: 1.25rem; }
     }
-
-    /* Arrow nav buttons for interactive slider */
-    .mrow-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 25;
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: rgba(7,10,15,0.88);
-      border: 1px solid rgba(0,232,137,0.35);
-      color: var(--green);
-      font-size: 1.1rem;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      user-select: none;
-      line-height: 1;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-    }
-    .mrow-arrow:hover {
-      background: rgba(0,232,137,0.18);
-      border-color: rgba(0,232,137,0.75);
-      transform: translateY(-50%) scale(1.12);
-      box-shadow: 0 0 20px rgba(0,232,137,0.3);
-    }
-    .mrow-arrow:active {
-      transform: translateY(-50%) scale(0.95);
-    }
-    .mrow-arrow.left { left: 14px; }
-    .mrow-arrow.right { right: 14px; }
 
     /* YouTube Demo Badge on Project Cards */
     .proj-yt-badge {
@@ -1206,8 +1165,14 @@
       cursor: pointer;
       transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
       display: flex; flex-direction: column;
-      width: 310px; flex-shrink: 0;
-      scroll-snap-align: start;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(24px);
+    }
+
+    .proj-card.visible {
+      opacity: 1;
+      transform: none;
     }
 
     .proj-card:hover {
@@ -2616,7 +2581,7 @@
           <li><a href="#projects">Projects</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <a href="Noel_Joyce_Varghese_Resume .pdf" download class="nav-resume">↓ Resume</a>
+        <a href="Noel_Joyce_Varghese_Electronics_Engineer.pdf" download class="nav-resume">↓ Resume</a>
       </div>
     </nav>
 
@@ -3029,18 +2994,7 @@
         <div class="section-line"></div>
       </div>
       <h2 class="section-title" id="proj-title">Projects &amp; Boards</h2>
-      <div class="marquee-container" id="marquee-container">
-        <div class="marquee-row-wrap">
-          <button class="mrow-arrow left" id="arrow-1-l" aria-label="Scroll left row 1">&#8592;</button>
-          <div class="marquee-row" id="mrow-1"><div class="marquee-track" id="mtrack-1"></div></div>
-          <button class="mrow-arrow right" id="arrow-1-r" aria-label="Scroll right row 1">&#8594;</button>
-        </div>
-        <div class="marquee-row-wrap">
-          <button class="mrow-arrow left" id="arrow-2-l" aria-label="Scroll left row 2">&#8592;</button>
-          <div class="marquee-row" id="mrow-2"><div class="marquee-track-r" id="mtrack-2"></div></div>
-          <button class="mrow-arrow right" id="arrow-2-r" aria-label="Scroll right row 2">&#8594;</button>
-        </div>
-      </div>
+      <div class="projects-grid" id="projects-grid"></div>
     </section>
 
     <!-- CONTACT -->
@@ -3343,7 +3297,7 @@
 
       // projects
       gsap.to('#proj-title', { scrollTrigger: { trigger: '#projects', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
-      gsap.from('#marquee-container', { scrollTrigger: { trigger: '#projects', start: 'top 80%' }, opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
+      gsap.from('#projects-grid', { scrollTrigger: { trigger: '#projects', start: 'top 80%' }, opacity: 0, y: 30, duration: 0.8, ease: 'power3.out' });
 
       // contact
       gsap.to('#contact-title', { scrollTrigger: { trigger: '#contact', start: 'top 78%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
@@ -3353,7 +3307,7 @@
       gsap.to('#avail-card-wrap', { scrollTrigger: { trigger: '#avail-card-wrap', start: 'top 80%' }, opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' });
     }
 
-    // ── BUILD INTERACTIVE PROJECT SLIDER CARDS ───────────────────────
+    // ── BUILD PROJECT CARDS (vertical grid, click to open) ───────────────────
     function buildCard(p) {
       const card = document.createElement('div');
       card.className = 'proj-card';
@@ -3377,74 +3331,25 @@
             <div class="proj-cta">View Case Study →</div>
           </div>
         </div>`;
-      card.addEventListener('click', (e) => {
-        // Only navigate if click was not a drag release
-        if (!card.dataset.dragged) {
-          window.location.href = 'project.html?id=' + p.id;
-        }
+      card.addEventListener('click', () => {
+        window.location.href = 'project.html?id=' + p.id;
       });
       return card;
     }
 
-    const mrow1 = document.getElementById('mrow-1');
-    const mrow2 = document.getElementById('mrow-2');
-    const track1 = document.getElementById('mtrack-1');
-    const track2 = document.getElementById('mtrack-2');
+    const projectsGrid = document.getElementById('projects-grid');
+    PROJECTS.forEach(p => projectsGrid.appendChild(buildCard(p)));
 
-    // Split projects across Row 1 (Avionics, UAV & Motor Control) and Row 2 (Robotics, Sensing & Bio)
-    const row1Projects = PROJECTS.slice(0, 5);
-    const row2Projects = PROJECTS.slice(5);
-
-    row1Projects.forEach(p => track1.appendChild(buildCard(p)));
-    row2Projects.forEach(p => track2.appendChild(buildCard(p)));
-
-    // ── INTERACTIVE DRAG & ARROW SLIDER NAVIGATION ──────────────────
-    (function() {
-      const CARD_STEP = 330; // pixels to scroll per arrow press
-
-      // Arrow navigation buttons
-      document.getElementById('arrow-1-l').addEventListener('click', () => mrow1.scrollBy({ left: -CARD_STEP, behavior: 'smooth' }));
-      document.getElementById('arrow-1-r').addEventListener('click', () => mrow1.scrollBy({ left: CARD_STEP, behavior: 'smooth' }));
-      document.getElementById('arrow-2-l').addEventListener('click', () => mrow2.scrollBy({ left: -CARD_STEP, behavior: 'smooth' }));
-      document.getElementById('arrow-2-r').addEventListener('click', () => mrow2.scrollBy({ left: CARD_STEP, behavior: 'smooth' }));
-
-      // Mouse Drag-to-Scroll Interactivity for both rows
-      [mrow1, mrow2].forEach(rowEl => {
-        let isDown = false;
-        let startX, scrollLeft;
-        let draggedDist = 0;
-
-        rowEl.addEventListener('mousedown', (e) => {
-          isDown = true;
-          draggedDist = 0;
-          startX = e.pageX - rowEl.offsetLeft;
-          scrollLeft = rowEl.scrollLeft;
-        });
-
-        rowEl.addEventListener('mouseleave', () => { isDown = false; });
-        rowEl.addEventListener('mouseup', () => {
-          isDown = false;
-          const cards = rowEl.querySelectorAll('.proj-card');
-          cards.forEach(c => {
-            if (draggedDist > 6) {
-              c.dataset.dragged = 'true';
-              setTimeout(() => { delete c.dataset.dragged; }, 100);
-            } else {
-              delete c.dataset.dragged;
-            }
-          });
-        });
-
-        rowEl.addEventListener('mousemove', (e) => {
-          if (!isDown) return;
-          e.preventDefault();
-          const x = e.pageX - rowEl.offsetLeft;
-          const walk = (x - startX) * 1.5;
-          draggedDist = Math.abs(walk);
-          rowEl.scrollLeft = scrollLeft - walk;
-        });
+    // Staggered reveal as cards scroll into view
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          cardObserver.unobserve(entry.target);
+        }
       });
-    })();
+    }, { threshold: 0.15 });
+    projectsGrid.querySelectorAll('.proj-card').forEach(c => cardObserver.observe(c));
 
     // ── FLYING BIRD ANIMATION ───────────────────────────────────────
     (function(){

@@ -4,7 +4,8 @@
 const PROJECTS = [
   {
     id: 'apex',
-    img: null,
+    img: 'img/apex-product_1.png',
+    photos: ['img/apex-product_1.png', 'img/Apex_2.png'],
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLKt2ic15ID9o',
     title: 'APEX – Intelligent UAV Payload Interface',
     subtitle: '4-Channel Smart Avionics Interface Board',
@@ -42,7 +43,8 @@ const PROJECTS = [
   },
   {
     id: 'skyhook',
-    img: null,
+    img: 'img/SKYHOOK_1.png',
+    photos: ['img/SKYHOOK_1.png', 'img/SKYHOOK_2.png'],
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLexVyNUshtQk',
     title: 'SKYHOOK – Precision UAV Payload Winch',
     subtitle: 'Geared DC Drone Payload Winch Controller',
