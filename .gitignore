@@ -2,3 +2,13 @@
 decimate_stl.py
 *.code-workspace
 *.mp4
+*.pdf
+!Noel_Joyce_Varghese_Electronics_Engineer.pdf
+*.docx
+*.tex
+*.kicad_sch
+*.kicad_pcb
+*.kicad_pro
+*.sch
+*.brd
+*.zip
