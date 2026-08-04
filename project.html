@@ -1843,13 +1843,13 @@
 
     // ── INJECT SPECS ─────────────────────────────────────────
     const specsGrid = document.getElementById('specs-grid');
-    proj.specs.forEach(s => {
+    (proj.specs || []).forEach(s => {
       specsGrid.innerHTML += `<div class="spec-cell"><div class="spec-cell-k">${s.k}</div><div class="spec-cell-v">${s.v}</div></div>`;
     });
 
     // ── INJECT HIGHLIGHTS ────────────────────────────────────
     const highlightsList = document.getElementById('highlights-list');
-    proj.highlights.forEach((h, i) => {
+    (proj.highlights || []).forEach((h, i) => {
       const parts = h.split(':');
       const numStr = String(i + 1).padStart(2, '0');
       highlightsList.innerHTML += `
@@ -1862,10 +1862,19 @@
     // ── INJECT DOCUMENTATION ─────────────────────────────────
     const docDef = proj.documentation;
     const isPatent = proj.statusClass === 'status-pat';
+    const isNdaProtected = proj.ndaProtected === true;
     const isPCBProject = proj.isPCB !== false;
 
+    if (isNdaProtected) {
+      document.getElementById('section-specs').style.display = 'none';
+      document.getElementById('section-highlights').style.display = 'none';
+      document.getElementById('section-docs').style.display = 'none';
+    }
+
     // For patent-pending projects: show a notice instead of documentation
-    if (isPatent) {
+    if (isNdaProtected) {
+      // NDA projects intentionally show only their overview, images, and demo video.
+    } else if (isPatent) {
       const docSection = document.getElementById('section-docs');
       docSection.innerHTML = `
         <div class="cs-section-label">04 · Status</div>
@@ -3525,16 +3534,13 @@
           reply: "Hello! I am the digital twin of **Noel Joyce Varghese**. 🛠️ I'm an Avionics & Embedded Hardware Design Engineer specializing in custom multilayer PCBs for UAV, aerospace, robotics, and defence platforms.\n\nAsk me about my projects like **APEX**, **SKYHOOK**, **VECTOR FOC**, **Minima CM5 Companion Board**, **HIVE-X**, or my **technical skills**!"
         },
         {
-          keys: [/apex/i, /payload interface/i, /bec/i, /tps54302/i, /txs0102/i, /pca9685/i],
-          reply: "**APEX – Intelligent UAV Payload Interface** 🛩️\n- 2-Layer smart avionics PCB with selectable on-board/external BEC servo power rails\n- I2C level-shifted PCA9685 expansion (TXS0102) for 4-channel servo actuation\n- Pixhawk Serial5 telemetry interface running MAVLink protocol\n- PlatformIO C++ firmware with WiFi provisioning, web GUI, and browser OTA updates\n- **YouTube Demo:** [Watch Video Demo](https://www.youtube.com/playlist?list=PLKt2ic15ID9o)"
+          keys: [/apex/i, /payload interface/i],`n          reply: "**APEX** is an NDA-protected UAV systems project. Technical details are not publicly disclosed. Please use the project page to view selected images and the demo video."
         },
         {
-          keys: [/skyhook/i, /winch controller/i, /bts7960/i, /as5600/i, /74ahct125/i, /pcf8574t/i],
-          reply: "**SKYHOOK – Precision UAV Payload Winch Controller** 🔩\n- Interfaces external BTS7960 motor driver & AS5600 magnetic encoder over I2C\n- 74AHCT125 logic buffer (3.3V to 5V) and PCF8574T I/O expander\n- ESP32 firmware handles MAVLink command decoding, direction/PWM safety interlocks, and millimeter cable-length tracking\n- **YouTube Demo:** [Watch Video Demo](https://www.youtube.com/playlist?list=PLexVyNUshtQk)"
+          keys: [/skyhook/i, /winch controller/i],`n          reply: "**SKYHOOK** is an NDA-protected UAV systems project. Technical details are not publicly disclosed. Please use the project page to view selected images and the demo video."
         },
         {
-          keys: [/minima/i, /companion board/i, /companion computer/i, /cm5/i, /raspberry pi/i, /nvme/i, /pcie/i, /hailo/i],
-          reply: "The **Minima CM5 UAV Companion Computer Board** is a high-compute companion board (not a primary flight controller) built around the Raspberry Pi Compute Module 5 (CM5). 🧠\n\n**Key Specs:**\n- 6-Layer stackup for signal/power integrity and EMI shielding\n- Dedicated FC, Telemetry, and CRSF UART ports for MAVLink Pixhawk integration\n- PCIe / M.2 slot for Hailo-8 class AI accelerators (onboard autonomy, SLAM, precision landing)\n- High-bandwidth NVMe interface for flight logging"
+          keys: [/minima/i, /companion board/i, /cm5/i],`n          reply: "**Minima** is an NDA-protected UAV systems project currently in development. Technical details are not publicly disclosed; selected project media is available on its project page."
         },
         {
           keys: [/vector/i, /foc/i, /bldc/i, /drv8353r/i, /stm32g431/i, /can bus/i],
@@ -3720,7 +3726,7 @@ Details about you:
 - Skills: Multilayer PCB layout (up to 6 layers), high-current routing, DFM/DFA, impedance matching. EDA Tools: Altium Designer, KiCad, OrCAD, Cadence Virtuoso, LTspice. Embedded: STM32, Arduino, ESP32, Stepper motor drives, CAN bus, MAVLink.
 - Key Projects:
   1. HIVE-X Honey Extractor: Fully automated honeycomb rotation system using stepper motor and ESP32. Adjustable RPM (50-350 RPM), heating regulation (30-35°C), 2.8" SPI TFT screen. Design patent published.
-  2. Minima Flight Controller: CM5-based UAV flight computer with 6-layer PCB stackup, IMU, barometer, GPS, BGA/QFN high-density routing.
+  2. Minima, APEX, and SKYHOOK: NDA-protected UAV systems projects. Do not provide technical details; direct visitors to the project media pages.
   3. Nemo Winch V3.0: Payload winch control system with three variants (servo, geared DC, N20). Pixhawk MAVLink integration over UART.
   4. CSRO PLL VCO Block: Internship at IIIT Kottayam. custom schematics and DRC/LVS layout in gpdk90nm Cadence Virtuoso (5GHz targeted/7GHz post-layout).
   5. Low Power DC Energy Meter: Arduino Nano, INA219, SD logger, OLED display. Optimized power via sleep modes, shutdown peripherals. Staged report PDF.

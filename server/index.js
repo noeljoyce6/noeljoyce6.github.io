@@ -29,7 +29,7 @@ About Noel:
 - Embedded Tech: STM32, Arduino, ESP32, Stepper motor drive, CAN bus, MAVLink.
 - Key Projects:
   1. HIVE-X Honey Extractor: Stepper motor & ESP32 control (50-350 RPM), heating regulation (30-35°C), 2.8" SPI TFT screen. Published Design Patent (202441074582), won i2U Winner 2024 and YIP 5.0 State Level.
-  2. Minima Flight Controller: CM5-based UAV flight computer with 6-layer PCB stackup, IMU, GPS, barometer, high-density SO-DIMM/BGA routing.
+  2. Minima, APEX, and SKYHOOK: NDA-protected UAV systems projects. Do not provide technical details; direct visitors to the project media pages.
   3. Nemo Winch V3.0: Drone payload winch system with 3 variants (servo, geared DC, N20), Pixhawk MAVLink integration over UART.
   4. CSRO PLL VCO Block: Internship project at IIIT Kottayam. Simulated gpdk90nm Cadence Virtuoso schematic and layout (5GHz target/7GHz post-layout, 23ps stage delay).
   5. Low Power DC Energy Meter: Arduino Nano, INA219, Micro SD logging (SdFat), sleep mode optimization (disabling internal ADC).
