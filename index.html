@@ -3084,7 +3084,7 @@
   <!-- 3D Viewer Modal removed — see project.html -->
 
   <!-- SCRIPTS -->
-  <script src="projects-data.js"></script>
+  <script src="projects-data.js?v=20260804-nda2"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script>
@@ -3316,19 +3316,19 @@
           ${p.img
             ? `<img class="proj-board-img" src="${p.img}" alt="${p.title}" loading="lazy"/><div class="proj-img-overlay"></div>`
             : `<div class="proj-visual-fallback"><div class="proj-icon">${p.icon}</div></div>`}
-          <span class="proj-cat-badge ${p.catClass}">${p.cat}</span>
-          <span class="proj-status ${p.statusClass}">${p.status}</span>
+          ${p.ndaProtected ? '' : `<span class="proj-cat-badge ${p.catClass}">${p.cat}</span>`}
+          ${p.ndaProtected ? '' : `<span class="proj-status ${p.statusClass}">${p.status}</span>`}
           ${p.youtubeUrl ? `<a class="proj-yt-badge" href="${p.youtubeUrl}" target="_blank" onclick="event.stopPropagation()" title="Watch YouTube Demo">▶ Demo Video</a>` : ''}
           ${p.award ? `<span class="proj-award-badge" style="bottom:${p.youtubeUrl?'34px':'10px'}">🏆 ${p.award.label.replace('🏆 ','')}</span>` : ''}
         </div>
         <div class="proj-body">
           <div class="proj-title">${p.title}</div>
-          <div class="proj-subtitle">${p.subtitle}</div>
+          ${p.subtitle ? `<div class="proj-subtitle">${p.subtitle}</div>` : ''}
           <div class="proj-desc">${p.desc.substring(0,115)}${p.desc.length>115?'…':''}</div>
-          <div class="proj-chips">${(p.chips || []).map(c=>`<span class="proj-chip">${c}</span>`).join('')}</div>
+          ${(p.chips || []).length ? `<div class="proj-chips">${p.chips.map(c=>`<span class="proj-chip">${c}</span>`).join('')}</div>` : ''}
           <div class="proj-footer">
-            <div class="proj-meta">${p.layers?`<span>${p.layers}L</span> · `:''}${p.dims}</div>
-            <div class="proj-cta">View Case Study →</div>
+            <div class="proj-meta">${p.ndaProtected ? '' : `${p.layers?`<span>${p.layers}L</span> · `:''}${p.dims}`}</div>
+            <div class="proj-cta">View Project →</div>
           </div>
         </div>`;
       card.addEventListener('click', () => {

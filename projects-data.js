@@ -3,40 +3,32 @@
 
 const PROJECTS = [
   {
-    id: 'apex',
-    ndaProtected: true,
+    id: 'apex', ndaProtected: true,
     img: 'img/apex-product_1.png',
     photos: ['img/apex-product_1.png', 'img/Apex_2.png'],
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLKt2ic15ID9o',
-    title: 'APEX â€“ Intelligent UAV Payload Interface',
-    subtitle: 'Confidential UAV Systems Project',
-    cat: 'Avionics', catClass: 'cat-aero', icon: 'ðŸ›©',
-    status: 'Completed', statusClass: 'status-done',
-    stls: [], docs: [], layers: null, dims: 'NDA-Protected Project',
-    chips: ['NDA Protected'], tags: ['NDA Protected'],
-    desc: 'A confidential UAV systems project. Technical details are withheld under NDA; selected project images and a demonstration video are available.',
+    title: 'APEX', subtitle: '', cat: '', catClass: '', icon: '',
+    status: '', statusClass: 'status-done',
+    stls: [{ label: 'APEX', file: 'SERVO_WINCH.stl' }], docs: [],
+    layers: null, dims: '', chips: [], tags: [],
+    desc: 'Selected project visuals and demonstration footage.',
     highlights: [], specs: [],
-    documentation: {
-      overview: `This project is protected by a non-disclosure agreement. Technical specifications, architecture, implementation details, and project files are not publicly disclosed. Selected images and the demonstration video are presented for portfolio purposes.`
-    }
-  },  {
-    id: 'skyhook',
-    ndaProtected: true,
+    documentation: { overview: 'Selected project visuals and demonstration footage.' }
+  },
+  {
+    id: 'skyhook', ndaProtected: true,
     img: 'img/SKYHOOK_1.png',
     photos: ['img/SKYHOOK_1.png', 'img/SKYHOOK_2.png'],
     youtubeUrl: 'https://www.youtube.com/playlist?list=PLexVyNUshtQk',
-    title: 'SKYHOOK â€“ Precision UAV Payload Winch',
-    subtitle: 'Confidential UAV Systems Project',
-    cat: 'UAV Systems', catClass: 'cat-uav', icon: 'ðŸ”©',
-    status: 'Completed', statusClass: 'status-done',
-    stls: [], docs: [], layers: null, dims: 'NDA-Protected Project',
-    chips: ['NDA Protected'], tags: ['NDA Protected'],
-    desc: 'A confidential UAV systems project. Technical details are withheld under NDA; selected project images and a demonstration video are available.',
+    title: 'SKYHOOK', subtitle: '', cat: '', catClass: '', icon: '',
+    status: '', statusClass: 'status-done',
+    stls: [{ label: 'SKYHOOK', file: 'GEARED DC WINCH.stl' }], docs: [],
+    layers: null, dims: '', chips: [], tags: [],
+    desc: 'Selected project visuals and demonstration footage.',
     highlights: [], specs: [],
-    documentation: {
-      overview: `This project is protected by a non-disclosure agreement. Technical specifications, architecture, implementation details, and project files are not publicly disclosed. Selected images and the demonstration video are presented for portfolio purposes.`
-    }
-  },  {
+    documentation: { overview: 'Selected project visuals and demonstration footage.' }
+  },
+  {
     id: 'foc',
     img: 'img/foc.png',
     title: 'VECTOR – High-Performance FOC Motor Controller',
@@ -74,22 +66,17 @@ const PROJECTS = [
     }
   },
   {
-    id: 'fc',
-    ndaProtected: true,
-    img: 'img/fc.png',
-    photos: ['img/fc.png'],
-    title: 'Minima â€“ CM5 UAV Companion Computer Board',
-    subtitle: 'Confidential Project Â· In Development',
-    cat: 'Companion Board', catClass: 'cat-aero', icon: 'ðŸ§ ',
-    status: 'Ongoing â€” NDA Protected', statusClass: 'status-wip',
-    stls: [], docs: [], layers: null, dims: 'NDA-Protected Project',
-    chips: ['NDA Protected'], tags: ['NDA Protected'],
-    desc: 'A confidential UAV systems project currently in development. Technical details are withheld under NDA; only selected project media is publicly presented.',
+    id: 'fc', ndaProtected: true,
+    img: 'img/fc.png', photos: ['img/fc.png'],
+    title: 'CM5 Minima', subtitle: '', cat: '', catClass: '', icon: '',
+    status: '', statusClass: 'status-wip',
+    stls: [{ label: 'Minima', file: 'FC.stl' }, { label: 'CM5 Adapter', file: 'CM5 PI ADAPTER.stl' }], docs: [],
+    layers: null, dims: '', chips: [], tags: [],
+    desc: 'A compact computing platform currently in development.',
     highlights: [], specs: [],
-    documentation: {
-      overview: `This project is protected by a non-disclosure agreement. Technical specifications, architecture, implementation details, and project files are not publicly disclosed. Selected project media is presented for portfolio purposes.`
-    }
-  },  {
+    documentation: { overview: 'A compact computing platform currently in development. Selected project visuals are shown here.' }
+  },
+  {
     id: 'eeg',
     img: 'img/EEG.jpeg',
     title: 'Wireless EEG Acquisition',
